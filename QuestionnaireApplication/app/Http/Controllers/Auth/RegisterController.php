@@ -28,6 +28,13 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    public $titles = array('Miss', 'Mr', 'Mrs', 'Ms', 'Other');
+
+    public function showRegistrationForm()
+    {
+        $titles = $this->getTitlesHTML();
+        return view("auth.register", compact("titles"));
+    }
 
     /**
      * Create a new controller instance.
@@ -35,7 +42,8 @@ class RegisterController extends Controller
      * @return void
      */
     public function __construct()
-    {
+    {    
+        //need to get user types
         $this->middleware('guest');
     }
 
@@ -73,5 +81,22 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function getTitles() 
+    {
+        return $this->titles;
+    }
+
+    public function getTitlesHTML() 
+    {
+        $titles = $this->getTitles();
+        $titlesHTML = '<select name="title" class="form-control" id="title">';
+        foreach($titles as $title)
+        {
+            $titlesHTML .= '<option value="' . $title . '">' . $title . '</option>';
+        }
+        $titlesHTML .= '</select>';
+        return $titlesHTML;
     }
 }
