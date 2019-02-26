@@ -8,5 +8,6 @@ class UserAddress extends Model
 {
     protected $table = 'user_addresses';
     protected $primaryKey = 'addressid';
+    protected $foreignKey = 'userid';
     public $timestamps = true;
 }
