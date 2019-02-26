@@ -13,8 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
                     You are logged in!
+                    <p>{{ Auth::user()->firstname }}</p>
+                    <p>{{ Auth::user()->lastname }}</p>
                 </div>
             </div>
         </div>
