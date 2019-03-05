@@ -6,8 +6,8 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Add Address</div>
-
                 <div class="panel-body">
+                    <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
 
                     {!! Form::open(['action' => 'UserAddressController@store', 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 

@@ -6,6 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Add Address</div>
+                <a href="home" type="button" class="btn btn-default">Back</a>
                 <div class="panel-body">
                     {!! Form::open(['action' => ['UserAddressController@update', $useraddress->addressid], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 

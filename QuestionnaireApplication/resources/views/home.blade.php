@@ -16,6 +16,7 @@
                     You are logged in!
                     <p>{{ Auth::user()->firstname }}</p>
                     <p>{{ Auth::user()->lastname }}</p>
+                    <a href="address/create" type="button" class="btn btn-default">Add Address</a>
                 </div>
             </div>
         </div>
