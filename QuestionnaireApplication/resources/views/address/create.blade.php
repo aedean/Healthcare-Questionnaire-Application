@@ -9,13 +9,13 @@
                 <div class="panel-body">
                     <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
 
-                    {!! Form::open(['action' => 'UserAddressController@store', 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['action' => 'UserAddressController@store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
                     <div class="form-group{{ $errors->has('addressline1') ? ' has-error' : '' }}">
                         <label for="addressline1" class="col-md-4 control-label">Addrees Line 1</label>
 
                         <div class="col-md-6">
-                            <input id="addressline1" type="text" class="form-control" name="addressline1" value="{{ old('addressline1') }}" required autofocus>
+                            <input id="addressline1" type="text" class="form-control" name="addressline1" required autofocus>
 
                             @if ($errors->has('addressline1'))
                                 <span class="help-block">
@@ -29,7 +29,7 @@
                         <label for="addressline2" class="col-md-4 control-label">Address Line 2</label>
 
                         <div class="col-md-6">
-                            <input id="addressline2" type="text" class="form-control" name="addressline2" value="{{ old('addressline2') }}" required autofocus>
+                            <input id="addressline2" type="text" class="form-control" name="addressline2" required autofocus>
 
                             @if ($errors->has('addressline2'))
                                 <span class="help-block">
@@ -43,7 +43,7 @@
                         <label for="city" class="col-md-4 control-label">City/ Town</label>
 
                         <div class="col-md-6">
-                            <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}" required autofocus>
+                            <input id="city" type="text" class="form-control" name="city" required autofocus>
 
                             @if ($errors->has('city'))
                                 <span class="help-block">
@@ -57,7 +57,7 @@
                         <label for="county" class="col-md-4 control-label">County</label>
 
                         <div class="col-md-6">
-                            <input id="county" type="text" class="form-control" name="county" value="{{ old('county') }}" required>
+                            <input id="county" type="text" class="form-control" name="county" required>
 
                             @if ($errors->has('county'))
                                 <span class="help-block">
@@ -71,7 +71,7 @@
                         <label for="country" class="col-md-4 control-label">Country</label>
 
                         <div class="col-md-6">
-                            <input id="country" type="text" class="form-control" name="country" value="{{ old('country') }}" required>
+                            <input id="country" type="text" class="form-control" name="country" required>
 
                             @if ($errors->has('country'))
                                 <span class="help-block">
@@ -85,7 +85,7 @@
                         <label for="postcode" class="col-md-4 control-label">Postcode</label>
 
                         <div class="col-md-6">
-                            <input id="postcode" type="text" class="form-control" name="postcode" value="{{ old('postcode') }}" required>
+                            <input id="postcode" type="text" class="form-control" name="postcode" required>
 
                             @if ($errors->has('postcode'))
                                 <span class="help-block">
