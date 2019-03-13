@@ -15,7 +15,16 @@ class UserAddressController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::check()) {
+            $user = auth()->user();
+            $userid = $user->id;
+            $useraddress = UserAddress::where('userid', '=', $userid)->get();;
+            if($useraddress->count() <= 0) {
+                return view('address.create');
+            } 
+        } else {
+            return view('home');
+        }
     }
 
     /**
