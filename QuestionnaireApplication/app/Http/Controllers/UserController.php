@@ -74,25 +74,26 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'addressline1'  => 'required',
-        //     'addressline2'  => 'required',
-        //     'city'  => 'required',
-        //     'county'    => 'required',
-        //     'country'   => 'required',
-        //     'postcode'  => 'required'
-        // ]);
+        //The old values need to be populated for the required to be ok
+        $this->validate($request, [
+            'usertypeid' => 'required',
+            'title' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'dob' => 'required',
+            'email' => 'required'
+        ]);
 
-        // $useraddress = UserAddress::find($id);
-        // $useraddress->addressline1 = $request->input('addressline1');
-        // $useraddress->addressline2 = $request->input('addressline2');
-        // $useraddress->city = $request->input('city');
-        // $useraddress->county = $request->input('county');
-        // $useraddress->country = $request->input('country');
-        // $useraddress->postcode = $request->input('postcode');
-        // $useraddress->save();
+        $user = User::find($id);
+        $user->usertypeid = $request->input('usertypeid');
+        $user->title = $request->input('title');
+        $user->firstname = $request->input('firstname');
+        $user->lastname = $request->input('lastname');
+        $user->dob = $request->input('dob');
+        $user->email = $request->input('email');
+        $user->save();
 
-        // return redirect('home')->with('success', 'Address updated.');
+        return redirect('home')->with('success', 'User updated.');
     }
 
 
