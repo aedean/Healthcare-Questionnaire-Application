@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('address', 'UserAddressController');
 
 Route::resource('usertype', 'UserTypesController');
+
+Route::resource('user', 'UserController');

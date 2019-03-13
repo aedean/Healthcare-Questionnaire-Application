@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\UserTypes;
 
 class UserController extends Controller
 {
+    public $titles = array('Miss', 'Mr', 'Mrs', 'Ms', 'Other');
     /**
      * Display a listing of the resource.
      *
@@ -56,7 +59,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $titles = $this->getTitlesHTML();
+        $usertype = $this->getUserTypesHTML();
+        $user = User::find($id);
+        return view('user.edit', compact("titles"), compact('usertype'))->with('user', $user);
     }
 
     /**
@@ -68,8 +74,27 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $this->validate($request, [
+        //     'addressline1'  => 'required',
+        //     'addressline2'  => 'required',
+        //     'city'  => 'required',
+        //     'county'    => 'required',
+        //     'country'   => 'required',
+        //     'postcode'  => 'required'
+        // ]);
+
+        // $useraddress = UserAddress::find($id);
+        // $useraddress->addressline1 = $request->input('addressline1');
+        // $useraddress->addressline2 = $request->input('addressline2');
+        // $useraddress->city = $request->input('city');
+        // $useraddress->county = $request->input('county');
+        // $useraddress->country = $request->input('country');
+        // $useraddress->postcode = $request->input('postcode');
+        // $useraddress->save();
+
+        // return redirect('home')->with('success', 'Address updated.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -80,5 +105,39 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getTitles() 
+    {
+        return $this->titles;
+    }
+
+    public function getTitlesHTML() 
+    {
+        $titles = $this->getTitles();
+        $titlesHTML = '<select name="title" class="form-control" id="title">';
+        foreach($titles as $title)
+        {
+            $titlesHTML .= '<option value="' . $title . '">' . $title . '</option>';
+        }
+        $titlesHTML .= '</select>';
+        return $titlesHTML;
+    }
+
+    public function getUserTypes()
+    {
+        return UserTypes::all();
+    }
+
+    public function getUserTypesHTML()
+    {
+        $usertypes = $this->getUserTypes();
+        $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
+        foreach($usertypes as $usertype)
+        {
+            $usertypesHTML .= '<option value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
+        }
+        $usertypesHTML .= '</select>';
+        return $usertypesHTML;
     }
 }
