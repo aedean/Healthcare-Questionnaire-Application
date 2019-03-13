@@ -6,10 +6,10 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Update User</div>
-                <a href="home" type="button" class="btn btn-default">Back</a>
+                <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
                 <div class="panel-body">
                     {!! Form::open(['action' => ['UserController@update', $user->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                    <?php var_dump($user->firstname); ?>
+   
                     <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                         <label for="title" class="col-md-4 control-label">Title</label>
 
@@ -85,7 +85,8 @@
                         <label for="dob" class="col-md-4 control-label">Date of Birth</label>
 
                         <div class="col-md-6">
-                            <input id="dob" type="text" class="form-control" name="dob" value="{{ old('dob') }}" required autofocus>
+                            <input id="dob" type="date
+                            " class="form-control" name="dob" value="{{ old('dob') }}" required autofocus>
 
                             @if ($errors->has('dob'))
                                 <span class="help-block">

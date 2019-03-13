@@ -13,10 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    You are logged in!
-                    <p>{{ Auth::user()->firstname }}</p>
-                    <p>{{ Auth::user()->lastname }}</p>
+                    <p>Welcome back {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</p>
                     <a href="address/create" type="button" class="btn btn-default">Add Address</a>
+                    <a href="user/{{ Auth::user()->id }}/edit" type="button" class="btn btn-default">Edit Details</a>
                 </div>
             </div>
         </div>
