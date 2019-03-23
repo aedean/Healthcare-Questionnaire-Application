@@ -8,7 +8,7 @@
                 <div class="panel-heading">Update User</div>
                 <div class="panel-body">
                 <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
-                    {!! Form::open(['action' => ['UserController@update', $user->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['action' => ['UsersController@update', $user->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
    
                     <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                         <label for="title" class="col-md-4 control-label">Title</label>

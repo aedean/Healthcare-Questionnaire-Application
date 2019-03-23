@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\User;
+use Illuminate\Support\Facades\Input;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,8 +21,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/search', 'UsersController@search');
+
 Route::resource('address', 'UserAddressController');
 
 Route::resource('usertype', 'UserTypesController');
 
-Route::resource('user', 'UserController');
+Route::resource('users', 'UsersController');

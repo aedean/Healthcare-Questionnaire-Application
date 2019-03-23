@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\UserTypes;
 
-class UserController extends Controller
+class UsersController extends Controller
 {
     public $titles = array('Miss', 'Mr', 'Mrs', 'Ms', 'Other');
     /**
@@ -16,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -62,7 +63,7 @@ class UserController extends Controller
         $titles = $this->getTitlesHTML();
         $usertype = $this->getUserTypesHTML();
         $user = User::find($id);
-        return view('user.edit', compact("titles"), compact('usertype'))->with('user', $user);
+        return view('users.edit', compact("titles"), compact('usertype'))->with('user', $user);
     }
 
     /**
@@ -105,7 +106,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+        return redirect('/users')->with('success', 'User deleted.');
+    }
+
+    /**
+     * Search for requested field.
+     *
+     * @param  $query  $query
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $search = $request->get('search');
+        var_dump('here');
+        die;
     }
 
     public function getTitles() 
