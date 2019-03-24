@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\UserTypes;
 
 class RegisterController extends Controller
 {
@@ -33,7 +34,8 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $titles = $this->getTitlesHTML();
-        return view("auth.register", compact("titles"));
+        $usertype = $this->getUserTypesHTML();
+        return view("auth.register", compact("titles"), compact('usertype'));
     }
 
     /**
@@ -56,6 +58,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'usertypeid' => 'required|int|max:5',
             'title' => 'required|string|max:25',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -74,6 +77,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'usertypeid' => $data['usertypeid'],
             'title' => $data['title'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
@@ -98,5 +102,22 @@ class RegisterController extends Controller
         }
         $titlesHTML .= '</select>';
         return $titlesHTML;
+    }
+
+    public function getUserTypes()
+    {
+        return UserTypes::all();
+    }
+
+    public function getUserTypesHTML()
+    {
+        $usertypes = $this->getUserTypes();
+        $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
+        foreach($usertypes as $usertype)
+        {
+            $usertypesHTML .= '<option value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
+        }
+        $usertypesHTML .= '</select>';
+        return $usertypesHTML;
     }
 }

@@ -13,9 +13,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    You are logged in!
-                    <p>{{ Auth::user()->firstname }}</p>
-                    <p>{{ Auth::user()->lastname }}</p>
+                    <p>Welcome back {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</p>
+                    <a href="user/{{ Auth::user()->id }}" type="button" class="btn btn-default">Account Details</a>
                 </div>
             </div>
         </div>

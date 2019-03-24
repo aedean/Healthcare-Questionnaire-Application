@@ -23,6 +23,18 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('usertypeid') ? ' has-error' : '' }}">
+                            <label for="usertypeid" class="col-md-4 control-label">User Type</label>
+                            <div class="col-md-6">
+                                {!! $usertype !!}
+                                @if ($errors->has('usertypeid'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('usertypeid') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                             <label for="firstname" class="col-md-4 control-label">Forename</label>
 
