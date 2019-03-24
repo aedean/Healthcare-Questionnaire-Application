@@ -15,7 +15,7 @@ class CreateQuestionnaireTagsTable extends Migration
     {
         Schema::create('questionnaire_tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->int('questionnaireid');
+            $table->integer('questionnaireid');
             $table->string('tagid');
             $table->timestamps();
         });

@@ -15,9 +15,9 @@ class CreateQuestionAnswersTable extends Migration
     {
         Schema::create('question_answers', function (Blueprint $table) {
             $table->increments('answerid');
-            $table->int('questionnaireid');
-            $table->int('questionid');
-            $table->int('languageid');
+            $table->integer('questionnaireid');
+            $table->integer('questionid');
+            $table->integer('languageid');
             $table->string('answer');
             $table->timestamps();
         });

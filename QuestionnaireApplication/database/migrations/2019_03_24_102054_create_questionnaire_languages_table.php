@@ -15,7 +15,7 @@ class CreateQuestionnaireLanguagesTable extends Migration
     {
         Schema::create('questionnaire_languages', function (Blueprint $table) {
             $table->increments('id');
-            $table->int('questionnaireid');
+            $table->integer('questionnaireid');
             $table->string('languageid');
             $table->timestamps();
         });
