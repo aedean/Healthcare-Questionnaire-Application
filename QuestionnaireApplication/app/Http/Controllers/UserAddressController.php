@@ -18,7 +18,7 @@ class UserAddressController extends Controller
         if (Auth::check()) {
             $user = auth()->user();
             $userid = $user->id;
-            $useraddress = UserAddress::where('userid', '=', $userid)->get();;
+            $useraddress = UserAddress::where('userid', '=', $userid)->get();
             if($useraddress->count() <= 0) {
                 return view('address.create');
             } 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\UserTypes;
+use App\UserAddress;
 
 class UserController extends Controller
 {
@@ -48,7 +49,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        if ($user)  {
+            $usertype = UserTypes::where('usertypeid', '=', $user->usertypeid)->first();
+            $useraddresses = UserAddress::where('userid', '=', $id)->get();
+            return view('user.show', compact('useraddresses'), compact('usertype'))->with('user', $user);
+        } else {
+            return redirect('home')->with('error', 'Resource not found.');
+        }
     }
 
     /**
@@ -59,9 +67,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $titles = $this->getTitlesHTML();
-        $usertype = $this->getUserTypesHTML();
         $user = User::find($id);
+        $titles = $this->getTitlesHTML($user->title);
+        $usertype = $this->getUserTypesHTML($user->usertypeid);
         return view('user.edit', compact("titles"), compact('usertype'))->with('user', $user);
     }
 
@@ -113,13 +121,17 @@ class UserController extends Controller
         return $this->titles;
     }
 
-    public function getTitlesHTML() 
+    public function getTitlesHTML($id) 
     {
         $titles = $this->getTitles();
         $titlesHTML = '<select name="title" class="form-control" id="title">';
         foreach($titles as $title)
         {
-            $titlesHTML .= '<option value="' . $title . '">' . $title . '</option>';
+            $selected = "";
+            if($id == $title) {
+                $selected = 'selected="selected"';
+            }
+            $titlesHTML .= '<option ' . $selected . ' value="' . $title . '">' . $title . '</option>';
         }
         $titlesHTML .= '</select>';
         return $titlesHTML;
@@ -130,13 +142,17 @@ class UserController extends Controller
         return UserTypes::all();
     }
 
-    public function getUserTypesHTML()
+    public function getUserTypesHTML($id)
     {
         $usertypes = $this->getUserTypes();
         $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
         foreach($usertypes as $usertype)
         {
-            $usertypesHTML .= '<option value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
+            $selected = "";
+            if($id == $usertype->usertypeid) {
+                $selected = 'selected="selected"';
+            }
+            $usertypesHTML .= '<option ' . $selected . ' value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
         }
         $usertypesHTML .= '</select>';
         return $usertypesHTML;
