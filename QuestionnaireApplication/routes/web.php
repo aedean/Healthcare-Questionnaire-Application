@@ -25,3 +25,4 @@ Route::resource('questionnairetags', 'QuestionnaireTagsController');
 Route::resource('questionnairelanguages', 'QuestionnaireLanguagesController');
 Route::resource('questions', 'QuestionsController');
 Route::resource('questionanswers', 'QuestionAnswersController');
+Route::get('/question/create', 'QuestionController@create')->name('questioncreation');
