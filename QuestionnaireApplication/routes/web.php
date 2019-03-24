@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/search', 'UsersController@search');
+Route::get('/users/search', 'UsersController@search');
 
 Route::resource('address', 'UserAddressController');
 

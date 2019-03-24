@@ -119,9 +119,10 @@ class UsersController extends Controller
      */
     public function search(Request $request)
     {
-        $search = $request->get('search');
-        var_dump('here');
+        var_dump($request);
         die;
+        $users = User::where('title', 'LIKE', "%$request->search%")->get();
+        return view('users.search');
     }
 
     public function getTitles() 

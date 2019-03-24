@@ -22,9 +22,9 @@ tr:nth-child(even) {
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Users</div>
-                <form action="/search" method="get">
+                <form action="<?php echo Request::url(); ?>/search" method="get" id="name">
                     <div class="input-group">
-                        <input type="search" name="search" class="form-control">
+                        <input type="search" name="search" id="firstname" class="form-control">
                         <span class="input-group-prepend">
                             <button type="submit" class="btn">Search</button>
                         </span>
