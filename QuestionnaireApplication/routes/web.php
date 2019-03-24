@@ -18,3 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/* Questionnaire Routes */
+Route::resource('questionnaires', 'QuestionnairesController');
+Route::resource('questionnairetags', 'QuestionnaireTagsController');
+Route::resource('questionnairelanguages', 'QuestionnaireLanguagesController');
+Route::resource('questions', 'QuestionsController');
+Route::resource('questionanswers', 'QuestionAnswersController');
