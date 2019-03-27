@@ -25,6 +25,34 @@
                         </div>
                     </div>
 
+                    <div class="form-group{{ $errors->has('languageid') ? ' has-error' : '' }}">
+                        <label for="languageid" class="col-md-4 control-label">Languages</label>
+
+                        <div class="col-md-6">
+                            <input id="languageid" type="text" class="form-control" name="languageid" required autofocus>
+
+                            @if ($errors->has('languageid'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('languageid') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
+                        <label for="tags" class="col-md-4 control-label">Tags</label>
+
+                        <div class="col-md-6">
+                            <input id="tags" type="text" class="form-control" name="tags" required autofocus>
+
+                            @if ($errors->has('tags'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('tags') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {!! Form::submit('Continue Creation', ['class' => 'btn']) !!}
