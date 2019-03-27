@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Questionnaires;
 
 class QuestionnairesController extends Controller
 {
@@ -40,7 +41,8 @@ class QuestionnairesController extends Controller
         $questionnaire = new Questionnaires;
         $questionnaire->name = $request->input('name');
         $questionnaire->save();
-        return redirect('questioncreation')->with('success', 'Questionnaire name created.');
+        $request->session()->put('questionnaire_id', $questionnaire->id);
+        return redirect('question/create')->with('success', 'Questionnaire name created.');
     }
 
     /**
