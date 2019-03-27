@@ -23,9 +23,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('questionnaires', 'QuestionnairesController');
 Route::resource('questionnairetags', 'QuestionnaireTagsController');
 Route::resource('questionnairelanguages', 'QuestionnaireLanguagesController');
-Route::resource('questions', 'QuestionsController');
+Route::resource('question', 'QuestionsController');
 Route::resource('questionanswers', 'QuestionAnswersController');
-Route::get('/question/create', 'QuestionController@create')->name('questioncreation');
 
 /* Users */
 Route::resource('address', 'UserAddressController');
