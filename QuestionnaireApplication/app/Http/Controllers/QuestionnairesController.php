@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Questionnaires;
+use App\Questions;
 
 class QuestionnairesController extends Controller
 {
@@ -65,7 +66,8 @@ class QuestionnairesController extends Controller
     public function edit($id)
     {
         $questionnaire = Questionnaires::find($id);
-        return view('questionnaires.edit')->with('questionnaire', $questionnaire);
+        $questions = Questions::where('questionid', '=', $id)->get();
+        return view('questionnaires.edit', compact('questions'))->with('questionnaire', $questionnaire);
     }
 
     /**

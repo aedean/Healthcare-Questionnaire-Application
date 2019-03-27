@@ -56,7 +56,8 @@ class QuestionnaireLanguagesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $language = QuestionnaireLanguages::find($id);
+        return view('languages.edit')->with('language', $language);
     }
 
     /**

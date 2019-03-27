@@ -92,7 +92,7 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Questions::find($id);
-        return view('question.edit')->with('questions', $question);
+        return view('question.edit')->with('question', $question);
     }
 
     /**
@@ -126,7 +126,7 @@ class QuestionsController extends Controller
             $answers->save();
         }
 
-        return redirect('questions/' . $id . '/edit')->with('success', 'Question updated.');
+        return URL::previous();
     }
 
     /**
