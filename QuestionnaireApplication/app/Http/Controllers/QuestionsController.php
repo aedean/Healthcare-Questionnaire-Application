@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Questions;
+use App\QuestionAnswers;
 
 class QuestionsController extends Controller
 {
@@ -23,7 +25,7 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        return view('address.create');
+        return view('question.create');
     }
 
     /**
@@ -34,30 +36,39 @@ class QuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::check()) {
-            $user = auth()->user();
-            $userid = $user->id;
-        } else {
-            return redirect('home')->with('success', 'Address created.');
-        }
+        $questionnaireId = $request->session()->get('questionnaire_id');
+
         $this->validate($request, [
-            'addressline1'  => 'required',
-            'addressline2'  => 'required',
-            'city'  => 'required',
-            'county'    => 'required',
-            'country'   => 'required',
-            'postcode'  => 'required'
+            // 'questionnumber'  => 'required',
+            // 'languageid'  => 'required',
+            'question'    => 'required',
+            // 'questionimage'   => 'required',
+            // 'answertype'  => 'required'
         ]);
-        $useraddress = new UserAddress;
-        $useraddress->userid = $userid;
-        $useraddress->addressline1 = $request->input('addressline1');
-        $useraddress->addressline2 = $request->input('addressline2');
-        $useraddress->city = $request->input('city');
-        $useraddress->county = $request->input('county');
-        $useraddress->country = $request->input('country');
-        $useraddress->postcode = $request->input('postcode');
-        $useraddress->save();
-        return redirect('home')->with('success', 'Address created.');
+
+        $questions = new Questions;
+        $questions->questionnaireid = $questionnaireId;
+        $questions->questionnumber = 5;
+        $questions->languageid = 7;
+        $questions->question = $request->input('question');
+        $questions->questionimage = 'here';
+        $questions->answertype = 'here';
+        $questions->save();
+        
+        if($request->answer) {
+            $answers = new QuestionAnswers; 
+            $answers->questionnaireid = $questionnaireId;
+            $answers->questionid = $questions->questionid;
+            $answers->answer = $request->answer;
+            $answers->languageid = 7;
+            $answers->save();
+        }
+
+        if($request->finish) {
+            return redirect('questionnaires/' . $questionnaireId . '/edit');
+        } elseif ($request->submit) {
+            return view('question.create');
+        }
     }
 
     /**
@@ -68,8 +79,8 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $useraddress = UserAddress::find($id);
-        return view('address.show')->with('useraddress', $useraddress);
+        $questions = Questions::find($id);
+        return view('question.show')->with('questions', $questions);
     }
 
     /**
@@ -80,8 +91,8 @@ class QuestionsController extends Controller
      */
     public function edit($id)
     {
-        $useraddress = UserAddress::find($id);
-        return view('address.edit')->with('useraddress', $useraddress);
+        $question = Questions::find($id);
+        return view('question.edit')->with('questions', $question);
     }
 
     /**
@@ -94,22 +105,28 @@ class QuestionsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'addressline1'  => 'required',
-            'addressline2'  => 'required',
-            'city'  => 'required',
-            'county'    => 'required',
+            'questionnumber'  => 'required',
+            'languageid'  => 'required',
+            'question'    => 'required',
             'country'   => 'required',
-            'postcode'  => 'required'
+            'answertype'  => 'required'
         ]);
-        $useraddress = UserAddress::find($id);
-        $useraddress->addressline1 = $request->input('addressline1');
-        $useraddress->addressline2 = $request->input('addressline2');
-        $useraddress->city = $request->input('city');
-        $useraddress->county = $request->input('county');
-        $useraddress->country = $request->input('country');
-        $useraddress->postcode = $request->input('postcode');
-        $useraddress->save();
-        return redirect('home')->with('success', 'Address updated.');
+        $question = Questions::find($id);
+        $question->questionnumber = $request->input('questionnumber');
+        $question->languageid = $request->input('languageid');
+        $question->question = $request->input('question');
+        $question->questionimage = $request->input('questionimage');
+        $question->answertype = $request->input('answertype');
+        $question->save();
+
+        if($request->answer) {
+            $answers = QuestionAnswers::id(); 
+            $answers->answer = $request->answer;
+            $answers->languageid = 7;
+            $answers->save();
+        }
+
+        return redirect('questions/' . $id . '/edit')->with('success', 'Question updated.');
     }
 
     /**
@@ -120,8 +137,8 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        $useraddress = UserAddress::find($id);
-        $useraddress->delete();
-        return redirect('home')->with('success', 'Address deleted.');
+        $questions = Questions::find($id);
+        $questions->delete();
+        return redirect('home')->with('success', 'Question deleted.');
     }
 }
