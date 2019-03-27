@@ -22,7 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 /* Questionnaire Routes */
 Route::resource('questionnaires', 'QuestionnairesController');
 Route::resource('questionnairetags', 'QuestionnaireTagsController');
-Route::resource('questionnairelanguages', 'QuestionnaireLanguagesController');
+Route::resource('languages', 'QuestionnaireLanguagesController');
 Route::resource('question', 'QuestionsController');
 Route::resource('questionanswers', 'QuestionAnswersController');
 
