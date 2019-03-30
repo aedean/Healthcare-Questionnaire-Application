@@ -46,8 +46,9 @@ class LanguagesController extends Controller
         $language->colour = $request->input('colour');
         $language->save();
 
+        $languageIndexUrl = url('/') . '/languages';
         $languages = Languages::all();
-        return view('languages.index', compact('languages'));
+        return redirect($languageIndexUrl)->with('languages', $languages);
     }
 
     /**
@@ -89,8 +90,9 @@ class LanguagesController extends Controller
         $language->colour = $request->input('colour');
         $language->save();
 
+        $languageIndexUrl = url('/') . '/languages';
         $languages = Languages::all();
-        return view('languages.index', compact('languages'));
+        return redirect($languageIndexUrl)->with('languages', $languages);
     }
 
     /**
@@ -103,8 +105,9 @@ class LanguagesController extends Controller
     {
         $language = Languages::find($id);
         $language->delete();
-        
+
+        $languageIndexUrl = url('/') . '/languages';
         $languages = Languages::all();
-        return view('languages.index', compact('languages'));
+        return redirect($languageIndexUrl)->with('languages', $languages);
     }
 }
