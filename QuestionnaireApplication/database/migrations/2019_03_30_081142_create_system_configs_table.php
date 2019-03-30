@@ -23,25 +23,25 @@ class CreateSystemConfigsTable extends Migration
         DB::table('system_configs')->insert(
             array(
                 array (
-                    'attributename' => 'languageapikey',
+                    'attributename' => 'Language API Key',
                     'attributevalue' => 'na',
                     'created_at' => date('Y-m-d H:i:s'), 
                     'updated_at' => date('Y-m-d H:i:s') 
                 ),
                 array (
-                    'attributename' => 'locationapikey',
+                    'attributename' => 'Location API Key',
                     'attributevalue' => 'na',
                     'created_at' => date('Y-m-d H:i:s'), 
                     'updated_at' => date('Y-m-d H:i:s') 
                 ),
                 array (
-                    'attributename' => 'applicationname',
+                    'attributename' => 'Application Name',
                     'attributevalue' => 'How are you feeling?',
                     'created_at' => date('Y-m-d H:i:s'), 
                     'updated_at' => date('Y-m-d H:i:s') 
                 ),
                 array (
-                    'attributename' => 'applicationlogo',
+                    'attributename' => 'Application Logo',
                     'attributevalue' => 'na',
                     'created_at' => date('Y-m-d H:i:s'), 
                     'updated_at' => date('Y-m-d H:i:s') 
