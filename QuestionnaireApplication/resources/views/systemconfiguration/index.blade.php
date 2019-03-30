@@ -13,7 +13,6 @@
                             <th>No.</th>
                             <th>Attribute Name</th>
                             <th>Edit</th>
-                            <th>Delete</th>
                         </thead>
                         <tbody>
                             <?php $configCount = 1; ?>
@@ -21,28 +20,28 @@
                                 <tr>
                                     <td><?php echo $configCount++; ?></td>
                                     <td><?php echo $attribute->attributename; ?></td>
-                                    <td><a href="/{{ $attribute->id }}/edit">Edit<a></td>
+                                    <td><a href="/{{ $attribute->id }}/edit" class="btn btn-default">Edit<a></td>
                                 </tr>
                             <?php endforeach; ?>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Languages</td>
-                                <td><a href="<?php echo url('/'); ?>/languages">Edit<a></td>
+                                <td><a href="<?php echo url('/') . '/languages'; ?>" class="btn btn-default">Edit<a></td>
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Tags</td>
-                                <td><a href="<?php echo url('/'); ?>/tags">Edit<a></td>
+                                <td><a href="<?php echo url('/') . '/tags'; ?>" class="btn btn-default">Edit<a></td>
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Users Permissions</td>
-                                <td><a href="<?php echo url('/') . '/user'; ?>">Edit<a></td>
+                                <td><a href="<?php echo url('/') . '/user'; ?>" class="btn btn-default">Edit<a></td>
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Healthcare Workers</td>
-                                <td><a href="<?php echo url('/') . '/languages'; ?>/healthcareworkers">Edit<a></td>
+                                <td><a href="<?php echo url('/') . '/healthcareworkers'; ?>" class="btn btn-default">Edit<a></td>
                             </tr>
                         </tbody>
                     </table>

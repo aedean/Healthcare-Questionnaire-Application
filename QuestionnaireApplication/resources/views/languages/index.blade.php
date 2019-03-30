@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Languages</div>
                 <div class="panel-body">
-                    <a href="<?php echo url('/') . '/languages'; ?>" class="btn btn-default">Back</a>
+                    <a href="<?php echo url('/') . '/systemconfiguration'; ?>" class="btn btn-default">Back</a>
                     <table>
                         <thead>
                             <th>No.</th>
