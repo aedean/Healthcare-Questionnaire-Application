@@ -27,22 +27,22 @@
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Languages</td>
-                                <td><a href="/langauges/">Edit<a></td>
+                                <td><a href="<?php echo url('/'); ?>/languages">Edit<a></td>
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Tags</td>
-                                <td><a href="/tags/">Edit<a></td>
+                                <td><a href="<?php echo url('/'); ?>/tags">Edit<a></td>
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
-                                <td>Users</td>
-                                <td><a href="systemconfiguration/{{ $attribute->id }}/show">Edit<a></td>
+                                <td>Users Permissions</td>
+                                <td><a href="<?php echo url('/') . '/user'; ?>">Edit<a></td>
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Healthcare Workers</td>
-                                <td><a href="systemconfiguration/{{ $attribute->id }}/show">Edit<a></td>
+                                <td><a href="<?php echo url('/') . '/languages'; ?>/healthcareworkers">Edit<a></td>
                             </tr>
                         </tbody>
                     </table>
