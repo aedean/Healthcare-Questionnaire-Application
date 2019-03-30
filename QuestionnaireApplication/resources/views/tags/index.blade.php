@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Tags</div>
                 <div class="panel-body">
-                    <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+                    <a href="<?php echo url('/') . '/tags'; ?>" class="btn btn-default">Back</a>
                     <table>
                         <thead>
                             <th>No.</th>

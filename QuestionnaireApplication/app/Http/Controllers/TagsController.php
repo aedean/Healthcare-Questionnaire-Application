@@ -102,6 +102,10 @@ class TagsController extends Controller
         $tag = Tags::find($id);
         $tag->delete();
         
+        $languageIndexUrl = url('/') . '/languages';
+        $languages = Languages::all();
+        return redirect($languageIndexUrl)->with('languages', $languages);
+        
         $tags = Tags::all();
         return view('tags.index', compact('tags'));
     }
