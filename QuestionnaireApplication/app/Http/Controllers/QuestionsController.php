@@ -10,7 +10,7 @@ class QuestionsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     *  
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -45,13 +45,18 @@ class QuestionsController extends Controller
             // 'questionimage'   => 'required',
             // 'answertype'  => 'required'
         ]);
+        
+        if($request->questionimage) {
+            $request->questionimage->storeAs('uploads/questionnaires/' . $questionnaireId . '/questions/', $request->questionimage->getClientOriginalName());
+            $filename = 'uploads/questionnaires/' . $questionnaireId . '/questions/' . $request->questionimage->getClientOriginalName();
+        }
 
         $questions = new Questions;
         $questions->questionnaireid = $questionnaireId;
         $questions->questionnumber = 5;
         $questions->languageid = 7;
         $questions->question = $request->input('question');
-        $questions->questionimage = 'here';
+        $questions->questionimage = $filename;
         $questions->answertype = 'here';
         $questions->save();
         
@@ -79,8 +84,9 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $questions = Questions::find($id);
-        return view('question.show')->with('questions', $questions);
+        $question = Questions::find($id);
+        $answers = QuestionAnswers::where('questionid', '=', $id)->get();
+        return view('question.show', compact('answers'))->with('question', $question);
     }
 
     /**
@@ -92,7 +98,8 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Questions::find($id);
-        return view('question.edit')->with('question', $question);
+        $answers = QuestionAnswers::where('questionid', '=', $id)->get();
+        return view('question.edit', compact('answers'))->with('question', $question);
     }
 
     /**

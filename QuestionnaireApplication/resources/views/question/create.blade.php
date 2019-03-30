@@ -9,7 +9,7 @@
                 <div class="panel-body">
                     <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
 
-                    {!! Form::open(['action' => 'QuestionsController@store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['action' => 'QuestionsController@store', 'method' => 'POST', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 
                     <!-- <div class="form-group{{ $errors->has('languageid') ? ' has-error' : '' }}">
                         <label for="languageid" class="col-md-4 control-label">languageid</label>
@@ -39,33 +39,19 @@
                         </div>
                     </div>
 
-                    <!-- <div class="form-group{{ $errors->has('questionimage') ? ' has-error' : '' }}">
-                        <label for="questionimage" class="col-md-4 control-label">questionimage</label>
+                    <div class="form-group">
+                        <label for="answer" class="col-md-4 control-label">Answer</label>
 
                         <div class="col-md-6">
-                            <input id="questionimage" type="text" class="form-control" name="questionimage" required autofocus>
-
-                            @if ($errors->has('questionimage'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('questionimage') }}</strong>
-                                </span>
-                            @endif
+                            <?php echo Form::file('file', array('name'=>'questionimage')); ?>
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('answertype') ? ' has-error' : '' }}">
-                        <label for="answertype" class="col-md-4 control-label">answertype</label>
+                    <div class="row">
 
-                        <div class="col-md-6">
-                            <input id="answertype" type="text" class="form-control" name="answertype" required autofocus>
-
-                            @if ($errors->has('answertype'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('answertype') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div> -->
+                    <div class="col-md-6">
+                        <input type="file" name="image" class="form-control">
+                    </div>
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
@@ -84,25 +70,26 @@
         </div>
     </div>
 </div>
-@endsection
-
 <script>
     //if the answer type is select 
-    let answerHtml = `<div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
-        <label for="answer" class="col-md-4 control-label">Answer</label>
+       // alert( "Handler for .change() called." );
 
-        <div class="col-md-6">
-            <input id="answer" type="text" class="form-control" name="answer" required autofocus>
+    // let answerHtml = `<div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
+    //     <label for="answer" class="col-md-4 control-label">Answer</label>
 
-            @if ($errors->has('answer'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('answer') }}</strong>
-                </span>
-            @endif
-        </div>
-    </div>`;
+    //     <div class="col-md-6">
+    //         <input id="answer" type="text" class="form-control" name="answer" required autofocus>
+
+    //         @if ($errors->has('answer'))
+    //             <span class="help-block">
+    //                 <strong>{{ $errors->first('answer') }}</strong>
+    //             </span>
+    //         @endif
+    //     </div>
+    // </div>`;
     //create answer input and btn
     //if the add another answer btn is clicked
     //delete the current btn 
     //create answer input and btn
 </script>
+@endsection

@@ -79,6 +79,26 @@
                         </div>
                     </div>
 
+                    <?php 
+                        $answerCount = 0;
+                        foreach($answers as $answer) {
+                            echo $answer;
+                             echo '<div class="form-group{{ $errors->has(\'answer\') ? \'has-error\' : \'\' }}">'; 
+                            // <label for="answer" class="col-md-4 control-label">Answer Type</label>
+    
+                            //     <div class="col-md-6">
+                            //         <input id="answer'  . $answerCount . '" type="text" class="form-control" name="answer'  . $answerCount . '" required autofocus>
+        
+                            //         @if ($errors->has(\'answer\'))
+                            //             <span class="help-block">
+                            //                 <strong>{{ $errors->first(\'answer\') }}</strong>
+                            //             </span>
+                            //         @endif
+                            //     </div>
+                            echo '</div>';
+                        }
+                    ?> 
+
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {!! Form::submit('Update', ['class' => 'btn', 'name' => 'update']) !!}
