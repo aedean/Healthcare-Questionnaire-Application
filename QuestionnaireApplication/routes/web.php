@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/* System Config */
+Route::resource('languages', 'LanguagesController');
+Route::resource('tags', 'TagsController');
+Route::resource('systemconfiguration', 'SystemConfigController');
