@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\UserTypes;
 
 class UserTypesController extends Controller
 {
@@ -13,7 +14,8 @@ class UserTypesController extends Controller
      */
     public function index()
     {
-        //
+        $usertypes = UserTypes::all();
+        return view('usertypes.index', compact('usertypes'));
     }
 
     /**
@@ -23,7 +25,7 @@ class UserTypesController extends Controller
      */
     public function create()
     {
-        //
+        return view('usertypes.create');
     }
 
     /**
@@ -33,8 +35,18 @@ class UserTypesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {  
+        $this->validate($request, [
+            'usertypename' => 'required'
+        ]);
+
+        $usertype = new UserTypes;
+        $usertype->usertypename = $request->input('usertypename');
+        $usertype->save();
+
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 
     /**
@@ -45,7 +57,7 @@ class UserTypesController extends Controller
      */
     public function show($id)
     {
-        //
+        //na
     }
 
     /**
@@ -56,7 +68,8 @@ class UserTypesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $usertype = UserTypes::find($id);
+        return view('usertypes.edit', compact('usertype'));
     }
 
     /**
@@ -68,7 +81,17 @@ class UserTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'usertypename' => 'required'
+        ]);
+
+        $usertype = UserTypes::find($id);
+        $usertype->usertypename = $request->input('usertypename');
+        $usertype->save();
+
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 
     /**
@@ -79,6 +102,11 @@ class UserTypesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $usertype = UserTypes::find($id);
+        $usertype->delete();
+
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 }
