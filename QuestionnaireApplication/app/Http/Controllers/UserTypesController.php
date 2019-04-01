@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\UserTypes;
+use App\UserAccess;
+use App\ApplicationAccess;
 
 class UserTypesController extends Controller
 {
@@ -68,8 +70,9 @@ class UserTypesController extends Controller
      */
     public function edit($id)
     {
+        $applicationAccess = ApplicationAccess::all();
         $usertype = UserTypes::find($id);
-        return view('usertypes.edit', compact('usertype'));
+        return view('usertypes.edit', compact('usertype'), compact('applicationAccess'));
     }
 
     /**
