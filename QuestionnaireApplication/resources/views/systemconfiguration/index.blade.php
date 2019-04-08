@@ -8,17 +8,17 @@
                 <div class="panel-heading">System Configuration</div>
                 <div class="panel-body">
                     <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
-                    <table>
+                    <table class="table">
                         <thead>
-                            <th>No.</th>
-                            <th>Attribute Name</th>
-                            <th>Edit</th>
+                            <th scope="col">No.</th>
+                            <th scope="col">Attribute Name</th>
+                            <th scope="col">Edit</th>
                         </thead>
                         <tbody>
                             <?php $configCount = 1; ?>
                             <?php foreach($attributes as $attribute): ?>
                                 <tr>
-                                    <td><?php echo $configCount++; ?></td>
+                                    <td scope="row"><?php echo $configCount++; ?></td>
                                     <td><?php echo $attribute->attributename; ?></td>
                                     <td><a href="/{{ $attribute->id }}/edit" class="btn btn-default">Edit<a></td>
                                 </tr>
