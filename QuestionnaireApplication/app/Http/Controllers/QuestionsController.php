@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Questions;
 use App\QuestionAnswers;
+use App\Questionnaires;
+use Illuminate\Support\Facades\Storage;
+use App\QuestionnaireLanguages;
+use App\Languages;
 
 class QuestionsController extends Controller
 {
@@ -25,7 +29,32 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        return view('question.create');
+        $questionnaireId = session('questionnaire_id');
+        $languageSelectHTML = $this->getQuestionnaireLanguagesHTML($questionnaireId);
+        return view('question.create')->with('languageSelectHTML', $languageSelectHTML);
+    }
+
+    public function getQuestionnaireLanguagesHTML($id)
+    {
+        $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
+        $questionLanguageHTML = '<select name="languageid" class="form-control" id="languageid">';
+        foreach($questionnaireLanguages as $language)
+        {
+            $languageArray = $this->languagesToArray($language->languageid);
+            $questionLanguageHTML .= '<option value="' . $language->languageid . '">' . $languageArray[$language->languageid] . '</option>';
+        }
+        $questionLanguageHTML .= '</select>';
+        return $questionLanguageHTML;
+    }
+    
+    public function languagesToArray($id)
+    {
+        $languagesArray = array();
+        $languages = Languages::where('id', '=', $id)->get();
+        foreach($languages as $language) {
+            $languagesArray[$language->id] = $language->language;
+        }
+        return $languagesArray;
     }
 
     /**
@@ -39,40 +68,34 @@ class QuestionsController extends Controller
         $questionnaireId = $request->session()->get('questionnaire_id');
 
         $this->validate($request, [
-            // 'questionnumber'  => 'required',
-            // 'languageid'  => 'required',
+            'questionnumber'  => 'required',
+            'languageid'  => 'required',
             'question'    => 'required',
-            // 'questionimage'   => 'required',
-            // 'answertype'  => 'required'
+            'questionimage'   => 'required',
+            'answertype'  => 'required'
         ]);
-        
-        if($request->questionimage) {
-            $request->questionimage->storeAs('uploads/questionnaires/' . $questionnaireId . '/questions/', $request->questionimage->getClientOriginalName());
-            $filename = 'uploads/questionnaires/' . $questionnaireId . '/questions/' . $request->questionimage->getClientOriginalName();
-        }
 
         $questions = new Questions;
         $questions->questionnaireid = $questionnaireId;
-        $questions->questionnumber = 5;
-        $questions->languageid = 7;
+        $questions->questionnumber = $request->input('questionnumber');
+        $questions->languageid = $request->input('languageid');
         $questions->question = $request->input('question');
-        $questions->questionimage = $filename;
-        $questions->answertype = 'here';
+        $questions->answertype = $request->input('answertype');
+        $questions->questionimage = '';
         $questions->save();
-        
-        if($request->answer) {
-            $answers = new QuestionAnswers; 
-            $answers->questionnaireid = $questionnaireId;
-            $answers->questionid = $questions->questionid;
-            $answers->answer = $request->answer;
-            $answers->languageid = 7;
-            $answers->save();
+
+        if($request->questionimage) {
+            $filename = 'uploads/questionnaires/' . $questionnaireId . '/questions/' . $questions->questionid;
+            $filename = Storage::disk('public')->put($filename, $request->questionimage);
         }
+
+        $questions->questionimage = $filename;
+        $questions->save();
 
         if($request->finish) {
             return redirect('questionnaires/' . $questionnaireId . '/edit');
         } elseif ($request->submit) {
-            return view('question.create');
+            return $this->create();
         }
     }
 
@@ -84,9 +107,26 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
+        // set products.name as array
+        // session()->put('products.name', []);
+
+
+        // // somewhere later
+        // session()->push('products.name', $name1);
+
+        session()->put('questions', []);
+        $questionnaireId = session('questionnaire_id');
         $question = Questions::find($id);
         $answers = QuestionAnswers::where('questionid', '=', $id)->get();
-        return view('question.show', compact('answers'))->with('question', $question);
+
+        //if the next question is the last redirect to finish
+        $nextislast = false;
+        $nextId = $id++;
+        $nextQuestion = Questions::find($id);
+        if (empty($nextQuestion)) { 
+            $nextislast = true;
+        } 
+        return view('question.show', compact('answers'), compact('nextislast'))->with('question', $question);
     }
 
     /**
@@ -118,6 +158,7 @@ class QuestionsController extends Controller
             'country'   => 'required',
             'answertype'  => 'required'
         ]);
+
         $question = Questions::find($id);
         $question->questionnumber = $request->input('questionnumber');
         $question->languageid = $request->input('languageid');
@@ -146,6 +187,8 @@ class QuestionsController extends Controller
     {
         $questions = Questions::find($id);
         $questions->delete();
-        return redirect('home')->with('success', 'Question deleted.');
+        $questionnairesEditUrl = url()->previous();
+        $questions = Questions::all();
+        return redirect(url()->previous())->with('questions', $questions);
     }
 }
