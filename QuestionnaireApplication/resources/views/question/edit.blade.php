@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Create Questionnaire</div>
+                <div class="panel-heading">Edit Question</div>
                 <div class="panel-body">
-                    <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+                    <a href="<?php echo url('/') . '/questionnaires' ?>" class="btn btn-default">Back</a>
                     {!! Form::open(['action' => ['QuestionsController@update', $question->questionid], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
                     <div class="form-group{{ $errors->has('questionnumber') ? ' has-error' : '' }}">
                         <label for="questionnumber" class="col-md-4 control-label">Question Number</label>

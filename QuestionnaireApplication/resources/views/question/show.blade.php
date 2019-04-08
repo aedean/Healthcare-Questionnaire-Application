@@ -12,9 +12,13 @@
                         </div>
                     </div>
 
+                    <div class="">
+                        <h1><?php echo $question->question; ?></h1>
+                    </div>
+
                     <div class="form-group">
                         <div class="col-md-6">
-                            <img src="<?php echo asset('storage/public/uploads/questionnaires/questions/tick.PNG'); ?>" />
+                            <img src="<?php echo url('/') . Storage::url($question->questionimage); ?>" />
                         </div>
                     </div>
 
@@ -26,18 +30,20 @@
                     
                     <div class="form-group">
                         <div class="col-md-6">
-                            <?php
-                                if($question->answertype == 'input') {
-                                    //create text input
-                                } elseif($question->answertype == 'select') {
-                                    foreach($answers as $answer) {
-                                        //create select input
-                                        echo $answer->answer;
-                                    }
-                                } 
+                            <?php if($question->answertype == 'input'): ?>
+                                
+                            <?php elseif($question->answertype == 'select'):
+                                foreach($answers as $answer) {
+                                    //create select input
+                                    echo $answer->answer;
+                                }
+                            endif;
                             ?>
                         </div>
                     </div>
+                    <?php if($nextislast == true): ?>
+                            <a class="btn btn-default" href="<?php echo url('/'); ?>">Finish</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
