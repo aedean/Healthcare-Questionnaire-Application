@@ -25,20 +25,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('languageid') ? ' has-error' : '' }}">
-                        <label for="languageid" class="col-md-4 control-label">Languages</label>
-
-                        <div class="col-md-6">
-                            <input id="languageid" type="text" class="form-control" name="languageid" required autofocus>
-
-                            @if ($errors->has('languageid'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('languageid') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-
                     <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
                         <label for="tags" class="col-md-4 control-label">Tags</label>
 
@@ -48,6 +34,19 @@
                             @if ($errors->has('tags'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('tags') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('languages') ? ' has-error' : '' }}">
+                        <label for="languages" class="col-md-4 control-label">Languages</label>
+
+                        <div class="col-md-6">
+                            {!! $createLanguagesHTML !!}
+                            @if ($errors->has('languages'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('languages') }}</strong>
                                 </span>
                             @endif
                         </div>
