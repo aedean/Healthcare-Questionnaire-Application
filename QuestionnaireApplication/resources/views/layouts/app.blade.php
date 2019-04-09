@@ -11,9 +11,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <script src="{{ asset('js/app.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/customstyles.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -64,6 +66,11 @@
                                     <a class="nav-link " href="<?php echo url('/') . '/register' ?>">Register</a>
                                 </li>
                             </ul>
+                        @else
+                        <ul class="nav-element-right">
+                            <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="<?php echo url('/') . '/register' ?>">Account</a>
+                            <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="<?php echo url('/') . '/home' ?>">Home</a>
+                        </ul>
                         @endif
                     </ul>
                 </div>

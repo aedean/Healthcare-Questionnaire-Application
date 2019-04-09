@@ -21,7 +21,7 @@ class QuestionnairesController extends Controller
         $questionnaires = Questionnaires::all();
         $questionnaireLanguages = QuestionnaireLanguages::all();
         $questionnaireTags = QuestionnaireTags::all();
-        $request->session()->put('questionnaire_id', $questionnaire->id);
+
         return view('questionnaires.index', compact('questionnaireTags'), compact('questionnaireLanguages'))->with('questionnaires', $questionnaires);
     }
 
@@ -72,7 +72,7 @@ class QuestionnairesController extends Controller
         $questionnaire->save();
         $request->session()->put('questionnaire_id', $questionnaire->id);
 
-        $this->addLanguages($request->all());
+        $this->addLanguages($request->all(), $questionnaire);
         return redirect('question/create')->with('success', 'Questionnaire name created.');
     }
 
@@ -86,13 +86,14 @@ class QuestionnairesController extends Controller
     {
         $questionnaires = Questionnaires::find($id);
         $questions = Questions::where('questionnaireid', '=', $id)->get();
+        $createLanguagesHTML = $this->getCreateLanguages();
         $firstquestion = "";
         foreach($questions as $question) {
             if($question->questionnumber == 1) {
                 $firstquestion = $question;
             }
         }
-        return view('questionnaires.show', compact('firstquestion'))->with('questionnaires', $questionnaires);
+        return view('questionnaires.show', compact('firstquestion'), compact('createLanguagesHTML'))->with('questionnaires', $questionnaires);
     }
 
     /**
@@ -205,9 +206,9 @@ class QuestionnairesController extends Controller
      *
      * @param object
      */
-    public function addLanguages($request)
+    public function addLanguages($request, $questionnaire)
     {
-        foreach($request->all() as $key => $input) {
+        foreach($request as $key => $input) {
             if (strpos($key, 'language') !== FALSE) { 
                 $questionnaireLanguage = new QuestionnaireLanguages;
                 $questionnaireLanguage->questionnaireid = $questionnaire->id;

@@ -69,7 +69,8 @@ class HealthcareWorkersController extends Controller
      */
     public function show($id)
     {
-        //na
+        $healthcareWorkers = HealthcareWorkers::all();
+        return view('healthcareworkers.show', compact('healthcareWorkers'));
     }
 
     /**

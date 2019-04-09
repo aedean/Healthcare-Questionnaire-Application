@@ -92,10 +92,26 @@ class QuestionsController extends Controller
         $questions->questionimage = $filename;
         $questions->save();
 
+        if($request->input('answertype') == 'select') {
+            $this->saveAnswers($request);
+        }
+
         if($request->finish) {
             return redirect('questionnaires/' . $questionnaireId . '/edit');
         } elseif ($request->submit) {
             return $this->create();
+        }
+    }
+
+    public function saveAnswers($request)
+    {
+        foreach($request as $key => $data){
+            if(strpos($data, 'answer') !== false && $data !== 'answertype'){
+                $answers = QuestionAnswers::id(); 
+                $answers->answer = $request->answer;
+                $answers->languageid = $request->input('languageid');
+                $answers->save();
+            }
         }
     }
 

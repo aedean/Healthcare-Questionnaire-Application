@@ -7,8 +7,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Healthcare Workers</div>
                 <div class="panel-body">
-                    <a href="<?php echo url('/') . '/systemconfiguration'; ?>" class="btn btn-default">Back</a>
-                    <a href="<?php echo url('/') . '/healthcareworkers/create'; ?>" class="btn btn-default">Create<a>
                     <table class="table">
                         <thead>
                             <th scope="col">No.</th>
@@ -17,8 +15,6 @@
                             <th scope="col">Mobile</th>
                             <th scope="col">Landline</th>
                             <th scope="col">Company</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
                         </thead>
                         <tbody>
                             <?php $configCount = 1; ?>
@@ -30,14 +26,6 @@
                                     <td><?php echo $healthcareWorker->mobile; ?></td>
                                     <td><?php echo $healthcareWorker->landline; ?></td>
                                     <td><?php echo $healthcareWorker->company; ?></td>
-                                    <td><a href="<?php echo url('/') . '/healthcareworkers/' . $healthcareWorker->id . '/edit'; ?>" class="btn btn-default">Edit<a></td>
-                                    <td>
-                                        {!! Form::open(['action' => ['HealthcareWorkersController@destroy', $healthcareWorker->id], 'method' => 'POST']) !!}
-                                        {{ csrf_field() }}
-                                            {!! Form::hidden('_method', 'DELETE') !!}
-                                            {!! Form::submit('Delete', ['class' => 'btn']) !!}
-                                        {!! Form::close() !!}
-                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
