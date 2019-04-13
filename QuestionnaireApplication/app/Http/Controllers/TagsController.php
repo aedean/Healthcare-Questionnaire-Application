@@ -44,8 +44,9 @@ class TagsController extends Controller
         $tag->tagname = $request->input('tagname');
         $tag->save();
 
+        $tagsIndexUrl = url('/') . '/tags';
         $tags = Tags::all();
-        return view('tags.index', compact('tags'));
+        return redirect($tagsIndexUrl)->with('tags', $tags);
     }
 
     /**
@@ -87,8 +88,9 @@ class TagsController extends Controller
         $tag->tagname = $request->input('tagname');
         $tag->save();
 
+        $tagsIndexUrl = url('/') . '/tags';
         $tags = Tags::all();
-        return view('tags.index', compact('tags'));
+        return redirect($tagsIndexUrl)->with('tags', $tags);
     }
 
     /**
@@ -102,11 +104,8 @@ class TagsController extends Controller
         $tag = Tags::find($id);
         $tag->delete();
         
-        $languageIndexUrl = url('/') . '/languages';
-        $languages = Languages::all();
-        return redirect($languageIndexUrl)->with('languages', $languages);
-        
+        $tagsIndexUrl = url('/') . '/tags';
         $tags = Tags::all();
-        return view('tags.index', compact('tags'));
+        return redirect($tagsIndexUrl)->with('tags', $tags);
     }
 }
