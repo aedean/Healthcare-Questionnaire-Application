@@ -9,20 +9,6 @@
                 <div class="panel-body">
                 <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
                     {!! Form::open(['action' => ['UserController@update', $user->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-   
-                    <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                        <label for="title" class="col-md-4 control-label">Title</label>
-
-                        <div class="col-md-6">
-                            {!! $titles !!}
-                            @if ($errors->has('title'))
-                                <span class="help-block">
-                                
-                                    <strong>{{ $errors->first('title') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
 
                     <div class="form-group{{ $errors->has('usertypeid') ? ' has-error' : '' }}">
                         <label for="usertypeid" class="col-md-4 control-label">User Type</label>
@@ -32,6 +18,21 @@
                             @if ($errors->has('usertypeid'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('usertypeid') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- IF EXISTS -->
+                    <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+                    <label for="title" class="col-md-4 control-label">Title</label>
+
+                        <div class="col-md-6">
+                            {!! $titles !!}
+                            @if ($errors->has('title'))
+                                <span class="help-block">
+                                
+                                    <strong>{{ $errors->first('title') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -75,21 +76,6 @@
                             @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-
-                    
-                    <div class="form-group{{ $errors->has('dob') ? ' has-error' : '' }}">
-                        <label for="dob" class="col-md-4 control-label">Date of Birth</label>
-
-                        <div class="col-md-6">
-                            <input id="dob" type="date" class="form-control" name="dob" value="{{ old('dob', $user->dob) }}" required autofocus>
-
-                            @if ($errors->has('dob'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('dob') }}</strong>
                                 </span>
                             @endif
                         </div>
