@@ -59,11 +59,11 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'usertypeid' => 'required|int|max:5',
-            'title' => 'required|string|max:25',
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'dob' => 'required|date|date_format:Y-m-d',
-            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users',
+            'title' => 'max:25',
+            'firstname' => 'max:255',
+            'lastname' => 'max:255',
+            'email' => 'max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -78,10 +78,10 @@ class RegisterController extends Controller
     {
         return User::create([
             'usertypeid' => $data['usertypeid'],
+            'username' => $data['username'],
             'title' => $data['title'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
-            'dob' => $data['dob'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
@@ -96,6 +96,7 @@ class RegisterController extends Controller
     {
         $titles = $this->getTitles();
         $titlesHTML = '<select name="title" class="form-control" id="title">';
+        $titlesHTML .= '<option value="">Select a title</option>';
         foreach($titles as $title)
         {
             $titlesHTML .= '<option value="' . $title . '">' . $title . '</option>';
@@ -113,6 +114,7 @@ class RegisterController extends Controller
     {
         $usertypes = $this->getUserTypes();
         $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
+        $usertypesHTML .= '<option value="">Select a user type</option>';
         foreach($usertypes as $usertype)
         {
             $usertypesHTML .= '<option value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
