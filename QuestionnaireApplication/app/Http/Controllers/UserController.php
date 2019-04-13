@@ -52,8 +52,7 @@ class UserController extends Controller
         $user = User::find($id);
         if ($user)  {
             $usertype = UserTypes::where('usertypeid', '=', $user->usertypeid)->first();
-            $useraddresses = UserAddress::where('userid', '=', $id)->get();
-            return view('user.show', compact('useraddresses'), compact('usertype'))->with('user', $user);
+            return view('user.show',  compact('usertype'))->with('user', $user);
         } else {
             return redirect('home')->with('error', 'Resource not found.');
         }
@@ -85,11 +84,7 @@ class UserController extends Controller
         //The old values need to be populated for the required to be ok
         $this->validate($request, [
             'usertypeid' => 'required',
-            'title' => 'required',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'dob' => 'required',
-            'email' => 'required'
+            'username' => 'required',
         ]);
 
         $user = User::find($id);
@@ -97,7 +92,6 @@ class UserController extends Controller
         $user->title = $request->input('title');
         $user->firstname = $request->input('firstname');
         $user->lastname = $request->input('lastname');
-        $user->dob = $request->input('dob');
         $user->email = $request->input('email');
         $user->save();
 
@@ -125,6 +119,7 @@ class UserController extends Controller
     {
         $titles = $this->getTitles();
         $titlesHTML = '<select name="title" class="form-control" id="title">';
+        $titlesHTML .= '<option value="">Select a title</option>';
         foreach($titles as $title)
         {
             $selected = "";
@@ -146,6 +141,7 @@ class UserController extends Controller
     {
         $usertypes = $this->getUserTypes();
         $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
+        $usertypesHTML .= '<option value="">Select a user type</option>';
         foreach($usertypes as $usertype)
         {
             $selected = "";
