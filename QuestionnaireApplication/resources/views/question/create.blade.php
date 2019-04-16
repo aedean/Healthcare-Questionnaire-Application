@@ -77,6 +77,30 @@
                         </div>
                     </div>
 
+                    <!-- Answer Test --> 
+                    <div class="form-group{{ $errors->has('answer1') ? ' has-error' : '' }}">
+                        <label for="answer1" class="col-md-4 control-label">Answer</label>
+
+                        <div class="col-md-6">
+                            <input id="answer1" type="text" class="form-control" name="answer1" required autofocus>
+
+                            @if ($errors->has('answer1'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('answer1') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="answerimage1" class="col-md-4 control-label">Answer Image</label>
+
+                        <div class="col-md-6">
+                            <?php echo Form::file('file', array('name'=>'answerimage1')); ?>
+                        </div>
+                    </div>
+                    <!-- Answer Test --> 
+
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {!! Form::submit('Add Another Question', ['class' => 'btn', 'name' => 'submit']) !!}
@@ -94,18 +118,18 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(document).ready(function() {
         $("#inputtype").change(function(){
             var inputtype = $(this).children("option:selected").val();
             //get count of answers
             if(inputtype == 'select') {
-                $(".answercontainer").append(`<div class="form-group additionalanswercontainer">
+                $(".answercontainer").html(`<div class="form-group additionalanswercontainer">
                                             <label for="answertype" class="col-md-4 control-label">Answer</label>
 
                                             <div class="col-md-6">
                                                 <input id="question" type="text" class="form-control" name="answer" required autofocus>
-                                                <button class="btn btn-default addanswer">Add another</button>
+                                                <div class="btn btn-default addanswer">Add another</div>
                                                 <button class="btn btn-default deleteanswer">Delete</button>
                                             </div>
                                         </div>`);
@@ -134,5 +158,5 @@
             //delete add another button
         });
     });
-</script>
+</script> -->
 @endsection`

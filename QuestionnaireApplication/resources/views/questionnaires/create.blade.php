@@ -9,7 +9,7 @@
                 <div class="panel-body">
                     <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
 
-                    {!! Form::open(['action' => 'QuestionnairesController@store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['action' => 'QuestionnairesController@store', 'method' => 'POST', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
 
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name" class="col-md-4 control-label">Name</label>
@@ -22,6 +22,14 @@
                                     <strong>{{ $errors->first('name') }}</strong>
                                 </span>
                             @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="questionnaireimage" class="col-md-4 control-label">Image</label>
+
+                        <div class="col-md-6">
+                            <?php echo Form::file('image', array('name'=>'questionnaireimage')); ?>
                         </div>
                     </div>
 

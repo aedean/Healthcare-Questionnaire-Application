@@ -85,7 +85,7 @@ class QuestionsController extends Controller
         $questions->save();
 
         if($request->questionimage) {
-            $filename = 'uploads/questionnaires/' . $questionnaireId . '/questions/' . $questions->questionid;
+            $filename = 'questions/' . $questionnaireId . '/' . $questions->questionid;
             $filename = Storage::disk('public')->put($filename, $request->questionimage);
         }
 
@@ -93,7 +93,7 @@ class QuestionsController extends Controller
         $questions->save();
 
         if($request->input('answertype') == 'select') {
-            $this->saveAnswers($request);
+            $this->saveAnswers($request, $questions->questionid, $questionnaireId);
         }
 
         if($request->finish) {
@@ -103,15 +103,32 @@ class QuestionsController extends Controller
         }
     }
 
-    public function saveAnswers($request)
+    public function saveAnswers($request, $questionid, $questionnaireId)
     {
-        foreach($request as $key => $data){
-            if(strpos($data, 'answer') !== false && $data !== 'answertype'){
-                $answers = QuestionAnswers::id(); 
-                $answers->answer = $request->answer;
-                $answers->languageid = $request->input('languageid');
-                $answers->save();
-            }
+        foreach($request->all() as $key => $input) {
+
+            if (preg_match_all("/^[a-zA-Z]{6}[0-9]$/", $key)) {
+                $filename = '';
+                $answer = new QuestionAnswers; 
+                $answer->answer = $request->$key;
+                $answer->questionnaireid = $questionnaireId;
+                $answer->questionid = $questionid;
+                $answer->languageid = 7;
+                $answer->answerimage = '';
+                $answer->save();
+                foreach($request->all() as $inputkey => $inputimage) {
+                    if(preg_match_all("/^[a-zA-Z]{11}[0-9]$/", $inputkey)) {
+                        $no = (int) filter_var($inputkey, FILTER_SANITIZE_NUMBER_INT);
+                        $nomatch = (int) filter_var($key, FILTER_SANITIZE_NUMBER_INT);
+                        if($no == $nomatch) {
+                            $filename = 'answers/' . $questionnaireId . '/' . $questionid . '/' . $answer->answerid;
+                            $filename = Storage::disk('public')->put($filename, $request->$inputkey);
+                        }
+                    }
+                }
+                $answer->answerimage = $filename;
+                $answer->save();
+            } 
         }
     }
 
@@ -183,12 +200,12 @@ class QuestionsController extends Controller
         $question->answertype = $request->input('answertype');
         $question->save();
 
-        if($request->answer) {
-            $answers = QuestionAnswers::id(); 
-            $answers->answer = $request->answer;
-            $answers->languageid = 7;
-            $answers->save();
-        }
+        // if($request->answer) {
+        //     $answers = QuestionAnswers::id(); 
+        //     $answers->answer = $request->answer;
+        //     $answers->languageid = 7;
+        //     $answers->save();
+        // }
 
         return URL::previous();
     }

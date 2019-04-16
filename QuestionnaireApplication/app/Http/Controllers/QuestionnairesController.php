@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Questionnaires;
 use App\Questions;
 use App\Languages;
@@ -69,11 +70,25 @@ class QuestionnairesController extends Controller
         ]);
         $questionnaire = new Questionnaires;
         $questionnaire->name = $request->input('name');
+        $questionnaire->questionnaireimage = '';
         $questionnaire->save();
         $request->session()->put('questionnaire_id', $questionnaire->id);
 
+        if($request->questionnaireimage) {
+            $filename = 'questionnaires/' . $questionnaire->id;;
+            $filename = Storage::disk('public')->put($filename, $request->questionnaireimage);
+        }
+
+        $questionnaire->questionnaireimage = $filename;
+        $questionnaire->save();
+
         $this->addLanguages($request->all(), $questionnaire);
         return redirect('question/create')->with('success', 'Questionnaire name created.');
+    }
+
+    public function saveAnswers()
+    {
+
     }
 
     /**
