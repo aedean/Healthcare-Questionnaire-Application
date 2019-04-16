@@ -25,7 +25,8 @@
                             </div>
                         </div>
 
-                        <?php foreach($applicationAccess as $access): ?>
+                        <!-- Need to implement all pages -->
+                        <!-- <?php foreach($applicationAccess as $access): ?>
                             <div class="form-group{{ $errors->has('usertypename') ? ' has-error' : '' }}">
                             <div class="col-md-6">
                                 <input id="usertypename" type="text" class="form-control" name="usertypename" value="{{ old('usertypename', $usertype->usertypename) }}" required autofocus>
@@ -37,7 +38,7 @@
                                     @endif
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                        <?php endforeach; ?> -->
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
