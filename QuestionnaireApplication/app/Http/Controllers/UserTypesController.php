@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\UserTypes;
 use App\UserAccess;
+use App\Helpers\Checkboxes;
+use App\Helpers\SaveCheckboxes;
 use App\ApplicationAccess;
 
 class UserTypesController extends Controller
@@ -27,7 +29,9 @@ class UserTypesController extends Controller
      */
     public function create()
     {
-        return view('usertypes.create');
+        $checkboxes = new Checkboxes;
+        $applicationAccess = $checkboxes->getApplicationAccess();
+        return view('usertypes.create', compact('applicationAccess'));
     }
 
     /**
@@ -45,6 +49,9 @@ class UserTypesController extends Controller
         $usertype = new UserTypes;
         $usertype->usertypename = $request->input('usertypename');
         $usertype->save();
+
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->storeCheckboxes($request, 'UserAccess', 'useraccess', 'usertypeid', $usertype->usertypeid, 'pageurlid');
 
         $usertypeIndexUrl = url('/') . '/usertypes';
         $usertypes = UserTypes::all();
@@ -70,8 +77,9 @@ class UserTypesController extends Controller
      */
     public function edit($id)
     {
-        $applicationAccess = ApplicationAccess::all();
         $usertype = UserTypes::find($id);
+        $checkboxes = new Checkboxes;
+        $applicationAccess = $checkboxes->getApplicationAccess($id);
         return view('usertypes.edit', compact('usertype'), compact('applicationAccess'));
     }
 
@@ -84,13 +92,31 @@ class UserTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'usertypename' => 'required'
-        ]);
+        // $this->validate($request, [
+        //     'usertypename' => 'required'
+        // ]);
 
-        $usertype = UserTypes::find($id);
-        $usertype->usertypename = $request->input('usertypename');
-        $usertype->save();
+        // $usertype = UserTypes::find($id);
+        // $usertype->usertypename = $request->input('usertypename');
+        // $usertype->save();
+
+        foreach($request->all() as $field => $data) {
+            if(strpos($field, 'useraccess') !== false){
+                $access = UserAccess::where('usertypeid', '=', $id)->get();
+                var_dump($access->all()->user);
+                die;
+                if(count($access) == 0) {
+                    $access = new UserAccess;
+                    $access->usertypeid = $id;
+                    $access->pageurlid = $data;
+                    $access->save();
+                }
+            }
+        }
+        // foreach(){
+
+        // }
+        die;
 
         $usertypeIndexUrl = url('/') . '/usertypes';
         $usertypes = UserTypes::all();
