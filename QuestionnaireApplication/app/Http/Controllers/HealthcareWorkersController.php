@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\HealthcareWorkers;
+use App\UserAddress;
 
 class HealthcareWorkersController extends Controller
 {
@@ -43,7 +44,13 @@ class HealthcareWorkersController extends Controller
             'gender' => 'required',
             'mobile' => 'required',
             'landline' => 'required',
-            'company' => 'required'
+            'company' => 'required',
+            'addressline1' => 'required',
+            'addressline2' => 'required',
+            'city' => 'required',
+            'county' => 'required',
+            'country' => 'required',
+            'postcode' => 'required'
         ]);
 
         $healthcareWorker = new HealthcareWorkers;
@@ -55,6 +62,16 @@ class HealthcareWorkersController extends Controller
         $healthcareWorker->landline = $request->input('landline');
         $healthcareWorker->company = $request->input('company');
         $healthcareWorker->save();
+
+        $useraddress = new UserAddress;
+        $useraddress->userid = $healthcareWorker->id;
+        $useraddress->addressline1 = $request->input('addressline1');
+        $useraddress->addressline2 = $request->input('addressline2');
+        $useraddress->city = $request->input('city');
+        $useraddress->county = $request->input('county');
+        $useraddress->country = $request->input('country');
+        $useraddress->postcode = $request->input('postcode');
+        $useraddress->save();
 
         $healthcareWorkersUrl = url('/') . '/healthcareworkers';
         $healthcareWorkers = HealthcareWorkers::all();
@@ -81,7 +98,9 @@ class HealthcareWorkersController extends Controller
     public function edit($id)
     {
         $healthcareWorker = HealthcareWorkers::find($id);
-        return view('healthcareworkers.edit', compact('healthcareWorker'));
+        $userAddress = UserAddress::where('userid', '=', $id)->get();
+        $userAddress = $userAddress->first();
+        return view('healthcareworkers.edit', compact('healthcareWorker'), compact('userAddress'));
     }
 
     /**
@@ -100,7 +119,13 @@ class HealthcareWorkersController extends Controller
             'gender' => 'required',
             'mobile' => 'required',
             'landline' => 'required',
-            'company' => 'required'
+            'company' => 'required',
+            'addressline1' => 'required',
+            'addressline2' => 'required',
+            'city' => 'required',
+            'county' => 'required',
+            'country' => 'required',
+            'postcode' => 'required'
         ]);
 
         $healthcareWorker = HealthcareWorkers::find($id);
@@ -112,6 +137,17 @@ class HealthcareWorkersController extends Controller
         $healthcareWorker->landline = $request->input('landline');
         $healthcareWorker->company = $request->input('company');
         $healthcareWorker->save();
+
+        $userAddress = UserAddress::where('userid', '=', $id)->get();
+        $useraddress = $userAddress->first();
+        $useraddress->userid = $healthcareWorker->id;
+        $useraddress->addressline1 = $request->input('addressline1');
+        $useraddress->addressline2 = $request->input('addressline2');
+        $useraddress->city = $request->input('city');
+        $useraddress->county = $request->input('county');
+        $useraddress->country = $request->input('country');
+        $useraddress->postcode = $request->input('postcode');
+        $useraddress->save();
 
         $healthcareWorkersUrl = url('/') . '/healthcareworkers';
         $HealthcareWorkers = HealthcareWorkers::all();

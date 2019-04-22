@@ -19,8 +19,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+/* Users */
+Route::resource('address', 'UserAddressController');
+Route::resource('usertype', 'UserTypesController');
+Route::resource('user', 'UserController');
+
 /* System Config */
 Route::resource('languages', 'LanguagesController');
 Route::resource('tags', 'TagsController');
 Route::resource('systemconfiguration', 'SystemConfigController');
 Route::resource('healthcareworkers', 'HealthcareWorkersController');
+Route::resource('usertypes', 'UserTypesController');

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Tags;
+use App\UserTypes;
+use App\UserAccess;
+use App\ApplicationAccess;
 
-class TagsController extends Controller
+class UserTypesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +16,8 @@ class TagsController extends Controller
      */
     public function index()
     {
-        $tags = Tags::all();
-        return view('tags.index', compact('tags'));
+        $usertypes = UserTypes::all();
+        return view('usertypes.index', compact('usertypes'));
     }
 
     /**
@@ -25,7 +27,7 @@ class TagsController extends Controller
      */
     public function create()
     {
-        //na
+        return view('usertypes.create');
     }
 
     /**
@@ -35,18 +37,18 @@ class TagsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {  
         $this->validate($request, [
-            'tagname' => 'required'
+            'usertypename' => 'required'
         ]);
 
-        $tag = new Tags;
-        $tag->tagname = $request->input('tagname');
-        $tag->save();
+        $usertype = new UserTypes;
+        $usertype->usertypename = $request->input('usertypename');
+        $usertype->save();
 
-        $tagsIndexUrl = url('/') . '/tags';
-        $tags = Tags::all();
-        return redirect($tagsIndexUrl)->with('tags', $tags);
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 
     /**
@@ -68,7 +70,9 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        //na
+        $applicationAccess = ApplicationAccess::all();
+        $usertype = UserTypes::find($id);
+        return view('usertypes.edit', compact('usertype'), compact('applicationAccess'));
     }
 
     /**
@@ -81,16 +85,16 @@ class TagsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'tagname' => 'required'
+            'usertypename' => 'required'
         ]);
 
-        $tag = Tags::find($id);
-        $tag->tagname = $request->input('tagname');
-        $tag->save();
+        $usertype = UserTypes::find($id);
+        $usertype->usertypename = $request->input('usertypename');
+        $usertype->save();
 
-        $tagsIndexUrl = url('/') . '/tags';
-        $tags = Tags::all();
-        return redirect($tagsIndexUrl)->with('tags', $tags);
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 
     /**
@@ -101,11 +105,11 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tags::find($id);
-        $tag->delete();
-        
-        $tagsIndexUrl = url('/') . '/tags';
-        $tags = Tags::all();
-        return redirect($tagsIndexUrl)->with('tags', $tags);
+        $usertype = UserTypes::find($id);
+        $usertype->delete();
+
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 }

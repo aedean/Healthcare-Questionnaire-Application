@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Tags;
 
-class TagsController extends Controller
+class UserAccessController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class TagsController extends Controller
      */
     public function index()
     {
-        $tags = Tags::all();
-        return view('tags.index', compact('tags'));
+        //
     }
 
     /**
@@ -25,7 +23,7 @@ class TagsController extends Controller
      */
     public function create()
     {
-        //na
+        //
     }
 
     /**
@@ -36,17 +34,7 @@ class TagsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'tagname' => 'required'
-        ]);
-
-        $tag = new Tags;
-        $tag->tagname = $request->input('tagname');
-        $tag->save();
-
-        $tagsIndexUrl = url('/') . '/tags';
-        $tags = Tags::all();
-        return redirect($tagsIndexUrl)->with('tags', $tags);
+        //
     }
 
     /**
@@ -57,7 +45,7 @@ class TagsController extends Controller
      */
     public function show($id)
     {
-        //na
+        //
     }
 
     /**
@@ -68,7 +56,7 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        //na
+        //
     }
 
     /**
@@ -80,17 +68,7 @@ class TagsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'tagname' => 'required'
-        ]);
-
-        $tag = Tags::find($id);
-        $tag->tagname = $request->input('tagname');
-        $tag->save();
-
-        $tagsIndexUrl = url('/') . '/tags';
-        $tags = Tags::all();
-        return redirect($tagsIndexUrl)->with('tags', $tags);
+        //
     }
 
     /**
@@ -101,11 +79,6 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tags::find($id);
-        $tag->delete();
-        
-        $tagsIndexUrl = url('/') . '/tags';
-        $tags = Tags::all();
-        return redirect($tagsIndexUrl)->with('tags', $tags);
+        //
     }
 }

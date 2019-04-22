@@ -24,6 +24,8 @@ class CreateHealthcareWorkersTable extends Migration
             $table->string('company');
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE healthcare_workers AUTO_INCREMENT = 100000;');
     }
 
     /**
