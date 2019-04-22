@@ -9,7 +9,7 @@ class Patient extends Authenticatable
 {
     use Notifiable;
     protected $table = 'patients';
-    protected $primaryKey = 'patientid';
+    protected $primaryKey = 'id';
     protected $foreignKey = 'usertypeid';
     public $timestamps = true;
 

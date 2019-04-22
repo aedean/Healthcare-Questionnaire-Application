@@ -14,7 +14,7 @@ class CreatePatientsTable extends Migration
     public function up()
     {
         Schema::create('patients', function (Blueprint $table) {
-            $table->increments('patientid');
+            $table->increments('id');
             $table->string('username')->unique();
             $table->unsignedInteger('usertypeid');
             $table->foreign('usertypeid')->references('usertypeid')->on('patients');
