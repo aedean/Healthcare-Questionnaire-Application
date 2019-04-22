@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\UserTypes;
 use App\UserAddress;
+use App\Helpers\Selects;
 
 class UserController extends Controller
 {
@@ -52,7 +53,7 @@ class UserController extends Controller
         $user = User::find($id);
         if ($user)  {
             $usertype = UserTypes::where('usertypeid', '=', $user->usertypeid)->first();
-            return view('user.show',  compact('usertype'))->with('user', $user);
+            return view('user.show', compact('usertype'))->with('user', $user);
         } else {
             return redirect('home')->with('error', 'Resource not found.');
         }
@@ -67,8 +68,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $titles = $this->getTitlesHTML($user->title);
-        $usertype = $this->getUserTypesHTML($user->usertypeid);
+        $selects = new Selects;
+        $titles = $selects->getTitles('titlename', $user->title);
+        $usertype = $selects->getUserTypes('usertypeid', $user->usertypeid);
         return view('user.edit', compact("titles"), compact('usertype'))->with('user', $user);
     }
 
@@ -107,50 +109,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $usertype = User::find($id);
+        $usertype->delete();
 
-    public function getTitles() 
-    {
-        return $this->titles;
-    }
-
-    public function getTitlesHTML($id) 
-    {
-        $titles = $this->getTitles();
-        $titlesHTML = '<select name="title" class="form-control" id="title">';
-        $titlesHTML .= '<option value="">Select a title</option>';
-        foreach($titles as $title)
-        {
-            $selected = "";
-            if($id == $title) {
-                $selected = 'selected="selected"';
-            }
-            $titlesHTML .= '<option ' . $selected . ' value="' . $title . '">' . $title . '</option>';
-        }
-        $titlesHTML .= '</select>';
-        return $titlesHTML;
-    }
-
-    public function getUserTypes()
-    {
-        return UserTypes::all();
-    }
-
-    public function getUserTypesHTML($id)
-    {
-        $usertypes = $this->getUserTypes();
-        $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
-        $usertypesHTML .= '<option value="">Select a user type</option>';
-        foreach($usertypes as $usertype)
-        {
-            $selected = "";
-            if($id == $usertype->usertypeid) {
-                $selected = 'selected="selected"';
-            }
-            $usertypesHTML .= '<option ' . $selected . ' value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
-        }
-        $usertypesHTML .= '</select>';
-        return $usertypesHTML;
+        return redirect('home')->with('success', 'User deleted.');
     }
 }

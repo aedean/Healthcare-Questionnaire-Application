@@ -6,7 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\UserTypes;
+use App\Helpers\Selects;
 
 class RegisterController extends Controller
 {
@@ -29,12 +29,12 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
-    public $titles = array('Miss', 'Mr', 'Mrs', 'Ms', 'Other');
 
     public function showRegistrationForm()
     {
-        $titles = $this->getTitlesHTML();
-        $usertype = $this->getUserTypesHTML();
+        $selects = new Selects;
+        $titles = $selects->getTitles();
+        $usertype = $selects->getUserTypes();
         return view("auth.register", compact("titles"), compact('usertype'));
     }
 
@@ -60,10 +60,10 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'usertypeid' => 'required|int|max:5',
             'username' => 'required|string|max:255|unique:users',
-            'title' => 'max:25',
-            'firstname' => 'max:255',
-            'lastname' => 'max:255',
-            'email' => 'max:255|unique:users',
+            'title' => 'max:25|nullable',
+            'firstname' => 'max:255|nullable',
+            'lastname' => 'max:255|nullable',
+            'email' => 'max:255|nullable|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -85,41 +85,5 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
-    }
-
-    public function getTitles() 
-    {
-        return $this->titles;
-    }
-
-    public function getTitlesHTML() 
-    {
-        $titles = $this->getTitles();
-        $titlesHTML = '<select name="title" class="form-control" id="title">';
-        $titlesHTML .= '<option value="">Select a title</option>';
-        foreach($titles as $title)
-        {
-            $titlesHTML .= '<option value="' . $title . '">' . $title . '</option>';
-        }
-        $titlesHTML .= '</select>';
-        return $titlesHTML;
-    }
-
-    public function getUserTypes()
-    {
-        return UserTypes::all();
-    }
-
-    public function getUserTypesHTML()
-    {
-        $usertypes = $this->getUserTypes();
-        $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
-        $usertypesHTML .= '<option value="">Select a user type</option>';
-        foreach($usertypes as $usertype)
-        {
-            $usertypesHTML .= '<option value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
-        }
-        $usertypesHTML .= '</select>';
-        return $usertypesHTML;
     }
 }
