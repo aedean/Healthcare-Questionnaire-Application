@@ -25,6 +25,7 @@ Route::resource('questionnairetags', 'QuestionnaireTagsController');
 Route::resource('languages', 'QuestionnaireLanguagesController');
 Route::resource('question', 'QuestionsController');
 Route::resource('questionanswers', 'QuestionAnswersController');
+Route::resource('questionnaireresults', 'QuestionnaireResultsController');
 
 /* Users */
 Route::resource('address', 'UserAddressController');

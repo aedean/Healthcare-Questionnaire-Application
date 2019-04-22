@@ -57,8 +57,7 @@
                     @endif
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
+                    <!-- <ul class="nav navbar-nav navbar-right">
                         @if (Auth::guest())
                             <ul class="nav navbar-nav">
                                 &nbsp;
@@ -72,7 +71,7 @@
                             <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="<?php echo url('/') . '/home' ?>">Home</a>
                         </ul>
                         @endif
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         </nav>

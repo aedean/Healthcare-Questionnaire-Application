@@ -9,6 +9,7 @@ use App\Questions;
 use App\Languages;
 use App\QuestionnaireLanguages;
 use App\QuestionnaireTags;
+use App\Tags;
 
 class QuestionnairesController extends Controller
 {
@@ -24,26 +25,6 @@ class QuestionnairesController extends Controller
         $questionnaireTags = QuestionnaireTags::all();
 
         return view('questionnaires.index', compact('questionnaireTags'), compact('questionnaireLanguages'))->with('questionnaires', $questionnaires);
-    }
-
-    public function allQuestionnaireLanguagesToArray()
-    {
-        $questionnaireTags = QuestionnaireTags::all();
-        $questionnaireTagsArray = "";
-        foreach($questionnaireTags as $questionnaireTag) {
-            $questionnaireTagsArray[$questionnaireTag->questionnaireId] = $questionnaireTag->languageId;
-        }
-        return $questionnaireTagsArray;
-    }
-
-    public function allQuestionnaireTagsToArray()
-    {
-        $questionnaireTags = QuestionnaireTags::all();
-        $questionnaireTagsArray = "";
-        foreach($questionnaireTags as $questionnaireTag) {
-            $questionnaireTagsArray[$questionnaireTag->questionnaireId] = $questionnaireTag->languageId;
-        }
-        return $questionnaireTagsArray;
     }
 
     /**
@@ -72,10 +53,10 @@ class QuestionnairesController extends Controller
         $questionnaire->name = $request->input('name');
         $questionnaire->questionnaireimage = '';
         $questionnaire->save();
-        $request->session()->put('questionnaire_id', $questionnaire->id);
+        session()->put('questionnaire_id', $questionnaire->id);
 
         if($request->questionnaireimage) {
-            $filename = 'questionnaires/' . $questionnaire->id;;
+            $filename = 'questionnaires/' . $questionnaire->id;
             $filename = Storage::disk('public')->put($filename, $request->questionnaireimage);
         }
 
@@ -86,11 +67,6 @@ class QuestionnairesController extends Controller
         return redirect('question/create')->with('success', 'Questionnaire name created.');
     }
 
-    public function saveAnswers()
-    {
-
-    }
-
     /**
      * Display the specified resource.
      *
@@ -99,7 +75,8 @@ class QuestionnairesController extends Controller
      */
     public function show($id)
     {
-        $questionnaires = Questionnaires::find($id);
+        $questionnaire = Questionnaires::find($id);
+        session()->put('questionnaire_id', $questionnaire->id);
         $questions = Questions::where('questionnaireid', '=', $id)->get();
         $createLanguagesHTML = $this->getCreateLanguages();
         $firstquestion = "";
@@ -108,7 +85,7 @@ class QuestionnairesController extends Controller
                 $firstquestion = $question;
             }
         }
-        return view('questionnaires.show', compact('firstquestion'), compact('createLanguagesHTML'))->with('questionnaires', $questionnaires);
+        return view('questionnaires.show', compact('firstquestion'), compact('createLanguagesHTML'))->with('questionnaires', $questionnaire);
     }
 
     /**
@@ -122,6 +99,7 @@ class QuestionnairesController extends Controller
         //Get all all questions assosiated with the questionnaire
         $questionnaire = Questionnaires::find($id);
         $questions = Questions::where('questionnaireid', '=', $id)->get();
+        session()->put('questionnaire_id', $questionnaire->id);
 
         //Get language HTML with langauges already saved checked
         $questionnaireLanguagesObject = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
@@ -129,8 +107,16 @@ class QuestionnairesController extends Controller
         foreach($questionnaireLanguagesObject as $language){
             $questionnaireLanguages[] = $language->languageid;
         }
+        //Get 
+        $questionnaireTagsObject = QuestionnaireTags::where('questionnaireid', '=', $id)->get();
+        $questionnaireTags = array();
+        foreach($questionnaireTagsObject as $tag){
+            $questionnaireTags[] = $tag->tagid;
+        }
+        $editTagsHTML = $this->getEditTags($questionnaireTags);
         $editLanguagesHTML = $this->getEditLanguages($questionnaireLanguages);
-        return view('questionnaires.edit', compact('questions'), compact('editLanguagesHTML'))->with('questionnaire', $questionnaire);
+
+        return view('questionnaires.edit', compact('editTagsHTML'), compact('editLanguagesHTML'))->with('questionnaire', $questionnaire)->with('questions', $questions);
     }
 
     /**
@@ -145,37 +131,27 @@ class QuestionnairesController extends Controller
         $this->validate($request, [
             'name'  => 'required'
         ]);
+
         $questionnaire = Questionnaires::find($id);
         $questionnaire->name = $request->input('name');
         $questionnaire->save();
 
+        // $questionnaireLanguages = $this->questionnaireLanguagesToArray($id);
+        // $requestLanguages = $this->requestLanguagesToArray($request);
+    
         $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
-        //loop over request
-        //if the id of the language is not in qlnags add it
-        //if 
-        $requestLanguages = $this->requestLanguageToArray($request);
-        var_dump($requestLanguages);
-        var_dump(array_values($requestLanguages));
-        // foreach($questionnaireLanguages as $language){
-        //     var_dump($language);
-        //     //in table not request delete
-        //     //in request not in table add
-        //     if(!in_array($language->id, $requestLanguages)) {
-        //          //delete it
-        //     } elseif() {
+        foreach($questionnaireLanguages as $language) {
+            if(in_array($language->languageid, array_values($request->all()))) {
+                var_dump($language);
+            }
+        }
 
-        //     }
-        //     // elseif (in_array(array_column(''))) {
+        //get the request languages
+        //if they in request but not in questionnaire languages add
+        //if they not in request delete them from questionnaire languages
 
-        //     // }
-        // }
-        // $questionnaireLanguagesArray = $this->questionnaireLanguagesToArray($id);
-        // foreach($requestLanguages as $language => ) {
-        //     if(!in_array($language, $questionnaireLanguagesArray)) {
-                
-        //     }
-        // }
-
+        var_dump(array_keys($request->all()));
+        var_dump($request->all());
         die;
 
         $this->updateLanguages($request->all());
@@ -197,11 +173,33 @@ class QuestionnairesController extends Controller
         return view('questionnaires.index', compact('questionnaires'))->with('success', 'Questionnaire deleted.');
     }
 
+    public function allQuestionnaireLanguagesToArray()
+    {
+        $questionnaireTags = QuestionnaireTags::all();
+        $questionnaireTagsArray = "";
+        foreach($questionnaireTags as $questionnaireTag) {
+            $questionnaireTagsArray[$questionnaireTag->questionnaireId] = $questionnaireTag->languageId;
+        }
+        return $questionnaireTagsArray;
+    }
+
+    public function allQuestionnaireTagsToArray()
+    {
+        $questionnaireTags = QuestionnaireTags::all();
+        $questionnaireTagsArray = "";
+        foreach($questionnaireTags as $questionnaireTag) {
+            $questionnaireTagsArray[$questionnaireTag->questionnaireId] = $questionnaireTag->languageId;
+        }
+        return $questionnaireTagsArray;
+    }
+
     public function requestLanguagesToArray($request)
     {
         $requestLanguages = array();
         foreach($request->all() as $key => $input) {
-            $requestLanguages[$key] = $input;
+            if(strpos($key, 'language')) {
+                $requestLanguages[$key] = $input;
+            }
         }
         return $requestLanguages;
     }
@@ -211,7 +209,9 @@ class QuestionnairesController extends Controller
         $questionnaireLanguagesArray = array();
         $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
         foreach($questionnaireLanguages as $language) {
-            $questionnaireLanguagesArray[$language->id];
+            var_dump($language->languageid);
+            die;
+            $questionnaireLanguagesArray[$language->languageid];
         }
         return $questionnaireLanguagesArray;
     }
@@ -255,11 +255,23 @@ class QuestionnairesController extends Controller
      *
      * @return object
      */
+    public function getTags()
+    {
+        $tags = Tags::all();
+        return $tags;
+    }
+
+    /**
+     * Get all languages available
+     *
+     * @return object
+     */
     public function getLanguages()
     {
         $languages = Languages::all();
         return $languages;
     }
+
 
     /**
      * Create the HTML inputs needed on the edit questionnaire page
@@ -277,6 +289,27 @@ class QuestionnairesController extends Controller
                 $editHTML .= '<input type="checkbox" name="' . $language->language . '" value="' . $language->id . '" checked>' . $language->language . '<br>';
             } else {
                 $editHTML .= '<input type="checkbox" name="' . $language->language . '" value="' . $language->id . '">' . $language->language . '<br>';
+            }
+        }
+        return $editHTML;
+    }
+
+    /**
+     * Create the HTML inputs needed on the edit questionnaire page
+     *
+     * @param array of questionnaire tags
+     * @return string of HTML
+     */
+    public function getEditTags($questionnaireTags)
+    {
+        $tags = $this->getTags();
+        $editHTML = '';
+        foreach($tags as $tag)
+        {
+            if(in_array($tag->id, $questionnaireTags)) {
+                $editHTML .= '<input type="checkbox" name="' . $tag->tagname . '" value="' . $tag->id . '" checked>' . $tag->tagname . '<br>';
+            } else {
+                $editHTML .= '<input type="checkbox" name="' . $tag->tagname . '" value="' . $tag->id . '">' . $tag->tagname . '<br>';
             }
         }
         return $editHTML;

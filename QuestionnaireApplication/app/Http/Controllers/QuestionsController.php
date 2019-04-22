@@ -140,26 +140,25 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        // set products.name as array
-        // session()->put('products.name', []);
-
-
-        // // somewhere later
-        // session()->push('products.name', $name1);
-
-        session()->put('questions', []);
-        $questionnaireId = session('questionnaire_id');
-        $question = Questions::find($id);
+        $questionnaireId = session()->get('questionnaire_id');
+        $questions = Questions::where('questionnaireid', '=', $questionnaireId)->get();
         $answers = QuestionAnswers::where('questionid', '=', $id)->get();
-
+        session()->put('question', $questions);
         //if the next question is the last redirect to finish
         $nextislast = false;
-        $nextId = $id++;
-        $nextQuestion = Questions::find($id);
-        if (empty($nextQuestion)) { 
-            $nextislast = true;
-        } 
-        return view('question.show', compact('answers'), compact('nextislast'))->with('question', $question);
+
+        $showquestion = '';
+        $nextNo = 0;
+        foreach($questions as $question) {
+            if($question->questionid == $id) {
+                $showquestion = $question;
+                $nextNo = $showquestion->questionnumber + 1;
+            } elseif (gettype($showquestion) == 'object' && $question->questionnumber == $nextNo) {
+                $nextislast = true;
+            }
+        }
+
+        return view('question.show', compact('answers'), compact('nextislast'))->with('question', $showquestion);
     }
 
     /**
@@ -171,6 +170,7 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Questions::find($id);
+        session()->put('question_id', $question->questionid);
         $answers = QuestionAnswers::where('questionid', '=', $id)->get();
         return view('question.edit', compact('answers'))->with('question', $question);
     }
@@ -184,11 +184,12 @@ class QuestionsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $questionnaireId = $request->session()->get('questionnaire_id');
+
         $this->validate($request, [
             'questionnumber'  => 'required',
             'languageid'  => 'required',
             'question'    => 'required',
-            'country'   => 'required',
             'answertype'  => 'required'
         ]);
 
@@ -196,18 +197,26 @@ class QuestionsController extends Controller
         $question->questionnumber = $request->input('questionnumber');
         $question->languageid = $request->input('languageid');
         $question->question = $request->input('question');
-        $question->questionimage = $request->input('questionimage');
         $question->answertype = $request->input('answertype');
         $question->save();
+        
+        if($request->questionimage) {
+            if($question->questionimage) {
+                if(Storage::disk('public')->has($question->questionimage)) {
+                    
+                    Storage::disk('public')->delete($question->questionimage);
+                }
+            } 
+           
+            $filename = 'questions/' . $questionnaireId . '/' . $question->questionid;
+            $filename = Storage::disk('public')->put($filename, $request->questionimage);
+            $question->questionimage = $filename;
+            $question->save();
+        }
 
-        // if($request->answer) {
-        //     $answers = QuestionAnswers::id(); 
-        //     $answers->answer = $request->answer;
-        //     $answers->languageid = 7;
-        //     $answers->save();
-        // }
 
-        return URL::previous();
+        $question = Questions::find($id);
+        return redirect('question/' . $id . '/edit')->with('question', $question);
     }
 
     /**
@@ -220,7 +229,6 @@ class QuestionsController extends Controller
     {
         $questions = Questions::find($id);
         $questions->delete();
-        $questionnairesEditUrl = url()->previous();
         $questions = Questions::all();
         return redirect(url()->previous())->with('questions', $questions);
     }

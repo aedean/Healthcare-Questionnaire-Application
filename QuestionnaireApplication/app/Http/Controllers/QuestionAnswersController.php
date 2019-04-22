@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Questions;
+use App\QuestionAnswers;
+use App\Questionnaires;
+use Illuminate\Support\Facades\Storage;
+use App\QuestionnaireLanguages;
+use App\Languages;
 
 class QuestionAnswersController extends Controller
 {
@@ -34,7 +40,31 @@ class QuestionAnswersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $questionnaireId = session()->get('questionnaire_id');
+        $questionId = session()->get('question_id');
+
+        $this->validate($request, [
+            'answer'    => 'required',
+            'answerimage'   => 'required'
+        ]);
+
+        $answer = new QuestionAnswers;
+        $answer->questionnaireid = $questionnaireId;
+        $answer->questionid = $questionId;
+        $answer->answer = $request->input('answer');
+        $answer->languageid = 7;
+        $answer->answerimage = '';
+        $answer->save();
+        
+        if($request->answerimage) {
+            $filename = 'answers/' . $questionnaireId . '/' . $questionId;
+            $filename = Storage::disk('public')->put($filename, $request->answerimage);
+            $answer->answerimage = $filename;
+            $answer->save();
+        }
+
+        $question = Questions::find($questionId);
+        return redirect('question/' . $questionId . '/edit')->with('question', $question);
     }
 
     /**
@@ -68,7 +98,31 @@ class QuestionAnswersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $questionnaireId = session()->get('questionnaire_id');
+        $questionId = session()->get('question_id');
+
+        $this->validate($request, [
+            'answer'    => 'required'
+        ]);
+
+        $answer = QuestionAnswers::find($id);
+        $answer->answer = $request->input('answer');
+        $answer->save();
+        
+        if($request->answerimage) {
+            if($answer->answerimage) {
+                if(Storage::disk('public')->has($answer->answerimage)) {
+                    Storage::disk('public')->delete($answer->answerimage);
+                }
+            } 
+            $filename = 'answers/' . $questionnaireId . '/' . $questionId;
+            $filename = Storage::disk('public')->put($filename, $request->answerimage);
+            $answer->answerimage = $filename;
+            $answer->save();
+        }
+
+        $question = Questions::find($questionId);
+        return redirect('question/' . $questionId . '/edit')->with('question', $question);
     }
 
     /**
@@ -79,6 +133,10 @@ class QuestionAnswersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $answer = QuestionAnswers::find($id);
+        $answer->delete();
+        $questionId = session()->get('question_id');
+        $question = Questions::find($questionId);
+        return redirect('question/' . $questionId . '/edit')->with('question', $question);
     }
 }
