@@ -48,7 +48,11 @@
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->firstname }} {{ Auth::user()->lastname }} <span class="caret"></span>
+                                    <?php if(Auth::user()->firstname == ''): ?>
+                                        {{ Auth::user()->username }} <span class="caret"></span>
+                                    <?php else: ?>
+                                        {{ Auth::user()->firstname }} {{ Auth::user()->lastname }} <span class="caret"></span>
+                                    <?php endif; ?>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
