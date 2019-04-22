@@ -30,3 +30,9 @@ Route::resource('tags', 'TagsController');
 Route::resource('systemconfiguration', 'SystemConfigController');
 Route::resource('healthcareworkers', 'HealthcareWorkersController');
 Route::resource('usertypes', 'UserTypesController');
+
+Route::prefix('patient')->group(function() {
+    Route::get('/login', 'Auth\PatientLoginController@showLoginForm')->name('patient.login');
+    Route::post('/login', 'Auth\PatientLoginController@login')->name('patient.login.submit');
+    Route::get('/', 'PatientController@index')->name('patient.dashboard');
+});
