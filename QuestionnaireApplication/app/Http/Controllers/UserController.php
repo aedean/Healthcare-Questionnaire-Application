@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public $titles = array('Miss', 'Mr', 'Mrs', 'Ms', 'Other');
     /**
      * Display a listing of the resource.
      *
