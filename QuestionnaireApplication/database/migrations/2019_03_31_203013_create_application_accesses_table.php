@@ -22,22 +22,17 @@ class CreateApplicationAccessesTable extends Migration
         DB::table('application_accesses')->insert(
             array(
                 array (
-                    'pageurl' => '/languages',
+                    'pageurl' => '/systemconfiguration',
                     'created_at' => date('Y-m-d H:i:s'), 
                     'updated_at' => date('Y-m-d H:i:s') 
                 ),
                 array (
-                    'pageurl' => '/tags',
+                    'pageurl' => '/systemconfiguration/languages',
                     'created_at' => date('Y-m-d H:i:s'), 
                     'updated_at' => date('Y-m-d H:i:s') 
                 ),
                 array (
-                    'pageurl' => '/healthcareworkers',
-                    'created_at' => date('Y-m-d H:i:s'), 
-                    'updated_at' => date('Y-m-d H:i:s') 
-                ),
-                array (
-                    'pageurl' => '/user',
+                    'pageurl' => '/systemconfiguration/tags',
                     'created_at' => date('Y-m-d H:i:s'), 
                     'updated_at' => date('Y-m-d H:i:s') 
                 )

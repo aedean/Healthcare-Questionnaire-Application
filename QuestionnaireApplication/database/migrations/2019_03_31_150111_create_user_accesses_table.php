@@ -16,7 +16,7 @@ class CreateUserAccessesTable extends Migration
         Schema::create('user_accesses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('usertypeid');  
-            $table->string('pageurl');
+            $table->string('pageurlid');
             $table->timestamps();
         });
     }
