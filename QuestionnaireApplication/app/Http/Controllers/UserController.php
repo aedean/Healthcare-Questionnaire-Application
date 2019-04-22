@@ -7,6 +7,8 @@ use App\User;
 use App\UserTypes;
 use App\UserAddress;
 use App\Helpers\Selects;
+use App\Validator\Forms;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -83,11 +85,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //The old values need to be populated for the required to be ok
-        $this->validate($request, [
-            'usertypeid' => 'required',
-            'username' => 'required',
+        $validator = Validator::make($request->all(), [
+            'usertypeid' => 'required|int|max:5',
+            'title' => 'max:25|string|alpha|nullable',
+            'firstname' => 'max:255|string|alpha|nullable',
+            'lastname' => 'max:255|string|alpha|nullable',
+            'email' => 'max:255|email|nullable|unique:users',
         ]);
+
+        if ($validator->fails())
+        {
+            return back()->withErrors($validator->errors());
+        }
 
         $user = User::find($id);
         $user->usertypeid = $request->input('usertypeid');
@@ -97,7 +106,8 @@ class UserController extends Controller
         $user->email = $request->input('email');
         $user->save();
 
-        return redirect('home')->with('success', 'User updated.');
+        $userUpdateRedirectUrl = '/user/' . $id . '/edit';
+        return redirect($userUpdateRedirectUrl);
     }
 
 
