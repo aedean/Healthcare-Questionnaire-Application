@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\UserTypes;
-use App\UserAddress;
 use App\Helpers\Selects;
 use App\Validator\Forms;
 use Illuminate\Support\Facades\Validator;
@@ -118,8 +117,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $usertype = User::find($id);
-        $usertype->delete();
+        $user = User::find($id);
+        $user->delete();
 
         return redirect('home')->with('success', 'User deleted.');
     }
