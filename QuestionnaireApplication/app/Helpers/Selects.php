@@ -34,6 +34,23 @@ class Selects
         return $titles;
     }
 
+    public function getGenders($checkitem = null, $match = null) 
+    {
+        $genders = (object) array(
+            1 => (object) array(
+                'gender' => 'Male'
+            ),
+            2 => (object) array(
+                'gender' => 'Female'
+            ),
+            3 => (object) array(
+                'gender' => 'Other'
+            )
+        );
+        $genders = $this->createSelect($genders, 'gender', 'Select a gender', 'gender', 'gender', $checkitem, $match);
+        return $genders;
+    }
+
     public function createSelect($selectObject, $fieldname, $fieldTitle, $selectid, $selectname, $checkitem = null, $match = null) {
         $createHTML = '<select name="' . $fieldname . '" class="form-control" id="' . $fieldname . '">';
         $createHTML .= '<option value="">' . $fieldTitle . '</option>';

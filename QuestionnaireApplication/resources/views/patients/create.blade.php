@@ -86,8 +86,7 @@
                         <label for="gender" class="col-md-4 control-label">Gender</label>
 
                         <div class="col-md-6">
-                            <input id="gender" type="text" class="form-control" name="gender">
-
+                            {!! $genders !!}
                             @if ($errors->has('gender'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('gender') }}</strong>

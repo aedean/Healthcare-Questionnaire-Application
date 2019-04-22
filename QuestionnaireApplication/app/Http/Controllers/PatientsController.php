@@ -31,7 +31,8 @@ class PatientsController extends Controller
     {
         $selects = new Selects;
         $titles = $selects->getTitles();
-        return view('patients.create', compact('titles'));
+        $genders = $selects->getGenders();
+        return view('patients.create', compact('titles'), compact('genders'));
     }
 
     /**
@@ -96,7 +97,8 @@ class PatientsController extends Controller
         $patient = Patient::find($id);
         $selects = new Selects;
         $titles = $selects->getTitles('titlename', $patient->title);
-        return view('patients.edit', compact("titles"))->with('patient', $patient);
+        $genders = $selects->getGenders('gender', $patient->gender);
+        return view('patients.edit', compact("titles"), compact('genders'))->with('patient', $patient);
     }
 
     /**
