@@ -38,10 +38,6 @@ class PatientLoginController extends Controller
         return redirect()->intended(route('patient.dashboard'));
       }
 
-      var_dump(Auth::guard('patient')->attempt(['username' => $request->username, 'password' => $request->password], $request->remember));
-      var_dump($request->password);
-      die;
-
       // if unsuccessful, then redirect back to the login with the form data
       return redirect()->back()->withInput($request->only('username', 'remember'));
     }
