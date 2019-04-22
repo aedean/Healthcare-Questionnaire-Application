@@ -1,4 +1,3 @@
-<!-- Show -->
 @extends('layouts.app')
 <style>
 .attribute-title {
@@ -19,12 +18,19 @@
                     </li>
                     <li class="list-group-item">
                         <h5 class="attribute-title">Name</h5>
-                        <?php echo $user->title . ' ' . $user->firstname . ' ' . $user->lastname; ?>
+                        <?php if($user->title == '' && $user->firstname == ''): ?>
+                            <p>Not set</p>
+                        <?php else: ?>
+                            <?php echo $user->title . ' ' . $user->firstname . ' ' . $user->lastname; ?>
+                        <?php endif; ?>
                     </li>
-                    <!-- IF EXISTS -->
                     <li class="list-group-item">
                         <h5 class="attribute-title">Email</h5>
-                        <?php echo $user->email; ?>
+                        <?php if($user->email == ''): ?>
+                            <p>Not set</p>
+                        <?php else: ?>
+                            <?php echo $user->email; ?>
+                        <?php endif; ?>
                     </li>
                     <li class="list-group-item">
                         <a href="<?php echo Request::url(); ?>/edit" type="button" class="btn btn-default">Edit Details</a>

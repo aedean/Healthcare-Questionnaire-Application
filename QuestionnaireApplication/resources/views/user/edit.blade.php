@@ -23,7 +23,6 @@
                         </div>
                     </div>
 
-                    <!-- IF EXISTS -->
                     <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                     <label for="title" class="col-md-4 control-label">Title</label>
 
@@ -42,7 +41,7 @@
                         <label for="firstname" class="col-md-4 control-label">First Name</label>
 
                         <div class="col-md-6">
-                            <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname', $user->firstname) }}" required autofocus>
+                            <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname', $user->firstname) }}" >
 
                             @if ($errors->has('firstname'))
                                 <span class="help-block">
@@ -57,7 +56,7 @@
                         "lastname" class="col-md-4 control-label">Last Name</label>
 
                         <div class="col-md-6">
-                            <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname', $user->lastname) }}" required autofocus>
+                            <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname', $user->lastname) }}" >
 
                             @if ($errors->has('lastname'))
                                 <span class="help-block">
@@ -71,7 +70,7 @@
                         <label for="email" class="col-md-4 control-label">Email Address</label>
 
                         <div class="col-md-6">
-                            <input id="email" type="text" class="form-control" name="email" value="{{ old('email', $user->email) }}" required autofocus>
+                            <input id="email" type="text" class="form-control" name="email" value="{{ old('email', $user->email) }}" >
 
                             @if ($errors->has('email'))
                                 <span class="help-block">
