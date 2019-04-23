@@ -140,26 +140,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        // set products.name as array
-        // session()->put('products.name', []);
-
-
-        // // somewhere later
-        // session()->push('products.name', $name1);
-
-        session()->put('questions', []);
-        $questionnaireId = session('questionnaire_id');
-        $question = Questions::find($id);
-        $answers = QuestionAnswers::where('questionid', '=', $id)->get();
-
-        //if the next question is the last redirect to finish
-        $nextislast = false;
-        $nextId = $id++;
-        $nextQuestion = Questions::find($id);
-        if (empty($nextQuestion)) { 
-            $nextislast = true;
-        } 
-        return view('question.show', compact('answers'), compact('nextislast'))->with('question', $question);
+        //
     }
 
     /**

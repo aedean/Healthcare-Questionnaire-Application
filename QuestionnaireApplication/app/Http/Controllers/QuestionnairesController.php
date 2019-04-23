@@ -99,16 +99,7 @@ class QuestionnairesController extends Controller
      */
     public function show($id)
     {
-        $questionnaires = Questionnaires::find($id);
-        $questions = Questions::where('questionnaireid', '=', $id)->get();
-        $createLanguagesHTML = $this->getCreateLanguages();
-        $firstquestion = "";
-        foreach($questions as $question) {
-            if($question->questionnumber == 1) {
-                $firstquestion = $question;
-            }
-        }
-        return view('questionnaires.show', compact('firstquestion'), compact('createLanguagesHTML'))->with('questionnaires', $questionnaires);
+        //
     }
 
     /**
