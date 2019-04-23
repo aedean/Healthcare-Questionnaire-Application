@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\UserTypes;
 use App\UserAccess;
+use App\Helpers\Checkboxes;
+use App\Helpers\SaveCheckboxes;
 use App\ApplicationAccess;
 
 class UserTypesController extends Controller
@@ -27,7 +29,9 @@ class UserTypesController extends Controller
      */
     public function create()
     {
-        return view('usertypes.create');
+        $checkboxes = new Checkboxes;
+        $applicationAccess = $checkboxes->getApplicationAccess();
+        return view('usertypes.create', compact('applicationAccess'));
     }
 
     /**
@@ -45,6 +49,9 @@ class UserTypesController extends Controller
         $usertype = new UserTypes;
         $usertype->usertypename = $request->input('usertypename');
         $usertype->save();
+
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->storeCheckboxes($request, 'UserAccess', 'useraccess', 'usertypeid', $usertype->usertypeid, 'pageurlid');
 
         $usertypeIndexUrl = url('/') . '/usertypes';
         $usertypes = UserTypes::all();
@@ -70,8 +77,9 @@ class UserTypesController extends Controller
      */
     public function edit($id)
     {
-        $applicationAccess = ApplicationAccess::all();
         $usertype = UserTypes::find($id);
+        $checkboxes = new Checkboxes;
+        $applicationAccess = $checkboxes->getApplicationAccess($id);
         return view('usertypes.edit', compact('usertype'), compact('applicationAccess'));
     }
 
@@ -92,9 +100,11 @@ class UserTypesController extends Controller
         $usertype->usertypename = $request->input('usertypename');
         $usertype->save();
 
-        $usertypeIndexUrl = url('/') . '/usertypes';
-        $usertypes = UserTypes::all();
-        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->updateCheckboxes($request, 'useraccess', 'UserAccess', $id, 'usertypeid', 'pageurlid');
+
+        $usertypeIndexUrl = url('/') . '/usertypes/' . $id . '/edit';
+        return redirect($usertypeIndexUrl);
     }
 
     /**

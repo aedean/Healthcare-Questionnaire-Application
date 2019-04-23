@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helpers\Selects;
 use App\Patient;
-use App\UserTypes;
+
 use App\Validator\Forms;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;

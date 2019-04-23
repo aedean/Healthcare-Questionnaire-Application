@@ -36,7 +36,7 @@
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
                                 <td>Users Permissions</td>
-                                <td><a href="<?php echo url('/') . '/user'; ?>" class="btn btn-default">Edit<a></td>
+                                <td><a href="<?php echo url('/') . '/usertypes'; ?>" class="btn btn-default">Edit<a></td>
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>

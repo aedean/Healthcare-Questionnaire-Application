@@ -25,19 +25,18 @@
                             </div>
                         </div>
 
-                        <?php foreach($applicationAccess as $access): ?>
-                            <div class="form-group{{ $errors->has('usertypename') ? ' has-error' : '' }}">
-                            <div class="col-md-6">
-                                <input id="usertypename" type="text" class="form-control" name="usertypename" value="{{ old('usertypename', $usertype->usertypename) }}" required autofocus>
+                        <div class="form-group{{ $errors->has('usertypename') ? ' has-error' : '' }}">
+                            <label for="usertypename" class="col-md-4 control-label">User Type Name</label>
 
-                                    @if ($errors->has('usertypename'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('usertypename') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
+                            <div class="col-md-6">
+                                {!! $applicationAccess !!}
+                                @if ($errors->has('usertypename'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('usertypename') }}</strong>
+                                    </span>
+                                @endif
                             </div>
-                        <?php endforeach; ?>
+                        </div>
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
