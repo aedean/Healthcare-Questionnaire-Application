@@ -19,11 +19,7 @@ class QuestionnairesController extends Controller
      */
     public function index()
     {
-        $questionnaires = Questionnaires::all();
-        $questionnaireLanguages = QuestionnaireLanguages::all();
-        $questionnaireTags = QuestionnaireTags::all();
-
-        return view('questionnaires.index', compact('questionnaireTags'), compact('questionnaireLanguages'))->with('questionnaires', $questionnaires);
+       //
     }
 
     public function allQuestionnaireLanguagesToArray()
