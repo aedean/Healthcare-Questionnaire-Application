@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\UserTypes;
+use App\UserAccess;
+use App\Helpers\Checkboxes;
+use App\Helpers\SaveCheckboxes;
+use App\ApplicationAccess;
 
 class UserTypesController extends Controller
 {
@@ -13,7 +18,8 @@ class UserTypesController extends Controller
      */
     public function index()
     {
-        //
+        $usertypes = UserTypes::all();
+        return view('usertypes.index', compact('usertypes'));
     }
 
     /**
@@ -23,7 +29,9 @@ class UserTypesController extends Controller
      */
     public function create()
     {
-        //
+        $checkboxes = new Checkboxes;
+        $applicationAccess = $checkboxes->getApplicationAccess();
+        return view('usertypes.create', compact('applicationAccess'));
     }
 
     /**
@@ -33,8 +41,21 @@ class UserTypesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {  
+        $this->validate($request, [
+            'usertypename' => 'required'
+        ]);
+
+        $usertype = new UserTypes;
+        $usertype->usertypename = $request->input('usertypename');
+        $usertype->save();
+
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->storeCheckboxes($request, 'UserAccess', 'useraccess', 'usertypeid', $usertype->usertypeid, 'pageurlid');
+
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 
     /**
@@ -45,7 +66,7 @@ class UserTypesController extends Controller
      */
     public function show($id)
     {
-        //
+        //na
     }
 
     /**
@@ -56,7 +77,10 @@ class UserTypesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $usertype = UserTypes::find($id);
+        $checkboxes = new Checkboxes;
+        $applicationAccess = $checkboxes->getApplicationAccess($id);
+        return view('usertypes.edit', compact('usertype'), compact('applicationAccess'));
     }
 
     /**
@@ -68,7 +92,19 @@ class UserTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'usertypename' => 'required'
+        ]);
+
+        $usertype = UserTypes::find($id);
+        $usertype->usertypename = $request->input('usertypename');
+        $usertype->save();
+
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->updateCheckboxes($request, 'useraccess', 'UserAccess', $id, 'usertypeid', 'pageurlid');
+
+        $usertypeIndexUrl = url('/') . '/usertypes/' . $id . '/edit';
+        return redirect($usertypeIndexUrl);
     }
 
     /**
@@ -79,6 +115,11 @@ class UserTypesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $usertype = UserTypes::find($id);
+        $usertype->delete();
+
+        $usertypeIndexUrl = url('/') . '/usertypes';
+        $usertypes = UserTypes::all();
+        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
     }
 }

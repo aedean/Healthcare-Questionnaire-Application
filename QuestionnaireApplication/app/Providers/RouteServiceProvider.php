@@ -22,9 +22,7 @@ class RouteServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        //
-
+    { 
         parent::boot();
     }
 

@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\UserTypes;
-use App\UserAddress;
+use App\Helpers\Selects;
+use App\Validator\Forms;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public $titles = array('Miss', 'Mr', 'Mrs', 'Ms', 'Other');
     /**
      * Display a listing of the resource.
      *
@@ -52,8 +53,7 @@ class UserController extends Controller
         $user = User::find($id);
         if ($user)  {
             $usertype = UserTypes::where('usertypeid', '=', $user->usertypeid)->first();
-            $useraddresses = UserAddress::where('userid', '=', $id)->get();
-            return view('user.show', compact('useraddresses'), compact('usertype'))->with('user', $user);
+            return view('user.show', compact('usertype'))->with('user', $user);
         } else {
             return redirect('home')->with('error', 'Resource not found.');
         }
@@ -68,8 +68,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $titles = $this->getTitlesHTML($user->title);
-        $usertype = $this->getUserTypesHTML($user->usertypeid);
+        $selects = new Selects;
+        $titles = $selects->getTitles('titlename', $user->title);
+        $usertype = $selects->getUserTypes('usertypeid', $user->usertypeid);
         return view('user.edit', compact("titles"), compact('usertype'))->with('user', $user);
     }
 
@@ -82,26 +83,29 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //The old values need to be populated for the required to be ok
-        $this->validate($request, [
-            'usertypeid' => 'required',
-            'title' => 'required',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'dob' => 'required',
-            'email' => 'required'
+        $validator = Validator::make($request->all(), [
+            'usertypeid' => 'required|int|max:5',
+            'title' => 'max:25|string|alpha|nullable',
+            'firstname' => 'max:255|string|alpha|nullable',
+            'lastname' => 'max:255|string|alpha|nullable',
+            'email' => 'max:255|email|nullable|unique:users',
         ]);
+
+        if ($validator->fails())
+        {
+            return back()->withErrors($validator->errors());
+        }
 
         $user = User::find($id);
         $user->usertypeid = $request->input('usertypeid');
         $user->title = $request->input('title');
         $user->firstname = $request->input('firstname');
         $user->lastname = $request->input('lastname');
-        $user->dob = $request->input('dob');
         $user->email = $request->input('email');
         $user->save();
 
-        return redirect('home')->with('success', 'User updated.');
+        $userUpdateRedirectUrl = '/user/' . $id . '/edit';
+        return redirect($userUpdateRedirectUrl);
     }
 
 
@@ -113,48 +117,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $user = User::find($id);
+        $user->delete();
 
-    public function getTitles() 
-    {
-        return $this->titles;
-    }
-
-    public function getTitlesHTML($id) 
-    {
-        $titles = $this->getTitles();
-        $titlesHTML = '<select name="title" class="form-control" id="title">';
-        foreach($titles as $title)
-        {
-            $selected = "";
-            if($id == $title) {
-                $selected = 'selected="selected"';
-            }
-            $titlesHTML .= '<option ' . $selected . ' value="' . $title . '">' . $title . '</option>';
-        }
-        $titlesHTML .= '</select>';
-        return $titlesHTML;
-    }
-
-    public function getUserTypes()
-    {
-        return UserTypes::all();
-    }
-
-    public function getUserTypesHTML($id)
-    {
-        $usertypes = $this->getUserTypes();
-        $usertypesHTML = '<select name="usertypeid" class="form-control" id="usertypeid">';
-        foreach($usertypes as $usertype)
-        {
-            $selected = "";
-            if($id == $usertype->usertypeid) {
-                $selected = 'selected="selected"';
-            }
-            $usertypesHTML .= '<option ' . $selected . ' value="' . $usertype->usertypeid . '">' . $usertype->usertypename . '</option>';
-        }
-        $usertypesHTML .= '</select>';
-        return $usertypesHTML;
+        return redirect('home')->with('success', 'User deleted.');
     }
 }

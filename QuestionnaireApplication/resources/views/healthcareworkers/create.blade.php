@@ -109,6 +109,92 @@
                             </div>
                         </div>
 
+                        <!-- User Address -->
+                        
+                        <div class="form-group{{ $errors->has('addressline1') ? ' has-error' : '' }}">
+                        <label for="addressline1" class="col-md-4 control-label">Addrees Line 1</label>
+
+                            <div class="col-md-6">
+                                <input id="addressline1" type="text" class="form-control" name="addressline1" autofocus>
+
+                                @if ($errors->has('addressline1'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('addressline1') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('addressline2') ? ' has-error' : '' }}">
+                            <label for="addressline2" class="col-md-4 control-label">Address Line 2</label>
+
+                            <div class="col-md-6">
+                                <input id="addressline2" type="text" class="form-control" name="addressline2"  autofocus>
+
+                                @if ($errors->has('addressline2'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('addressline2') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+                            <label for="city" class="col-md-4 control-label">City/ Town</label>
+
+                            <div class="col-md-6">
+                                <input id="city" type="text" class="form-control" name="city"  autofocus>
+
+                                @if ($errors->has('city'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('city') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('county') ? ' has-error' : '' }}">
+                            <label for="county" class="col-md-4 control-label">County</label>
+
+                            <div class="col-md-6">
+                                <input id="county" type="text" class="form-control" name="county" >
+
+                                @if ($errors->has('county'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('county') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
+                            <label for="country" class="col-md-4 control-label">Country</label>
+
+                            <div class="col-md-6">
+                                <input id="country" type="text" class="form-control" name="country" >
+
+                                @if ($errors->has('country'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('country') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('postcode') ? ' has-error' : '' }}">
+                            <label for="postcode" class="col-md-4 control-label">Postcode</label>
+
+                            <div class="col-md-6">
+                                <input id="postcode" type="text" class="form-control" name="postcode" >
+
+                                @if ($errors->has('postcode'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('postcode') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {!! Form::submit('Add Healthcare Worker', ['class' => 'btn']) !!}

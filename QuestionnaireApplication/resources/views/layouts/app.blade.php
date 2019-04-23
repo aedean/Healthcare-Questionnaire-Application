@@ -67,10 +67,29 @@
                                 </li>
                             </ul>
                         @else
-                        <ul class="nav-element-right">
-                            <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="<?php echo url('/') . '/register' ?>">Account</a>
-                            <a class="btn btn-bd-download d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="<?php echo url('/') . '/home' ?>">Home</a>
-                        </ul>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <?php if(Auth::user()->firstname == ''): ?>
+                                        {{ Auth::user()->username }} <span class="caret"></span>
+                                    <?php else: ?>
+                                        {{ Auth::user()->firstname }} {{ Auth::user()->lastname }} <span class="caret"></span>
+                                    <?php endif; ?>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
                         @endif
                     </ul>
                 </div>
