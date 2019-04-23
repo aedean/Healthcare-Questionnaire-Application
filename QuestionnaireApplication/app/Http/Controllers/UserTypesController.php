@@ -92,35 +92,19 @@ class UserTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'usertypename' => 'required'
-        // ]);
+        $this->validate($request, [
+            'usertypename' => 'required'
+        ]);
 
-        // $usertype = UserTypes::find($id);
-        // $usertype->usertypename = $request->input('usertypename');
-        // $usertype->save();
+        $usertype = UserTypes::find($id);
+        $usertype->usertypename = $request->input('usertypename');
+        $usertype->save();
 
-        foreach($request->all() as $field => $data) {
-            if(strpos($field, 'useraccess') !== false){
-                $access = UserAccess::where('usertypeid', '=', $id)->get();
-                var_dump($access->all()->user);
-                die;
-                if(count($access) == 0) {
-                    $access = new UserAccess;
-                    $access->usertypeid = $id;
-                    $access->pageurlid = $data;
-                    $access->save();
-                }
-            }
-        }
-        // foreach(){
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->updateCheckboxes($request, 'useraccess', 'UserAccess', $id, 'usertypeid', 'pageurlid');
 
-        // }
-        die;
-
-        $usertypeIndexUrl = url('/') . '/usertypes';
-        $usertypes = UserTypes::all();
-        return redirect($usertypeIndexUrl)->with('usertypes', $usertypes);
+        $usertypeIndexUrl = url('/') . '/usertypes/' . $id . '/edit';
+        return redirect($usertypeIndexUrl);
     }
 
     /**
