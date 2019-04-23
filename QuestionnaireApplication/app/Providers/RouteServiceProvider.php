@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Helpers\CheckAccessRight;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -24,19 +22,8 @@ class RouteServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        // $checkAccessRight = new CheckAccessRight;
-        // $access = $checkAccessRight->checkAccessRight($this->app->request->getRequestUri());
-        // var_dump($access);
-        // var_dump(Auth::guest());
-        // var_dump(Auth::user());
-        // die; 
+    { 
         parent::boot();
-        // if($access) {
-        //     parent::boot();
-        // } else { 
-        //     //no permission page
-        // }
     }
 
     /**
