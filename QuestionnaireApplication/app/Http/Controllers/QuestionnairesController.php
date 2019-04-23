@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Questionnaires;
 use App\Questions;
-use App\Languages;
 use App\QuestionnaireLanguages;
 use App\QuestionnaireTags;
+use App\Helpers\Checkboxes;
+use App\Helpers\SaveCheckboxes;
 
 class QuestionnairesController extends Controller
 {
@@ -19,27 +20,14 @@ class QuestionnairesController extends Controller
      */
     public function index()
     {
-       //
-    }
+        $questionnaires = Questionnaires::all();
+        $questionnairelanguages = QuestionnaireLanguages::all();
+        $questionnairetags = QuestionnaireTags::all();
 
-    public function allQuestionnaireLanguagesToArray()
-    {
-        $questionnaireTags = QuestionnaireTags::all();
-        $questionnaireTagsArray = "";
-        foreach($questionnaireTags as $questionnaireTag) {
-            $questionnaireTagsArray[$questionnaireTag->questionnaireId] = $questionnaireTag->languageId;
-        }
-        return $questionnaireTagsArray;
-    }
-
-    public function allQuestionnaireTagsToArray()
-    {
-        $questionnaireTags = QuestionnaireTags::all();
-        $questionnaireTagsArray = "";
-        foreach($questionnaireTags as $questionnaireTag) {
-            $questionnaireTagsArray[$questionnaireTag->questionnaireId] = $questionnaireTag->languageId;
-        }
-        return $questionnaireTagsArray;
+        return view('questionnaires.index')
+            ->with('questionnaires', $questionnaires)
+            ->with('questionnairelanguages', $questionnairelanguages)
+            ->with('questionnairetags', $questionnairetags);
     }
 
     /**
@@ -49,8 +37,12 @@ class QuestionnairesController extends Controller
      */
     public function create()
     {
-        $createLanguagesHTML = $this->getCreateLanguages();
-        return view('questionnaires.create')->with('createLanguagesHTML', $createLanguagesHTML);
+        $checkboxes = new Checkboxes;
+        $languages = $checkboxes->getLanguages();
+        $tags = $checkboxes->getTags();
+        return view('questionnaires.create')
+            ->with('languages', $languages)
+            ->with('tags', $tags);
     }
 
     /**
@@ -64,27 +56,25 @@ class QuestionnairesController extends Controller
         $this->validate($request, [
             'name'  => 'required'
         ]);
+
         $questionnaire = new Questionnaires;
         $questionnaire->name = $request->input('name');
         $questionnaire->questionnaireimage = '';
         $questionnaire->save();
         $request->session()->put('questionnaire_id', $questionnaire->id);
 
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->storeCheckboxes($request, 'QuestionnaireLanguages', 'language', 'questionnaireid', $questionnaire->id, 'languageid');
+        $checkboxes->storeCheckboxes($request, 'QuestionnaireTags', 'tag', 'questionnaireid', $questionnaire->id, 'tagid');
+
         if($request->questionnaireimage) {
             $filename = 'questionnaires/' . $questionnaire->id;;
             $filename = Storage::disk('public')->put($filename, $request->questionnaireimage);
+            $questionnaire->questionnaireimage = $filename;
+            $questionnaire->save();
         }
 
-        $questionnaire->questionnaireimage = $filename;
-        $questionnaire->save();
-
-        $this->addLanguages($request->all(), $questionnaire);
-        return redirect('question/create')->with('success', 'Questionnaire name created.');
-    }
-
-    public function saveAnswers()
-    {
-
+        return redirect('question/create')->with('success', 'Questionnaire created.');
     }
 
     /**
@@ -106,18 +96,18 @@ class QuestionnairesController extends Controller
      */
     public function edit($id)
     {
-        //Get all all questions assosiated with the questionnaire
         $questionnaire = Questionnaires::find($id);
         $questions = Questions::where('questionnaireid', '=', $id)->get();
 
-        //Get language HTML with langauges already saved checked
-        $questionnaireLanguagesObject = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
-        $questionnaireLanguages = array();
-        foreach($questionnaireLanguagesObject as $language){
-            $questionnaireLanguages[] = $language->languageid;
-        }
-        $editLanguagesHTML = $this->getEditLanguages($questionnaireLanguages);
-        return view('questionnaires.edit', compact('questions'), compact('editLanguagesHTML'))->with('questionnaire', $questionnaire);
+        $checkboxes = new Checkboxes;
+        $languages = $checkboxes->getLanguages($id);
+        $tags = $checkboxes->getTags($id);
+
+        return view('questionnaires.edit')
+            ->with('questionnaire', $questionnaire)
+            ->with('questions', $questions)
+            ->with('languages', $languages)
+            ->with('tags', $tags);
     }
 
     /**
@@ -136,38 +126,12 @@ class QuestionnairesController extends Controller
         $questionnaire->name = $request->input('name');
         $questionnaire->save();
 
-        $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
-        //loop over request
-        //if the id of the language is not in qlnags add it
-        //if 
-        $requestLanguages = $this->requestLanguageToArray($request);
-        var_dump($requestLanguages);
-        var_dump(array_values($requestLanguages));
-        // foreach($questionnaireLanguages as $language){
-        //     var_dump($language);
-        //     //in table not request delete
-        //     //in request not in table add
-        //     if(!in_array($language->id, $requestLanguages)) {
-        //          //delete it
-        //     } elseif() {
-
-        //     }
-        //     // elseif (in_array(array_column(''))) {
-
-        //     // }
-        // }
-        // $questionnaireLanguagesArray = $this->questionnaireLanguagesToArray($id);
-        // foreach($requestLanguages as $language => ) {
-        //     if(!in_array($language, $questionnaireLanguagesArray)) {
-                
-        //     }
-        // }
-
-        die;
-
-        $this->updateLanguages($request->all());
+        $checkboxes = new SaveCheckboxes;
+        $checkboxes->updateCheckboxes($request, 'language', 'QuestionnaireLanguages', $id, 'questionnaireid', 'languageid');
+        $checkboxes->updateCheckboxes($request, 'tag', 'QuestionnaireTags', $id, 'questionnaireid', 'tagid');
+  
         $questions = Questions::where('questionnaireid', '=', $id)->get();
-        return view('questionnaires.edit', compact('questions'))->with('questionnaire', $questionnaire);
+        return redirect('/questionnaires/' . $id . '/edit');
     }
 
     /**
@@ -180,110 +144,6 @@ class QuestionnairesController extends Controller
     {
         $questionnaire = Questionnaires::find($id);
         $questionnaire->delete();
-        $questionnaires = Questionnaires::all();
-        return view('questionnaires.index', compact('questionnaires'))->with('success', 'Questionnaire deleted.');
-    }
-
-    public function requestLanguagesToArray($request)
-    {
-        $requestLanguages = array();
-        foreach($request->all() as $key => $input) {
-            $requestLanguages[$key] = $input;
-        }
-        return $requestLanguages;
-    }
-
-    public function questionnaireLanguagesToArray($id)
-    {
-        $questionnaireLanguagesArray = array();
-        $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
-        foreach($questionnaireLanguages as $language) {
-            $questionnaireLanguagesArray[$language->id];
-        }
-        return $questionnaireLanguagesArray;
-    }
-
-    /**
-     * Add languages to questionnaire languages table
-     *
-     * @param object
-     */
-    public function addLanguages($request, $questionnaire)
-    {
-        foreach($request as $key => $input) {
-            if (strpos($key, 'language') !== FALSE) { 
-                $questionnaireLanguage = new QuestionnaireLanguages;
-                $questionnaireLanguage->questionnaireid = $questionnaire->id;
-                $questionnaireLanguage->languageid = $input;
-                $questionnaireLanguage->save();
-            }
-        }
-    }
-
-    /**
-     * Add or remove languages from the questionnaire languages table
-     *
-     * @param object
-     */
-    public function updateLanguages($request)
-    {
-        foreach($request->all() as $key => $input) {
-            if (strpos($key, 'language') !== FALSE) { 
-                $questionnaireLanguage = new QuestionnaireLanguages;
-                $questionnaireLanguage->questionnaireid = $questionnaire->id;
-                $questionnaireLanguage->languageid = $input;
-                $questionnaireLanguage->save();
-            }
-        }
-    }
-
-    /**
-     * Get all languages available
-     *
-     * @return object
-     */
-    public function getLanguages()
-    {
-        $languages = Languages::all();
-        return $languages;
-    }
-
-    /**
-     * Create the HTML inputs needed on the edit questionnaire page
-     *
-     * @param array of questionnaire languages
-     * @return string of HTML
-     */
-    public function getEditLanguages($questionnaireLanguages)
-    {
-        $languages = $this->getLanguages();
-        $editHTML = '';
-        foreach($languages as $language)
-        {
-            if(in_array($language->id, $questionnaireLanguages)) {
-                $editHTML .= '<input type="checkbox" name="' . $language->language . '" value="' . $language->id . '" checked>' . $language->language . '<br>';
-            } else {
-                $editHTML .= '<input type="checkbox" name="' . $language->language . '" value="' . $language->id . '">' . $language->language . '<br>';
-            }
-        }
-        return $editHTML;
-    }
-
-    /**
-     * Create the HTML inputs needed on the create questionnaire page
-     *
-     * @return string of HTML
-     */
-    public function getCreateLanguages()
-    {
-        $languages = $this->getLanguages();
-        $editHTML = '';
-        $languageCount = 1;
-        foreach($languages as $language)
-        {
-            $editHTML .= '<input type="checkbox" name="language' . $languageCount . '" value="' . $language->id . '">' . $language->language . '<br>';
-            $languageCount++;
-        }
-        return $editHTML;
+        return redirect('/questionnaires')->with('success', 'Questionnaire deleted.');
     }
 }

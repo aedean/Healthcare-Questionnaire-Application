@@ -4,9 +4,45 @@ namespace App\Helpers;
 
 use App\ApplicationAccess;
 use App\UserAccess;
+use App\Languages;
+use App\QuestionnaireLanguages;
+use App\QuestionnaireTags;
+use App\Tags;
 
 class Checkboxes
 {
+    public function getLanguages($id = null)
+    {
+        if(!is_null($id)) {
+            $questionnairelanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
+            $questionnairelanguagesarray = array();
+            foreach($questionnairelanguages as $language) {
+                $questionnairelanguagesarray[] = $language->languageid;
+            }
+            $languages = $this->createCheckboxes(Languages::all(), 'id', 'language', 'language', $questionnairelanguagesarray, 'id');
+            return $languages;
+        } else {
+            $languages = $this->createCheckboxes(Languages::all(), 'id', 'language', 'language');
+            return $languages;
+        }
+    }
+
+    public function getTags($id = null)
+    {
+        if(!is_null($id)) {
+            $questionnairetags = QuestionnaireTags::where('questionnaireid', '=', $id)->get();
+            $questionnairetagsarray = array();
+            foreach($questionnairetags as $tag) {
+                $questionnairetagsarray[] = $tag->tagid;
+            }
+            $tags = $this->createCheckboxes(Tags::all(), 'id', 'tagname', 'tag', $questionnairetagsarray, 'id');
+            return $tags;
+        } else {
+            $tags = $this->createCheckboxes(Tags::all(), 'id', 'tagname', 'tag');
+            return $tags;
+        }
+    }
+
     public function getApplicationAccess($id = null)
     {
         if(!is_null($id)) {

@@ -3,6 +3,8 @@
 namespace App\Helpers;
 
 use App\UserAccess;
+use App\QuestionnaireTags;
+use App\QuestionnaireLanguages;
 
 class SaveCheckboxes
 {
@@ -12,9 +14,13 @@ class SaveCheckboxes
             if(strpos($field, $fieldName) !== false){
                 if($objectName == 'UserAccess') {
                     $object = new UserAccess;
+                } elseif($objectName == 'QuestionnaireLanguages') {
+                    $object = new QuestionnaireLanguages;
+                } elseif($objectName == 'QuestionnaireTags') {
+                    $object = new QuestionnaireTags;
                 }
-                $object->$idName = $relationId;
-                $object->$storeName = $data;
+                $object->$idName = $relationId; 
+                $object->$storeName = $data; 
                 $object->save();
             }
         }
@@ -34,6 +40,10 @@ class SaveCheckboxes
     {
         if($objectName == 'UserAccess') {
             $existingValuesObject = UserAccess::where('usertypeid', '=', $id)->get();
+        } elseif($objectName == 'QuestionnaireLanguages') {
+            $existingValuesObject = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
+        } elseif($objectName == 'QuestionnaireTags') {
+            $existingValuesObject = QuestionnaireTags::where('questionnaireid', '=', $id)->get();
         }
         $requestarray = array();
         foreach($request->all() as $field => $data) {
@@ -42,6 +52,10 @@ class SaveCheckboxes
                 if(!in_array($data, array_column($existingValuesObject->all(), $searchElement))) {
                     if($objectName == 'UserAccess') {
                         $object = new UserAccess;
+                    } elseif($objectName == 'QuestionnaireLanguages') {
+                        $object = new QuestionnaireLanguages;
+                    } elseif($objectName == 'QuestionnaireTags') {
+                        $object = new QuestionnaireTags;
                     }
                     $object->$storageId = $id;
                     $object->$searchElement = $data;

@@ -37,8 +37,7 @@
                         <label for="tags" class="col-md-4 control-label">Tags</label>
 
                         <div class="col-md-6">
-                            <input id="tags" type="text" class="form-control" name="tags" required autofocus>
-
+                            {!! $tags !!}
                             @if ($errors->has('tags'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('tags') }}</strong>
@@ -51,7 +50,7 @@
                         <label for="languages" class="col-md-4 control-label">Languages</label>
 
                         <div class="col-md-6">
-                            {!! $createLanguagesHTML !!}
+                            {!! $languages !!}
                             @if ($errors->has('languages'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('languages') }}</strong>

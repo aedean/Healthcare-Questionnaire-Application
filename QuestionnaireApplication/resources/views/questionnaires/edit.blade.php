@@ -27,10 +27,23 @@
                         <label for="languages" class="col-md-4 control-label">Languages</label>
 
                         <div class="col-md-6">
-                            {!! $editLanguagesHTML !!}
+                            {!! $languages !!}
                             @if ($errors->has('languages'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('languages') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
+                        <label for="tags" class="col-md-4 control-label">Tags</label>
+
+                        <div class="col-md-6">
+                            {!! $tags !!}
+                            @if ($errors->has('tags'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('tags') }}</strong>
                                 </span>
                             @endif
                         </div>
