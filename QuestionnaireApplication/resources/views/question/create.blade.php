@@ -85,7 +85,7 @@
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
-                        {!! Form::submit('Finish', ['class' => 'btn', 'name' => 'finish', 'value' => 'test']) !!}
+                        {!! Form::submit('Create Boundaries', ['class' => 'btn', 'name' => 'boundaries']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}
