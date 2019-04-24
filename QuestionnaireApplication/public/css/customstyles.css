@@ -36,3 +36,7 @@
 .nav-element-right {
     margin: 10px 0 !important;
 }
+
+hr {
+    border: #626567 1px solid;
+}
