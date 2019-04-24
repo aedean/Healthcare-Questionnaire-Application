@@ -9,6 +9,7 @@ use App\Questionnaires;
 use Illuminate\Support\Facades\Storage;
 use App\QuestionnaireLanguages;
 use App\Languages;
+use App\Helpers\SaveImages;
 
 class QuestionsController extends Controller
 {
@@ -29,32 +30,10 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        $questionnaireId = session('questionnaire_id');
-        $languageSelectHTML = $this->getQuestionnaireLanguagesHTML($questionnaireId);
-        return view('question.create')->with('languageSelectHTML', $languageSelectHTML);
-    }
-
-    public function getQuestionnaireLanguagesHTML($id)
-    {
-        $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
-        $questionLanguageHTML = '<select name="languageid" class="form-control" id="languageid">';
-        foreach($questionnaireLanguages as $language)
-        {
-            $languageArray = $this->languagesToArray($language->languageid);
-            $questionLanguageHTML .= '<option value="' . $language->languageid . '">' . $languageArray[$language->languageid] . '</option>';
-        }
-        $questionLanguageHTML .= '</select>';
-        return $questionLanguageHTML;
-    }
-    
-    public function languagesToArray($id)
-    {
-        $languagesArray = array();
-        $languages = Languages::where('id', '=', $id)->get();
-        foreach($languages as $language) {
-            $languagesArray[$language->id] = $language->language;
-        }
-        return $languagesArray;
+        $questionnaireId = session()->get('questionnaire')->id;
+        $languages = $this->getQuestionnaireLanguagesSelect($questionnaireId);
+        return view('question.create')
+            ->with('languages', $languages);
     }
 
     /**
@@ -65,7 +44,7 @@ class QuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        $questionnaireId = $request->session()->get('questionnaire_id');
+        $questionnaireId = $request->session()->get('questionnaire')->id;
 
         $this->validate($request, [
             'questionnumber'  => 'required',
@@ -75,22 +54,17 @@ class QuestionsController extends Controller
             'answertype'  => 'required'
         ]);
 
-        $questions = new Questions;
-        $questions->questionnaireid = $questionnaireId;
-        $questions->questionnumber = $request->input('questionnumber');
-        $questions->languageid = $request->input('languageid');
-        $questions->question = $request->input('question');
-        $questions->answertype = $request->input('answertype');
-        $questions->questionimage = '';
-        $questions->save();
+        $question = new Questions;
+        $question->questionnaireid = $questionnaireId;
+        $question->questionnumber = $request->input('questionnumber');
+        $question->languageid = $request->input('languageid');
+        $question->question = $request->input('question');
+        $question->answertype = $request->input('answertype');
+        $question->questionimage = '';
+        $question->save();
 
-        if($request->questionimage) {
-            $filename = 'questions/' . $questionnaireId . '/' . $questions->questionid;
-            $filename = Storage::disk('public')->put($filename, $request->questionimage);
-        }
-
-        $questions->questionimage = $filename;
-        $questions->save();
+        $saveImages = new SaveImages;
+        $saveImages->saveImage($request, 'questionimage', $question, $questionnaireId, $question->questionid);
 
         if($request->input('answertype') == 'select') {
             $this->saveAnswers($request, $questions->questionid, $questionnaireId);
@@ -101,6 +75,87 @@ class QuestionsController extends Controller
         } elseif ($request->submit) {
             return $this->create();
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $question = Questions::find($id);
+        $answers = QuestionAnswers::where('questionid', '=', $id)->get();
+        session()->put('question', $question);
+        $questionnaireId = session()->get('questionnaire')->id;
+        $languages = $this->getQuestionnaireLanguagesSelect($questionnaireId, $question->questionid);
+        return view('question.edit')
+            ->with('question', $question)
+            ->with('questionnaireId', $questionnaireId)
+            ->with('answers', $answers)
+            ->with('languages', $languages);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $questionnaireId = $request->session()->get('questionnaire')->id; 
+
+        $this->validate($request, [
+            'questionnumber'  => 'required',
+            'languageid'  => 'required',
+            'question'    => 'required',
+            'answertype'  => 'required'
+        ]);
+
+        $question = Questions::find($id);
+        $question->questionnumber = $request->input('questionnumber');
+        $question->languageid = $request->input('languageid');
+        $question->question = $request->input('question');
+        $question->answertype = $request->input('answertype');
+        $question->save();
+
+        if($request->questionimage) {
+            $saveImages = new SaveImages;
+            $saveImages->saveImage($request, 'questionimage', $question, $questionnaireId, $question->questionid);
+        }
+        
+        return redirect('question/' . $id. '/edit');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $question = Questions::find($id);
+        $question->delete();
+        $questionanswers = QuestionAnswers::where('questionid', '=', $id)->get();
+        foreach($questionanswers as $answer) {
+            $answer->delete();
+        }
+        return redirect(url()->previous());
     }
 
     public function saveAnswers($request, $questionid, $questionnaireId)
@@ -132,77 +187,30 @@ class QuestionsController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function getQuestionnaireLanguagesSelect($id, $questionlanguageid = null)
     {
-        //
+        $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
+        $questionLanguageHTML = '<select name="languageid" class="form-control" id="languageid">';
+        foreach($questionnaireLanguages as $language)
+        {
+            $languageArray = $this->languagesToArray($language->languageid);
+            $selected = '';
+            if($language->languageid == $questionlanguageid) {
+                $selected = 'selected';
+            }
+            $questionLanguageHTML .= '<option value="' . $language->languageid . '" ' . $selected . '>' . $languageArray[$language->languageid] . '</option>';
+        }
+        $questionLanguageHTML .= '</select>';
+        return $questionLanguageHTML;
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    
+    public function languagesToArray($id)
     {
-        $question = Questions::find($id);
-        $answers = QuestionAnswers::where('questionid', '=', $id)->get();
-        return view('question.edit', compact('answers'))->with('question', $question);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'questionnumber'  => 'required',
-            'languageid'  => 'required',
-            'question'    => 'required',
-            'country'   => 'required',
-            'answertype'  => 'required'
-        ]);
-
-        $question = Questions::find($id);
-        $question->questionnumber = $request->input('questionnumber');
-        $question->languageid = $request->input('languageid');
-        $question->question = $request->input('question');
-        $question->questionimage = $request->input('questionimage');
-        $question->answertype = $request->input('answertype');
-        $question->save();
-
-        // if($request->answer) {
-        //     $answers = QuestionAnswers::id(); 
-        //     $answers->answer = $request->answer;
-        //     $answers->languageid = 7;
-        //     $answers->save();
-        // }
-
-        return URL::previous();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $questions = Questions::find($id);
-        $questions->delete();
-        $questionnairesEditUrl = url()->previous();
-        $questions = Questions::all();
-        return redirect(url()->previous())->with('questions', $questions);
+        $languagesArray = array();
+        $languages = Languages::where('id', '=', $id)->get();
+        foreach($languages as $language) {
+            $languagesArray[$language->id] = $language->language;
+        }
+        return $languagesArray;
     }
 }

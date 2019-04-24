@@ -10,6 +10,7 @@ use App\QuestionnaireLanguages;
 use App\QuestionnaireTags;
 use App\Helpers\Checkboxes;
 use App\Helpers\SaveCheckboxes;
+use App\Helpers\SaveImages;
 
 class QuestionnairesController extends Controller
 {
@@ -61,19 +62,17 @@ class QuestionnairesController extends Controller
         $questionnaire->name = $request->input('name');
         $questionnaire->questionnaireimage = '';
         $questionnaire->save();
-        $request->session()->put('questionnaire_id', $questionnaire->id);
 
         $checkboxes = new SaveCheckboxes;
         $checkboxes->storeCheckboxes($request, 'QuestionnaireLanguages', 'language', 'questionnaireid', $questionnaire->id, 'languageid');
         $checkboxes->storeCheckboxes($request, 'QuestionnaireTags', 'tag', 'questionnaireid', $questionnaire->id, 'tagid');
 
         if($request->questionnaireimage) {
-            $filename = 'questionnaires/' . $questionnaire->id;;
-            $filename = Storage::disk('public')->put($filename, $request->questionnaireimage);
-            $questionnaire->questionnaireimage = $filename;
-            $questionnaire->save();
+            $saveImages = new SaveImages;
+            $saveImages->saveImage($request, 'questionnaireimage', $questionnaire, $questionnaire->id);
         }
 
+        $request->session()->put('questionnaire', $questionnaire);
         return redirect('question/create')->with('success', 'Questionnaire created.');
     }
 
@@ -97,6 +96,7 @@ class QuestionnairesController extends Controller
     public function edit($id)
     {
         $questionnaire = Questionnaires::find($id);
+        session()->put('questionnaire', $questionnaire);
         $questions = Questions::where('questionnaireid', '=', $id)->get();
 
         $checkboxes = new Checkboxes;
@@ -129,8 +129,12 @@ class QuestionnairesController extends Controller
         $checkboxes = new SaveCheckboxes;
         $checkboxes->updateCheckboxes($request, 'language', 'QuestionnaireLanguages', $id, 'questionnaireid', 'languageid');
         $checkboxes->updateCheckboxes($request, 'tag', 'QuestionnaireTags', $id, 'questionnaireid', 'tagid');
-  
-        $questions = Questions::where('questionnaireid', '=', $id)->get();
+
+        if($request->questionnaireimage) {
+            $saveImages = new SaveImages;
+            $saveImages->saveImage($request, 'questionnaireimage', $questionnaire, $questionnaire->id);
+        }
+
         return redirect('/questionnaires/' . $id . '/edit');
     }
 
@@ -142,8 +146,19 @@ class QuestionnairesController extends Controller
      */
     public function destroy($id)
     {
-        $questionnaire = Questionnaires::find($id);
+        $questionnaire = Questionnaire::find($id);
         $questionnaire->delete();
+
+        $questions = Questions::where('questionnaireid', '=', $id);
+        foreach($questions as $question) {
+            $question->delete();
+        }
+
+        $questionanswers = QuestionAnswers::where('questionnaireid', '=', $id)->get();
+        foreach($questionanswers as $answer) {
+            $answer->delete();
+        }
+
         return redirect('/questionnaires')->with('success', 'Questionnaire deleted.');
     }
 }
