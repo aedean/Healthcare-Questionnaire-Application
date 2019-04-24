@@ -8,18 +8,18 @@
                 <div class="panel-heading">Languages</div>
                 <div class="panel-body">
                     <a href="<?php echo url('/') . '/systemconfiguration'; ?>" class="btn btn-default">Back</a>
-                    <table>
+                    <table class="table">
                         <thead>
-                            <th>No.</th>
-                            <th>Language</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th scope="col">No.</th>
+                            <th scope="col">Language</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </thead>
                         <tbody>
                             <?php $configCount = 1; ?>
                             <?php foreach($languages as $language): ?>
                                 <tr>
-                                    <td><?php echo $configCount++; ?></td>
+                                    <td scope="row"><?php echo $configCount++; ?></td>
                                     <td><?php echo $language->language; ?></td>
                                     <td>
                                         {!! Form::open(['action' => ['LanguagesController@update', $language->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}

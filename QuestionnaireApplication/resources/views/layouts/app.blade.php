@@ -10,8 +10,12 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <script src="{{ asset('js/app.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/customstyles.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -29,22 +33,39 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        How are you feeling?
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
+                    @if (!Auth::guest())
+                        <ul class="nav navbar-nav">
+                            &nbsp;
+                            <li class="nav-link ">
+                                <a class="nav-link " href="<?php echo url('/') . '/systemconfiguration' ?>">System Config</a>
+                            </li>
+                            &nbsp;
+                            <li class="nav-link ">
+                                <a class="nav-link " href="<?php echo url('/') . '/questionnaires' ?>">Questionnaires</a>
+                            </li>
+                            &nbsp;
+                            <li class="nav-link ">
+                                <a class="nav-link " href="<?php echo url('/') . '/users' ?>">Users</a>
+                            </li>
+                        </ul>
+                    @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <ul class="nav navbar-nav">
+                                &nbsp;
+                                <li class="nav-link ">
+                                    <a class="nav-link " href="<?php echo url('/') . '/register' ?>">Register</a>
+                                </li>
+                            </ul>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -74,6 +95,28 @@
                 </div>
             </div>
         </nav>
+
+        <div class="bd-example">
+            @if(count($errors) > 0)
+                @foreach($errors->all() as $error)
+                    <div class="alert alert-danger" role="alert">
+                        {{$error}}
+                    </div>
+                @endforeach
+            @endif
+
+            @if(session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{session('success')}}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{session('error')}}
+                </div>
+            @endif
+        </div>
 
         @yield('content')
     </div>

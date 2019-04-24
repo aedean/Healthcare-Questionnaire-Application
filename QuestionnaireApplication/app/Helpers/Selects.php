@@ -5,12 +5,24 @@ use App\UserTypes;
 
 class Selects
 {
+    /**
+     * Get user types Html.
+     *
+     * @param  string $checkitem - field to check against
+     * @param  string $match - current selected value stored
+     */
     public function getUserTypes($checkitem = null, $match = null)
     {
         $usertypes = $this->createSelect(UserTypes::all(), 'usertypeid', 'Select a user type', 'usertypeid', 'usertypename', $checkitem, $match);
         return $usertypes;
     }
 
+    /**
+     * Get titles Html.
+     *
+     * @param  string $checkitem - field to check against
+     * @param  string $match - current selected value stored
+     */
     public function getTitles($checkitem = null, $match = null) 
     {
         $titles = (object) array(
@@ -34,6 +46,12 @@ class Selects
         return $titles;
     }
 
+    /**
+     * Get genders Html.
+     *
+     * @param  string $checkitem - field to check against
+     * @param  string $match - current selected value stored
+     */
     public function getGenders($checkitem = null, $match = null) 
     {
         $genders = (object) array(
@@ -51,6 +69,17 @@ class Selects
         return $genders;
     }
 
+    /**
+     * Create select Html.
+     *
+     * @param  object $selectObject - object to loop over for select values
+     * @param  string $fieldName - name of field to be stored later
+     * @param  string $fieldTitle - title of input
+     * @param  string $selectid - id of select value
+     * @param  string $selectname - name of select value
+     * @param  string $checkitem - field to check against
+     * @param  string $match - current selected value stored
+     */
     public function createSelect($selectObject, $fieldname, $fieldTitle, $selectid, $selectname, $checkitem = null, $match = null) {
         $createHTML = '<select name="' . $fieldname . '" class="form-control" id="' . $fieldname . '">';
         $createHTML .= '<option value="">' . $fieldTitle . '</option>';

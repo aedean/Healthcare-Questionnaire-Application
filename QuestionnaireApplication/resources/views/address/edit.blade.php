@@ -11,7 +11,7 @@
                     {!! Form::open(['action' => ['UserAddressController@update', $useraddress->addressid], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
                     <div class="form-group{{ $errors->has('addressline1') ? ' has-error' : '' }}">
-                        <label for="addressline1" class="col-md-4 control-label">Addrees Line 1</label>
+                        <label for="addressline1" class="col-md-4 control-label">Address Line 1</label>
 
                         <div class="col-md-6">
                             <input id="addressline1" type="text" class="form-control" name="addressline1" value="{{ old('addressline1', $useraddress->addressline1) }}" required autofocus>

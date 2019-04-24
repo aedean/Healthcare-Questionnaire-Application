@@ -3,18 +3,33 @@
 namespace App\Helpers;
 
 use App\UserAccess;
+use App\QuestionnaireTags;
+use App\QuestionnaireLanguages;
 
 class SaveCheckboxes
 {
+    /**
+     * Store checkbox data.
+     *
+     * @param  string $request - request from form
+     * @param  string $objectName - name of the object to be searched against
+     * @param  string $fieldName - the fieldname of the checkboxes
+     * @param  string $idName - name of the field to store id of checkbox against
+     * @param  string $storeName - name of the field to store the checkbox id
+     */
     public function storeCheckboxes($request, $objectName, $fieldName, $idName, $relationId, $storeName)
     {
         foreach($request->all() as $field => $data){
             if(strpos($field, $fieldName) !== false){
                 if($objectName == 'UserAccess') {
                     $object = new UserAccess;
+                } elseif($objectName == 'QuestionnaireLanguages') {
+                    $object = new QuestionnaireLanguages;
+                } elseif($objectName == 'QuestionnaireTags') {
+                    $object = new QuestionnaireTags;
                 }
-                $object->$idName = $relationId;
-                $object->$storeName = $data;
+                $object->$idName = $relationId; 
+                $object->$storeName = $data; 
                 $object->save();
             }
         }
@@ -23,7 +38,6 @@ class SaveCheckboxes
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  string $fieldName - the name of input field thats being saved to
      * @param  string $objectName - name of the object to be searched against
      * @param  int $id - the id of the element you are checking values for
@@ -34,6 +48,10 @@ class SaveCheckboxes
     {
         if($objectName == 'UserAccess') {
             $existingValuesObject = UserAccess::where('usertypeid', '=', $id)->get();
+        } elseif($objectName == 'QuestionnaireLanguages') {
+            $existingValuesObject = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
+        } elseif($objectName == 'QuestionnaireTags') {
+            $existingValuesObject = QuestionnaireTags::where('questionnaireid', '=', $id)->get();
         }
         $requestarray = array();
         foreach($request->all() as $field => $data) {
@@ -42,6 +60,10 @@ class SaveCheckboxes
                 if(!in_array($data, array_column($existingValuesObject->all(), $searchElement))) {
                     if($objectName == 'UserAccess') {
                         $object = new UserAccess;
+                    } elseif($objectName == 'QuestionnaireLanguages') {
+                        $object = new QuestionnaireLanguages;
+                    } elseif($objectName == 'QuestionnaireTags') {
+                        $object = new QuestionnaireTags;
                     }
                     $object->$storageId = $id;
                     $object->$searchElement = $data;

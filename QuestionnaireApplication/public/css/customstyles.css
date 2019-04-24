@@ -1,0 +1,42 @@
+.navbar {
+    background-color:#154360;
+    color: white;
+}
+.navbar-default .navbar-brand {
+    color: white;
+}
+
+.navbar-default .navbar-brand:hover {
+    color: white;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: white;
+}
+
+.panel-heading {
+    color: red;
+}
+
+.btn {
+    background-color: #626567;
+    border-color: #626567;
+    color: white;
+}
+
+* {
+    color: black;
+    font-family: 'Roboto', sans-serif;
+}
+
+.nav-element-right {
+    margin: 10px 0 !important;
+}
+
+hr {
+    border: #626567 1px solid;
+}
