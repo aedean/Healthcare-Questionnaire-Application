@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 /* Questionnaire Routes */
 Route::resource('questionnaires', 'QuestionnairesController');
 Route::resource('question', 'QuestionsController');
+Route::resource('questionanswers', 'QuestionAnswersController');
 
 /* Users */
 Route::resource('address', 'UserAddressController');
