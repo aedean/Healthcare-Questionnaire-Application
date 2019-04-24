@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('questionnaires', 'QuestionnairesController');
 Route::resource('question', 'QuestionsController');
 Route::resource('questionanswers', 'QuestionAnswersController');
+Route::resource('questionnaireboundaries', 'QuestionnaireBoundariesController');
 
 /* Users */
 Route::resource('address', 'UserAddressController');

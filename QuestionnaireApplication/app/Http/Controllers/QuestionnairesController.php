@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Questionnaires;
+use App\QuestionnaireBoundaries;
 use App\Questions;
 use App\QuestionnaireLanguages;
 use App\QuestionnaireTags;
@@ -102,9 +103,11 @@ class QuestionnairesController extends Controller
         $checkboxes = new Checkboxes;
         $languages = $checkboxes->getLanguages($id);
         $tags = $checkboxes->getTags($id);
+        $boundaries = QuestionnaireBoundaries::where('questionnaireid', '=', $id)->get();
 
         return view('questionnaires.edit')
             ->with('questionnaire', $questionnaire)
+            ->with('boundaries', $boundaries)
             ->with('questions', $questions)
             ->with('languages', $languages)
             ->with('tags', $tags);
