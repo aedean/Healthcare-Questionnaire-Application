@@ -1,10 +1,4 @@
-/* <div class="form-group create-boundary-btns">
-<div class="col-md-8 col-md-offset-4">
-    <div class="btn btn-default addboundary" id="element1">Add another</div>
-    <div class="btn btn-default deleteboundary" id="element1">Delete</div>
-</div>
-</div> */
-
+//Create extra boundary entries for user
 $(document).ready(function() {
     $(document).on('click', '.addboundary', function(event){
         event.preventDefault();

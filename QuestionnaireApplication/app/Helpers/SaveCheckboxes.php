@@ -8,6 +8,15 @@ use App\QuestionnaireLanguages;
 
 class SaveCheckboxes
 {
+    /**
+     * Store checkbox data.
+     *
+     * @param  string $request - request from form
+     * @param  string $objectName - name of the object to be searched against
+     * @param  string $fieldName - the fieldname of the checkboxes
+     * @param  string $idName - name of the field to store id of checkbox against
+     * @param  string $storeName - name of the field to store the checkbox id
+     */
     public function storeCheckboxes($request, $objectName, $fieldName, $idName, $relationId, $storeName)
     {
         foreach($request->all() as $field => $data){
@@ -29,7 +38,6 @@ class SaveCheckboxes
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  string $fieldName - the name of input field thats being saved to
      * @param  string $objectName - name of the object to be searched against
      * @param  int $id - the id of the element you are checking values for

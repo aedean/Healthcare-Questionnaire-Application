@@ -1,3 +1,4 @@
+//Create extra answer inputs for users
 $(document).ready(function() {
     $("#inputtype").change(function(){
         var inputtype = $(this).children("option:selected").val();
