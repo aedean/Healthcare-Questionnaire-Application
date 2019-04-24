@@ -77,7 +77,7 @@
                                 <label for="boundaryname" class="col-md-4 control-label">Boundary Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="boundaryname" type="text" class="form-control" name="boundaryname" required autofocus>
+                                    <input id="boundaryname" type="text" class="form-control" name="boundaryname1" required autofocus>
 
                                     @if ($errors->has('boundaryname'))
                                         <span class="help-block">
@@ -91,7 +91,7 @@
                                 <label for="lowerboundary" class="col-md-4 control-label">Lower Boundary</label>
 
                                 <div class="col-md-6">
-                                    <input id="lowerboundary" type="text" class="form-control" name="lowerboundary" required autofocus>
+                                    <input id="lowerboundary" type="text" class="form-control" name="lowerboundary1" required autofocus>
 
                                     @if ($errors->has('lowerboundary'))
                                         <span class="help-block">
@@ -105,7 +105,7 @@
                                 <label for="higherboundary" class="col-md-4 control-label">Higher Boundary</label>
 
                                 <div class="col-md-6">
-                                    <input id="higherboundary" type="text" class="form-control" name="higherboundary" required autofocus>
+                                    <input id="higherboundary" type="text" class="form-control" name="higherboundary1" required autofocus>
 
                                     @if ($errors->has('higherboundary'))
                                         <span class="help-block">
@@ -119,7 +119,7 @@
                                 <label for="notes" class="col-md-4 control-label">Notes</label>
 
                                 <div class="col-md-6">
-                                    <input id="notes" type="text" class="form-control" name="notes" required autofocus>
+                                    <input id="notes" type="text" class="form-control" name="notes1" required autofocus>
 
                                     @if ($errors->has('notes'))
                                         <span class="help-block">

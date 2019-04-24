@@ -24,7 +24,7 @@ class QuestionnaireBoundariesController extends Controller
      */
     public function create()
     {
-        //
+        return view('boundaries.create');
     }
 
     /**
@@ -37,20 +37,18 @@ class QuestionnaireBoundariesController extends Controller
     {
         $questionnaireId = session()->get('questionnaire')->id;
 
-        $this->validate($request, [
-            'boundaryname'  => 'required',
-            'lowerboundary'  => 'required',
-            'higherboundary'  => 'required',
-            'notes'    => 'required'
-        ]);
-
-        $boundary = new QuestionnaireBoundaries;
-        $boundary->questionnaireid = $questionnaireId;
-        $boundary->boundaryname = $request->input('boundaryname');
-        $boundary->lowerboundary = $request->input('lowerboundary');
-        $boundary->higherboundary = $request->input('higherboundary');
-        $boundary->notes = $request->input('notes');
-        $boundary->save();
+        foreach($request->all() as $key => $input) {
+            if (strpos($key, 'boundaryname') !== false) {
+                $elementno = (int) filter_var($key, FILTER_SANITIZE_NUMBER_INT);
+                $boundary = new QuestionnaireBoundaries;
+                $boundary->questionnaireid = $questionnaireId;
+                $boundary->boundaryname = $request->input('boundaryname' . $elementno);
+                $boundary->lowerboundary = $request->input('lowerboundary' . $elementno);
+                $boundary->higherboundary = $request->input('higherboundary' . $elementno);
+                $boundary->notes = $request->input('notes' . $elementno);
+                $boundary->save();
+            } 
+        }
 
         return redirect('/questionnaires/' . $questionnaireId . '/edit');
     }
@@ -116,5 +114,34 @@ class QuestionnaireBoundariesController extends Controller
         $boundary = QuestionnaireBoundaries::find($id);
         $boundary->delete();
         return redirect('/questionnaires/' . $questionnaireId . '/edit');
+    }
+
+    public function saveAnswers($request, $questionid, $questionnaireId)
+    {
+        foreach($request->all() as $key => $input) {
+
+            if (preg_match_all("/^[a-zA-Z]{6}[0-9]$/", $key)) {
+                $filename = '';
+                $answer = new QuestionAnswers; 
+                $answer->answer = $request->$key;
+                $answer->questionnaireid = $questionnaireId;
+                $answer->questionid = $questionid;
+                $answer->languageid = 7;
+                $answer->answerimage = '';
+                $answer->save();
+                foreach($request->all() as $inputkey => $inputimage) {
+                    if(preg_match_all("/^[a-zA-Z]{11}[0-9]$/", $inputkey)) {
+                        $no = (int) filter_var($inputkey, FILTER_SANITIZE_NUMBER_INT);
+                        $nomatch = (int) filter_var($key, FILTER_SANITIZE_NUMBER_INT);
+                        if($no == $nomatch) {
+                            $filename = 'answers/' . $questionnaireId . '/' . $questionid . '/' . $answer->answerid;
+                            $filename = Storage::disk('public')->put($filename, $request->$inputkey);
+                        }
+                    }
+                }
+                $answer->answerimage = $filename;
+                $answer->save();
+            } 
+        }
     }
 }

@@ -70,8 +70,8 @@ class QuestionsController extends Controller
             $this->saveAnswers($request, $question->questionid, $questionnaireId);
         }
 
-        if($request->finish) {
-            return redirect('questionnaires/' . $questionnaireId . '/edit');
+        if($request->boundaries) {
+            return redirect('/boundaries/create');
         } elseif ($request->submit) {
             return $this->create();
         }
