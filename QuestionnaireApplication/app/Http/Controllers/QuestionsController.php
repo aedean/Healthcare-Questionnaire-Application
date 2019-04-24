@@ -67,7 +67,7 @@ class QuestionsController extends Controller
         $saveImages->saveImage($request, 'questionimage', $question, $questionnaireId, $question->questionid);
 
         if($request->input('answertype') == 'select') {
-            $this->saveAnswers($request, $questions->questionid, $questionnaireId);
+            $this->saveAnswers($request, $question->questionid, $questionnaireId);
         }
 
         if($request->finish) {
