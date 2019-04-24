@@ -12,6 +12,7 @@ use App\QuestionnaireTags;
 use App\Helpers\Checkboxes;
 use App\Helpers\SaveCheckboxes;
 use App\Helpers\SaveImages;
+use App\QuestionAnswers;
 
 class QuestionnairesController extends Controller
 {
@@ -149,7 +150,7 @@ class QuestionnairesController extends Controller
      */
     public function destroy($id)
     {
-        $questionnaire = Questionnaire::find($id);
+        $questionnaire = Questionnaires::find($id);
         $questionnaire->delete();
 
         $questions = Questions::where('questionnaireid', '=', $id);
