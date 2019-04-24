@@ -7,8 +7,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Edit Question</div>
                 <div class="panel-body">
-                    <a href="<?php echo url('/') . '/questionnaires' ?>" class="btn btn-default">Back</a>
-                    {!! Form::open(['action' => ['QuestionsController@update', $question->questionid], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                    <a href="<?php echo url('/') . '/questionnaires/' . $questionnaireId . '/edit' ?>" class="btn btn-default">Back</a>
+                    {!! Form::open(['action' => ['QuestionsController@update', $question->questionid], 'method' => 'PUT', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
+                    
                     <div class="form-group{{ $errors->has('questionnumber') ? ' has-error' : '' }}">
                         <label for="questionnumber" class="col-md-4 control-label">Question Number</label>
 
@@ -27,8 +28,7 @@
                         <label for="languageid" class="col-md-4 control-label">Language</label>
 
                         <div class="col-md-6">
-                            <input id="languageid" type="text" class="form-control" name="languageid" value="{{ old('language', $question->language) }}" required autofocus>
-
+                            {!! $languages !!}
                             @if ($errors->has('languageid'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('languageid') }}</strong>
@@ -51,17 +51,18 @@
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('questionimage') ? ' has-error' : '' }}">
-                        <label for="questionimage" class="col-md-4 control-label">Question Image</label>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Image</label>
+                        <div class="col-md-12">
+                            <img src="<?php echo url('/') . Storage::url($question->questionimage); ?>" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="questionimage" class="col-md-4 control-label">New Image</label>
 
                         <div class="col-md-6">
-                            <input id="questionimage" type="text" class="form-control" name="questionimage" value="{{ old('questionimage', $question->questionimage) }}" required autofocus>
-
-                            @if ($errors->has('questionimage'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('questionimage') }}</strong>
-                                </span>
-                            @endif
+                            <?php echo Form::file('file', array('name'=>'questionimage')); ?>
                         </div>
                     </div>
 
@@ -79,41 +80,107 @@
                         </div>
                     </div>
 
-                    <?php 
-                        $answerCount = 0;
-                        foreach($answers as $answer) {
-                            echo $answer;
-                             echo '<div class="form-group{{ $errors->has(\'answer\') ? \'has-error\' : \'\' }}">'; 
-                            // <label for="answer" class="col-md-4 control-label">Answer Type</label>
-    
-                            //     <div class="col-md-6">
-                            //         <input id="answer'  . $answerCount . '" type="text" class="form-control" name="answer'  . $answerCount . '" required autofocus>
-        
-                            //         @if ($errors->has(\'answer\'))
-                            //             <span class="help-block">
-                            //                 <strong>{{ $errors->first(\'answer\') }}</strong>
-                            //             </span>
-                            //         @endif
-                            //     </div>
-                            echo '</div>';
-                        }
-                    ?> 
-
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {!! Form::submit('Update', ['class' => 'btn', 'name' => 'update']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}
-                    <div class="btn">
-                        <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+
+                    <h3>Create Answer</h3>
+                    {!! Form::open(['action' => ['QuestionAnswersController@store'], 'method' => 'POST', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
+
+                    <div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
+                        <label for="answer" class="col-md-4 control-label">Answer</label>
+
+                        <div class="col-md-6">
+                            <input id="answer" type="text" class="form-control" name="answer" value="" required autofocus>
+
+                            @if ($errors->has('answer'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('answer') }}</strong>
+                                </span>
+                            @endif
+                        </div>
                     </div>
-                    <div class="btn">
-                        <a href="<?php echo url('/'); ?>/question/<?php echo $question->questionid + 1; ?>/edit" class="btn btn-default">Next Question</a>
+
+                    <div class="form-group">
+                        <label for="answerimage" class="col-md-4 control-label">Image</label>
+
+                        <div class="col-md-6">
+                            <?php echo Form::file('file', array('name'=>'answerimage')); ?>
+                        </div>
                     </div>
-                    <div class="btn">
-                        <a href="<?php echo url('/'); ?>/question/<?php echo $question->questionid - 1; ?>/edit" class="btn btn-default">Previous Question</a>
+
+                    <div class="form-group">
+                        <div class="col-md-8 col-md-offset-4">
+                        {!! Form::submit('Add Answer', ['class' => 'btn', 'name' => 'add']) !!}
+                        </div>
                     </div>
+                    {!! Form::close() !!}
+
+                    <?php $answerCount = 0; ?>
+                        <h3>Answers</h3>
+                        <table class="table answers-table">
+                            <thead>
+                                <th scope="col">No</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </thead>
+                            <tbody>
+                                <?php foreach($answers as $answer): ?>
+                                    <tr>
+                                        <td scope="row"><?php echo $answer->answerid; ?></td>
+                                        <td>
+                                            {!! Form::open(['action' => ['QuestionAnswersController@update', $answer->answerid], 'method' => 'PUT', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
+                                                <div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
+                                                    <label for="answer" class="col-md-4 control-label">Answer</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="answer" type="text" class="form-control" name="answer" value="{{ old('answer', $answer->answer) }}" required autofocus>
+
+                                                        @if ($errors->has('answer'))
+                                                            <span class="help-block">
+                                                                <strong>{{ $errors->first('answer') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Image</label>
+                                                    <div class="col-md-12">
+                                                        <img src="<?php echo url('/') . Storage::url($answer->answerimage); ?>" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="answerimage" class="col-md-4 control-label">New Image</label>
+
+                                                    <div class="col-md-6">
+                                                        <?php echo Form::file('file', array('name'=>'answerimage')); ?>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <div class="col-md-8 col-md-offset-4">
+                                                    {!! Form::submit('Update', ['class' => 'btn', 'name' => 'update']) !!}
+                                                    </div>
+                                                </div>
+                                            {!! Form::close() !!}
+                                        </td>
+                                        <td>
+                                            {!! Form::open(['action' => ['QuestionAnswersController@destroy', $answer->answerid], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                {!! Form::hidden('_method', 'DELETE') !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn']) !!}
+                                            {!! Form::close() !!}
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <a href="<?php echo url('/'); ?>/question/<?php echo $question->questionid + 1; ?>/edit" class="btn btn-default">Next Question</a>
+                    <a href="<?php echo url('/'); ?>/question/<?php echo $question->questionid - 1; ?>/edit" class="btn btn-default">Previous Question</a>
                 </div>
             </div>
         </div>
@@ -125,10 +192,8 @@
     //if the answer type is select 
     let answerHtml = `<div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
         <label for="answer" class="col-md-4 control-label">Answer</label>
-
         <div class="col-md-6">
             <input id="answer" type="text" class="form-control" name="answer" required autofocus>
-
             @if ($errors->has('answer'))
                 <span class="help-block">
                     <strong>{{ $errors->first('answer') }}</strong>

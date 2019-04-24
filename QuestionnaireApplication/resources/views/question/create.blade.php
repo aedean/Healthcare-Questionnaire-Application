@@ -29,7 +29,7 @@
                         <label for="languages" class="col-md-4 control-label">Languages</label>
 
                         <div class="col-md-6">
-                            {!! $languageSelectHTML !!}
+                            {!! $languages !!}
                             @if ($errors->has('languages'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('languages') }}</strong>
@@ -52,13 +52,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="questionimage" class="col-md-4 control-label">Image</label>
 
-                        <div class="col-md-6">
-                            <?php echo Form::file('file', array('name'=>'questionimage')); ?>
-                        </div>
-                    </div>
 
                     <div class="form-group{{ $errors->has('answertype') ? ' has-error' : '' }} answercontainer">
                         <label for="answertype" class="col-md-4 control-label">Answer Type</label>
