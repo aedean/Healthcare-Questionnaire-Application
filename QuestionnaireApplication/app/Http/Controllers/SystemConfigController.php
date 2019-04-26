@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\SystemConfig;
 use App\Languages;
 use App\Tags;
+use App\Helpers\SaveImages;
+use Illuminate\Support\Facades\Storage;
 
 class SystemConfigController extends Controller
 {
@@ -62,7 +64,12 @@ class SystemConfigController extends Controller
     public function edit($id)
     {
         $attribute = SystemConfig::find($id);
-        return view('systemconfiguration.edit', compact('attribute'));
+        $inputtype = 'input';
+        if($attribute->attributename == 'Application Logo') {
+            $inputtype = 'image';
+        }
+        return view('systemconfiguration.edit', compact('attribute'))
+            ->with('inputtype', $inputtype);
     }
 
     /**
@@ -74,13 +81,23 @@ class SystemConfigController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'attributevalue' => 'required'
-        ]);
-
         $attribute = SystemConfig::find($id);
-        $attribute->attributevalue = $request->input('attributevalue');
-        $attribute->save();
+        if($attribute->attributename == 'Application Logo') {
+            if($request->image) {
+                if($attribute->attributevalue) {
+                    if(Storage::disk('public')->has($attribute->attributevalue)) {
+                        Storage::disk('public')->delete($attribute->attributevalue);
+                    }
+                    $filename = 'application/logo';
+                    $filename = Storage::disk('public')->put($filename, $request->image);
+                    $attribute->attributevalue = $filename;
+                    $attribute->save();
+                } 
+            }
+        } else {
+            $attribute->attributevalue = $request->input('attributevalue');
+            $attribute->save();
+        }
 
         $attributes = SystemConfig::all();
         return view('systemconfiguration.index', compact('attributes'));

@@ -34,7 +34,7 @@ Route::resource('user', 'UserController');
 Route::resource('languages', 'LanguagesController');
 Route::resource('tags', 'TagsController');
 Route::resource('systemconfiguration', 'SystemConfigController');
-Route::resource('healthcareworkers', 'HealthcareWorkersController');
+Route::resource('healthcarecontacts', 'HealthcareContactsController');
 Route::resource('usertypes', 'UserTypesController');
 
 /* Patients */
