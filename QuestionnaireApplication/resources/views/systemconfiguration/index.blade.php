@@ -20,7 +20,7 @@
                                 <tr>
                                     <td scope="row"><?php echo $configCount++; ?></td>
                                     <td><?php echo $attribute->attributename; ?></td>
-                                    <td><a href="/{{ $attribute->id }}/edit" class="btn btn-default">Edit<a></td>
+                                    <td><a href="<?php echo url('/') ?>/systemconfiguration/{{ $attribute->id }}/edit" class="btn btn-default">Edit<a></td>
                                 </tr>
                             <?php endforeach; ?>
                             <tr>
@@ -40,8 +40,8 @@
                             </tr>
                             <tr>
                                 <td><?php echo $configCount++; ?></td>
-                                <td>Healthcare Workers</td>
-                                <td><a href="<?php echo url('/') . '/healthcareworkers'; ?>" class="btn btn-default">Edit<a></td>
+                                <td>Healthcare Contacts</td>
+                                <td><a href="<?php echo url('/') . '/healthcarecontacts'; ?>" class="btn btn-default">Edit<a></td>
                             </tr>
                         </tbody>
                     </table>

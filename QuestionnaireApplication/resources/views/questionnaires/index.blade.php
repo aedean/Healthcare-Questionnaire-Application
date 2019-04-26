@@ -8,6 +8,7 @@
                 <div class="panel-body">
                     <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
                     <a href="<?php echo url('/') . '/questionnaires/create' ?>" class="btn btn-default">Create New</a>
+                    <input type="text" class="form-controller" id="search" name="search" />
                     <table class="table">
                         <thead>
                             <th scope="col">Questionnaire Id</th>
@@ -21,10 +22,10 @@
                         <tbody>
                             <?php foreach($questionnaires as $questionnaire): ?>
                                 <tr>
-                                    <td scope="row"><?php echo $questionnaire->id; ?></td> <!-- ID -->
-                                    <td><?php echo $questionnaire->name; ?></td> <!-- Name -->
-                                    <td><?php echo $questionnaire->questionnaire; ?></td> <!-- Languages -->
-                                    <td><?php echo $questionnaire->languageid; ?></td> <!-- Tags -->
+                                    <td scope="row"><?php echo $questionnaire->id; ?></td>
+                                    <td><?php echo $questionnaire->name; ?></td>
+                                    <td><?php echo $questionnaire->questionnaire; ?></td>
+                                    <td><?php echo $questionnaire->languageid; ?></td>
                                     <td><a href="{{url('/')}}/questionnaires/{{ $questionnaire->id }}">Take<a></td>
                                     <td><a href="{{url('/')}}/questionnaires/{{ $questionnaire->id }}/edit">Edit<a></td>
                                     <td>
@@ -42,4 +43,21 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$('#search').on('keyup',function(){
+    console.log('her');
+$value=$(this).val();
+$.ajax({
+type : 'get',
+url : '{{URL::to('search')}}',
+data:{'search':$value},
+success:function(data){
+console.log(data);
+}
+});
+})
+</script>
+<script type="text/javascript">
+$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+</script>
 @endsection
