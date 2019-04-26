@@ -8,7 +8,6 @@
                 <div class="panel-body">
                     <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
                     <a href="<?php echo url('/') . '/questionnaires/create' ?>" class="btn btn-default">Create New</a>
-                    <input type="text" class="form-controller" id="search" name="search" />
                     <table class="table">
                         <thead>
                             <th scope="col">Questionnaire Id</th>

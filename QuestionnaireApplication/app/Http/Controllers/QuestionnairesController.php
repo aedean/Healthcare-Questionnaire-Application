@@ -165,25 +165,4 @@ class QuestionnairesController extends Controller
 
         return redirect('/questionnaires')->with('success', 'Questionnaire deleted.');
     }
-
-    public function search(Request $request)
-    {
-        if($request->ajax())
-        {
-            $output = "";
-            $questionnaires = DB::table('questionnaires')->where('name','LIKE','%'.$request->search."%")->get();
-            if($questionnaires)
-            {
-                foreach ($questionnaires as $key => $questionnaire) {
-                $output .= '<tr>'.
-                '<td>' . $questionnaire->id.'</td>'.
-                '<td>' . $questionnaire->title.'</td>'.
-                '<td>' . $questionnaire->description.'</td>'.
-                '<td>' . $questionnaire->price.'</td>'.
-                '</tr>';
-                }
-                return Response($output);
-            }
-        }
-    }
 }
