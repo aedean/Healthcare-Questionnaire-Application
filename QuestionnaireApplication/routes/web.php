@@ -40,7 +40,7 @@ Route::resource('usertypes', 'UserTypesController');
 /* Patients */
 Route::resource('patients', 'PatientsController');
 Route::prefix('patient')->group(function() {
-Route::get('/login', 'Auth\PatientLoginController@showLoginForm')->name('patient.login');
-Route::post('/login', 'Auth\PatientLoginController@login')->name('patient.login.submit');
-Route::get('/', 'PatientController@index')->name('patient.dashboard');
+    Route::get('/login', 'Auth\PatientLoginController@showLoginForm')->name('patient.login');
+    Route::post('/login', 'Auth\PatientLoginController@login')->name('patient.login.submit');
+    Route::get('/', 'PatientController@index')->name('patient.dashboard');
 });
