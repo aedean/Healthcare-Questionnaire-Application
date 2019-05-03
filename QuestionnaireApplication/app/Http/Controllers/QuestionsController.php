@@ -169,6 +169,7 @@ class QuestionsController extends Controller
                 $answer->questionnaireid = $questionnaireId;
                 $answer->questionid = $questionid;
                 $answer->languageid = 7;
+                $answer->score = 1;
                 $answer->answerimage = '';
                 $answer->save();
                 foreach($request->all() as $inputkey => $inputimage) {
