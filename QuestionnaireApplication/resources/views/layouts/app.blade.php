@@ -24,13 +24,13 @@
                 <div class="navbar-header">
                     <?php $applicationlogo = getApplicationLogo(); ?>
                     <?php if($applicationlogo != null): ?>
-                    <img src="<?php echo url('/') . Storage::url($applicationlogo); ?>" alt="logo" class="navbar-brand mr-0 mr-md-2" />
+                    <img src="<?php echo url('/') . Storage::url($applicationlogo); ?>" alt="logo" class="app-logo navbar-brand mr-0 mr-md-2" />
                     <?php endif; ?>
                     
                     <ul class="nav navbar-nav">
                         &nbsp;
                         <li class="nav-link ">
-                            <a class="nav-link" href="<?php echo url('/') . '/questionnaires'; ?>"><?php echo getApplicationName(); ?></a>
+                            <a class="nav-link app-name" href="<?php echo url('/') . '/questionnaires'; ?>"><?php echo getApplicationName(); ?></a>
                         </li>
                     </ul>
 
