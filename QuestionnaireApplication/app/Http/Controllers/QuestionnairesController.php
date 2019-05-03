@@ -12,7 +12,9 @@ use App\QuestionnaireTags;
 use App\Helpers\Checkboxes;
 use App\Helpers\SaveCheckboxes;
 use App\Helpers\SaveImages;
+use App\Helpers\SetImagesCookie;
 use App\QuestionAnswers;
+use Cookie;
 
 class QuestionnairesController extends Controller
 {
@@ -23,6 +25,9 @@ class QuestionnairesController extends Controller
      */
     public function index()
     {
+        $imageCookie = new SetImagesCookie();
+        $imageCookie->createServiceWorker();
+
         $questionnaires = Questionnaires::all();
         $questionnairelanguages = QuestionnaireLanguages::all();
         $questionnairetags = QuestionnaireTags::all();
@@ -86,7 +91,15 @@ class QuestionnairesController extends Controller
      */
     public function show($id)
     {
-        //
+        $questionnaire = Questionnaires::find($id);
+        $checkboxes = new Checkboxes;
+        $languages = $checkboxes->getLanguages($id);
+        $tags = $checkboxes->getTags($id);
+        //first question
+        return view('questionnaires.show')
+            ->with('questionnaire', $questionnaire)
+            ->with('languages', $languages)
+            ->with('tags', $tags);
     }
 
     /**
