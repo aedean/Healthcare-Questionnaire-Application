@@ -17,6 +17,12 @@ $(document).ready(function() {
                                                         <input name="answerimage1" type="file">
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="score1" class="col-md-4 control-label">Score</label>
+                                                    <div class="col-md-6">
+                                                        <input id="score1" type="text" class="form-control" name="score1" required autofocus>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group question-create-answers-btns">
                                                     <div class="col-md-8 col-md-offset-4">
                                                         <div class="btn btn-default addanswer" id="element1">Add another</div>
@@ -50,6 +56,12 @@ $(document).ready(function() {
                                         <label for="answerimage${elementno}" class="col-md-4 control-label">Answer Image</label>
                                         <div class="col-md-6">
                                             <input name="answerimage${elementno}" type="file">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="score${elementno}" class="col-md-4 control-label">Score</label>
+                                        <div class="col-md-6">
+                                            <input id="score${elementno}" type="text" class="form-control" name="score${elementno}" required autofocus>
                                         </div>
                                     </div>
                                     <div class="form-group question-create-answers-btns">

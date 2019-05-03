@@ -112,6 +112,20 @@
                         </div>
                     </div>
 
+                    <div class="form-group{{ $errors->has('score') ? ' has-error' : '' }}">
+                        <label for="score" class="col-md-4 control-label">Score</label>
+
+                        <div class="col-md-6">
+                            <input id="score" type="int" class="form-control" name="score" value="" required autofocus>
+
+                            @if ($errors->has('score'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('score') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {!! Form::submit('Add Answer', ['class' => 'btn', 'name' => 'add']) !!}
@@ -161,6 +175,20 @@
                                                         <?php echo Form::file('file', array('name'=>'answerimage')); ?>
                                                     </div>
                                                 </div>
+
+                                                <div class="form-group{{ $errors->has('score') ? ' has-error' : '' }}">
+                                                    <label for="score" class="col-md-4 control-label">Score</label>
+
+                                                    <div class="col-md-6">
+                                                        <input id="score" type="text" class="form-control" name="score" value="{{ old('score', $answer->score) }}" required autofocus>
+
+                                                        @if ($errors->has('score'))
+                                                            <span class="help-block">
+                                                                <strong>{{ $errors->first('score') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                                 
                                                 <div class="form-group">
                                                     <div class="col-md-8 col-md-offset-4">
@@ -187,22 +215,3 @@
     </div>
 </div>
 @endsection
-
-<script>
-    //if the answer type is select 
-    let answerHtml = `<div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
-        <label for="answer" class="col-md-4 control-label">Answer</label>
-        <div class="col-md-6">
-            <input id="answer" type="text" class="form-control" name="answer" required autofocus>
-            @if ($errors->has('answer'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('answer') }}</strong>
-                </span>
-            @endif
-        </div>
-    </div>`;
-    //create answer input and btn
-    //if the add another answer btn is clicked
-    //delete the current btn 
-    //create answer input and btn
-</script>

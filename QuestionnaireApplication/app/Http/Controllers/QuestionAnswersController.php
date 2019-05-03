@@ -51,6 +51,7 @@ class QuestionAnswersController extends Controller
         $answer->questionid = $questionid;
         $answer->answer = $request->input('answer');
         $answer->languageid = $question->languageid;
+        $answer->score = $request->input('score');
         $answer->answerimage = '';
         $answer->save();
         
@@ -102,6 +103,7 @@ class QuestionAnswersController extends Controller
         $answer = QuestionAnswers::find($id);
         $answer->answer = $request->input('answer');
         $answer->languageid = $question->languageid;
+        $answer->score = $request->input('score');
         $answer->save();
         
         if($request->answerimage) {
