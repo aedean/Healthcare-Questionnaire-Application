@@ -24,6 +24,9 @@ Route::resource('questionnaires', 'QuestionnairesController');
 Route::resource('question', 'QuestionsController');
 Route::resource('questionanswers', 'QuestionAnswersController');
 Route::resource('boundaries', 'QuestionnaireBoundariesController');
+Route::resource('questionnaireresults', 'QuestionnaireResultsController');
+Route::resource('questionnairenotes', 'QuestionnaireNotesController');
+Route::resource('result', 'QuestionnaireBoundariesController');
 
 /* Users */
 Route::resource('address', 'UserAddressController');
