@@ -16,7 +16,7 @@ class CreateQuestionnaireResultsTable extends Migration
         Schema::create('questionnaire_results', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('questionnaireid');
-            $table->string('result');
+            $table->integer('score');
             $table->integer('userid')->nullable();
             $table->timestamps();
         });

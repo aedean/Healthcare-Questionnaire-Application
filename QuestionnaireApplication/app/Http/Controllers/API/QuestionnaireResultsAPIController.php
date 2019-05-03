@@ -10,6 +10,9 @@ use App\QuestionnaireLanguages;
 use App\QuestionnaireTags;
 use App\Questions;
 use App\QuestionnaireResults;
+use App\QuestionnaireResultAnswers;
+use App\QuestionnaireNotes;
+use App\Patient;
 use Validator;
 
 class QuestionnaireResultsAPIController extends APIBaseController
@@ -31,19 +34,43 @@ class QuestionnaireResultsAPIController extends APIBaseController
     */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $validator = Validator::make($input, [
+        $inputs = $request->all();
+     
+        $validator = Validator::make($inputs, [
             'questionnaireid' => 'required',
-            'result' => 'required'       
+            'score' => 'required'       
         ]);
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
+
         $result = new QuestionnaireResults;
-        $result->questionnaireid = $request->input('questionnaireid');
-        $result->result = $request->input('result');
-        $result->userid = $request->input('userid');
+        $result->questionnaireid = $inputs['questionnaireid'];
+        $result->score = $inputs['score'];
+        if(isset($inputs['username'])){
+            $user = Patient::where('username', '=', $inputs['username'])->first();
+            if($user->id != null){
+                $result->userid = $user->id;
+            }
+        }
         $result->save();
+
+        $resultid = $result->id;
+
+        $note = new QuestionnaireNotes;
+        $note->resultid = $resultid;
+        $note->note = $inputs['note'];
+        $note->save();
+
+        foreach($inputs as $key => $input) {
+            if(strpos($key, 'answer') !== false) {
+                $answer = new QuestionnaireResultAnswers;
+                $answer->resultid = $resultid;
+                $answer->answer = $inputs[$key];
+                $answer->save();
+            }
+        }
+
         return $this->sendResponse($result->toArray(), 'Result created successfully.');
     }
 
