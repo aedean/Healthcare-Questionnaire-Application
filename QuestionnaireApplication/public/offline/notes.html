@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+    <head>
+        <title>Page Title</title>
+        <link href="../css/customstyles.css" rel="stylesheet">
+        <link href="../css/app.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="app">
+            <nav class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <script>document.write('<img src="' + localStorage.getItem('app-logo') + '" alt="logo" class="navbar-brand mr-0 mr-md-2" />');</script>
+                        <ul class="nav navbar-nav">
+                            &nbsp;
+                            <li class="nav-link ">
+                                <a class="nav-link app-name" href=""><script>document.write('<p>' +localStorage.getItem('app-name')+ '</p>');</script></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        <h1>Notes</h1>
+            <div class="notes-container">
+                <textarea rows="4" cols="50" class="notes">
+                </textarea>
+            </div> 
+        </div>
+
+        <div class="btn save">Save</div>
+
+        <script src="../js/app.js"></script>
+        <script src="../js/notes.js"></script>
+    </body>
+</html>
