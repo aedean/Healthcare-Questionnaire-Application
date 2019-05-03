@@ -20,15 +20,20 @@
                 </div>
             </nav>
 
-        <h1>All Questionnaires</h1>
-            <div class="questionnaires-container">
-                <div class="card-deck">
-
+        <h1>Questionnaire Page</h1>
+            <div class="questionnaire-container">            
+            </div>
+                <div class="questionnaire-user-types">
+                    <select name="savetype" class="savetype">
+                        <option name="nosave" value="nosave">Annoymous no data saved</option>
+                        <option name="annoymoussave" value="annoymoussave">Annoymous save data</option>
+                        <option name="save" value="save">Healthcare professional on behald of user patient</option>
+                    </select>
                 </div>
-            </div> 
+            <div class="btn take-questionnaire">Take</div> 
         </div>
 
         <script src="../js/app.js"></script>
-        <script src="../js/getQuestionnaires.js"></script>
+        <script src="../js/getQuestionnaire.js"></script>
     </body>
 </html>
