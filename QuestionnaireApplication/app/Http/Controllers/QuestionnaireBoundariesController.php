@@ -14,7 +14,7 @@ class QuestionnaireBoundariesController extends Controller
      */
     public function index()
     {
-        //
+        return view('result.index');
     }
 
     /**
