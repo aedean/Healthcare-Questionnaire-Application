@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\APIBaseController as APIBaseController;
 use App\HealthcareContacts;
+use App\UserAddress;
 use Validator;
 
 class HealthcareContactsAPIController extends APIBaseController
@@ -16,11 +17,16 @@ class HealthcareContactsAPIController extends APIBaseController
     */
     public function index()
     {
+        $healthcareContactsArray = array();
         $healthcareContacts = HealthcareContacts::all();
-        $healthcareContacts = array(
-            'healthcarecontacts' => $healthcareContacts->toArray()
-        );
-        return $this->sendResponse($healthcareContacts, 'Healthcare Contacts retrieved successfully.');
+        foreach($healthcareContacts as $contact) {
+            $address = UserAddress::where('userid', '=', $contact->id)->get()->toArray();
+            $healthcareContactsArray[] = array(
+                $contact,
+                $address
+            );
+        }
+        return $this->sendResponse($healthcareContactsArray, 'Healthcare Contacts retrieved successfully.');
     }
 
     /**
