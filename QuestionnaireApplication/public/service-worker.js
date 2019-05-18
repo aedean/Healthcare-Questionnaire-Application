@@ -1,44 +1,44 @@
 
-            var CACHE_NAME = 'static-cache';
+var CACHE_NAME = 'questionnaire-cache';
 
-            var urlsToCache = [
-            'css/app.css',
-            'css/customstyles.css',
-            'js/getQuestion.js',
-            'js/getResults.js',
-            'js/notes.js',
-            'js/offline/getHealthcareContacts.js',
-            'js/getQuestionnaires.js',
-            'js/getQuestionnaire.js',
-            'js/app.js',
-            'storage/application/logo/ClLGaX5mVgwnq6rkokHMAmuRweOILd3QfonaktSP.jpeg',
-            'offline/questionnaires.html',
-            'offline/questionnaire.html',
-            'offline/question.html',
-            'offline/notes.html',
-            'offline/healthcarecontacts.html',
-            'offline/results.html',
-            'storage/questionnaires/1/yunZQ3aABHG9klwzZMHHG5U6EUwO2Uo4g1sLYGaG.jpeg','storage/questionnaires/2/SrwRt07NVNbyhrmVODCO5yfFiVDNQuZjD4IfaqfL.jpeg','storage/questionnaires/3/fYEICZABkPYEUmWIUbjByAXM40yEvFZ2c4DdBzfN.jpeg','storage/questions/1/1/F8J6LCEWRrBvzKwiNcphXUhbMBdSBvpiH4lEPa2p.jpeg','storage/questions/1/2/fqqf3Vhp41m3zmXFTzIaeUL02Tya1Km5Vv9PkL5l.jpeg','storage/questions/2/3/J05mndFX2ZCTc0LFGConswBpp4CuFpVO1OL40Mj5.jpeg','storage/questions/3/4/ayVZTT6yWcaMoWwa2o1KjrQIWtKKKgJund29AezB.jpeg','storage/questions/3/5/0yhi7KWcznwyktXWeOCONba4w4dCD5ONszZjVnbU.jpeg','storage/questions/3/7/qEqVVs7TN6bZ02BrIW4TVlZNOrYK8psnHM1fmwcP.jpeg','storage/answers/3/5/1/DN6jJPBeC8tczpOMLSEFFoa9gljJlxsEzxkhQtS2.jpeg','storage/answers/3/5/2/Ogos5r2wyQ74W1vRThXJ0gxJ8s3uQcOwmuuzKBTx.jpeg','storage/answers/3/5/3/gGjs2UltHewMz5cfncagnCFmKa47hqGXOoaSsjJs.jpeg','storage/answers/3/7/4/WkAYS0IMnsVaKGMGxiVFBgn089nSJ5Fmgv6rPz63.jpeg','storage/answers/3/7/5/UT1JJnEKn9N1Haxw51nfG4AJGtJXo65GsxgqJDbu.jpeg','storage/answers/3/5/6/kgC5NStgI0i2qzX2Xz2YQ5e7aAWwE9XdNk6HmTsC.jpeg'
-            ];
+var urlsToCache = [
+'css/app.css',
+'css/customstyles.scss',
+'css/bootstrap.css',
+'js/getQuestion.js',
+'js/offline/getResults.js',
+'js/notes.js',
+'js/offline/getHealthcareContacts.js',
+'js/getQuestionnaires.js',
+'js/getQuestionnaire.js',
+'js/app.js',
+'offline/questionnaires.html',
+'offline/questionnaire.html',
+'offline/question.html',
+'offline/notes.html',
+'offline/healthcarecontacts.html',
+'offline/results.html',
+'storage/questionnaires/1/yunZQ3aABHG9klwzZMHHG5U6EUwO2Uo4g1sLYGaG.jpeg','storage/questionnaires/2/SrwRt07NVNbyhrmVODCO5yfFiVDNQuZjD4IfaqfL.jpeg','storage/questionnaires/4/RpiafKL3sMr3rJQZtnSE8e58WrnDI3wEYbuEA3tv.jpeg','storage/questionnaires/5/ZVaTLJKPRwpexez01cIPu0WTKV0cAYvOsQm4Nw5M.png','storage/questionnaires/6/mgBT1cW5y4KBNQeRqA3FjA0GaRSGRlFLkgPFpFyx.jpeg','storage/questionnaires/7/yf526lQUOzxpSAj04pLWRgWuBUdRJJZtolAefcwV.jpeg','storage/answers/4/10/12/EcYefR4TTu8IZErHFLbyIbQDPlVyz5dj2I6XjqJq.jpeg','storage/answers/4/10/11/9bH9jvmmKXPju0mD302c8uFtTNAVdPV5JC6SbQix.jpeg','storage/answers/4/10/10/jSCrLpHIFVs3FnphS6FQvTRSifzk77IpcLPNumUk.jpeg','storage/answers/4/9/8/zdlFnpFXZ4gR6sXVKZdfhhPEMt69XI415oNOzAtx.jpeg','storage/answers/4/9/7/AyVI4tOSlfIu8nVokeKcDWbPqDsDdjsHQWHNJzZb.jpeg'
+];
 
-            self.addEventListener('install', function(event) {
-                event.waitUntil(
-                    caches.open(CACHE_NAME)
-                    .then(function(cache) {
-                        //console.log(urlsToCache);
-                        return cache.addAll(urlsToCache);
-                    })
-                );
-            });
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+        .then(cache => {
+            console.log(urlsToCache);
+            return cache.addAll(urlsToCache);
+        })
+    );
+});
 
-            var offlineUrl = 'offline/questionnaires.html';
+var offlineUrl = 'offline/questionnaires.html';
 
-            self.addEventListener('fetch', function(event) {
-            
-                event.respondWith(
-                caches.match(event.request).then(function(response) {
-                    return response || fetch(event.request);
-                })
-                );
-            });
-        
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request).then(response => {
+            return response || fetch(event.request);
+        }).catch(() => {
+            return caches.match('/offline/questionnaires.html');
+        })
+    );
+});
