@@ -18,7 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return view('user.index')->with('users', $users);
     }
 
     /**
@@ -88,7 +89,7 @@ class UserController extends Controller
             'title' => 'max:25|string|alpha|nullable',
             'firstname' => 'max:255|string|alpha|nullable',
             'lastname' => 'max:255|string|alpha|nullable',
-            'email' => 'max:255|email|nullable|unique:users',
+            'email' => 'max:255|email|nullable',
         ]);
 
         if ($validator->fails())
@@ -120,6 +121,6 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect('home')->with('success', 'User deleted.');
+        return redirect('/user')->with('success', 'User deleted.');
     }
 }

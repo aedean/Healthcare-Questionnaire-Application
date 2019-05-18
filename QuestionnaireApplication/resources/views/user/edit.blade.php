@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Update User</div>
                 <div class="panel-body">
-                <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+                <a href="{{ URL::previous() }}" class="btn btn-secondary btn-lg btn-default">Back</a>
                     {!! Form::open(['action' => ['UserController@update', $user->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
                     <div class="form-group{{ $errors->has('usertypeid') ? ' has-error' : '' }}">
@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {{ Form::hidden('_method', 'PUT') }}
-                        {!! Form::submit('Update User', ['class' => 'btn']) !!}
+                        {!! Form::submit('Update User', ['class' => 'btn btn-secondary btn-lg btn-default']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}
