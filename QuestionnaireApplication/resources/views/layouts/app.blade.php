@@ -15,98 +15,84 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/customstyles.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/customstyles.scss') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <?php $applicationlogo = getApplicationLogo(); ?>
-                    <?php if($applicationlogo != null): ?>
-                    <img src="<?php echo url('/') . Storage::url($applicationlogo); ?>" alt="logo" class="app-logo navbar-brand mr-0 mr-md-2" />
-                    <?php endif; ?>
-                    
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                        <li class="nav-link ">
-                            <a class="nav-link app-name" href="<?php echo url('/') . '/questionnaires'; ?>"><?php echo getApplicationName(); ?></a>
-                        </li>
-                    </ul>
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        
-                    </a>
+        <div class="nav-container">
+            <nav class="custom-nav navs">
+                <div class="layer-one navs">
+                    <div class="app-nav-data">
+                        <?php $applicationlogo = getApplicationLogo(); ?>
+                            <?php if($applicationlogo != null): ?>
+                            <img src="<?php echo url('/') . Storage::url($applicationlogo); ?>" alt="logo" class="app-logo navbar-brand mr-0 mr-md-2" />
+                        <?php endif; ?>
+                        <h3 class="app-name-header"><a class="nav-link app-name" href="<?php echo url('/') . '/questionnaires'; ?>"><?php echo getApplicationName(); ?></a></h3>
+                    </div>
                 </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    @if (!Auth::guest())
-                        <ul class="nav navbar-nav">
-                            &nbsp;
-                            <li class="nav-link ">
-                                <a class="nav-link " href="<?php echo url('/') . '/systemconfiguration' ?>">System Config</a>
-                            </li>
-                            &nbsp;
-                            <li class="nav-link ">
-                                <a class="nav-link " href="<?php echo url('/') . '/questionnaires' ?>">Questionnaires</a>
-                            </li>
-                            &nbsp;
-                            <li class="nav-link ">
-                                <a class="nav-link " href="<?php echo url('/') . '/users' ?>">Users</a>
-                            </li>
-                        </ul>
-                    @endif
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <ul class="nav navbar-nav">
-                                &nbsp;
-                                <li class="nav-link ">
-                                    <a class="nav-link " href="<?php echo url('/') . '/register' ?>">Register</a>
-                                </li>
-                            </ul>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    <?php if(Auth::user()->firstname == ''): ?>
-                                        {{ Auth::user()->username }} <span class="caret"></span>
-                                    <?php else: ?>
-                                        {{ Auth::user()->firstname }} {{ Auth::user()->lastname }} <span class="caret"></span>
-                                    <?php endif; ?>
+                <div class="my-lg-0 layer-two navs">
+                    <div class="content">
+                        <div class="icon-row">
+                            <span class="icon-vertical"><a class="active" href="questionnaires">
+                                <i class="fa fa-fw q-icon icons"></i>
                                 </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
-                    </ul>
+                            </span>
+                            <span class="icon-span">Questionnaires</span>
+                        </div>
+                        <div class="icon-row">
+                            <span class="icon-vertical"><a class="active" href="#">
+                                <i class="fa fa-fw more-icon icons"></i>
+                                </a>
+                            </span>
+                            <span class="icon-span">More</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="my-lg-0 layer-three">
+                <div class="content">
+                    <div class="icon-row">
+                        <span class="icon-vertical">
+                            <a class="active" href="<?php echo url('/') . '/user' ?>">
+                                <i class="fa fa-fw user-icon icons"></i>
+                            </a>
+                        </span>
+                        <span class="icon-span">Users</span>
+                    </div>
+                    <div class="icon-row">
+                        <span class="icon-vertical">
+                            <a class="active" href="<?php echo url('/') . '/patients' ?>">
+                                <i class="fa fa-fw patient-icon icons"></i>
+                            </a>
+                        </span>
+                        <span class="icon-span">Patients</span>
+                    </div>
+                    <div class="icon-row">
+                        <span class="icon-vertical"><a class="active" href="<?php echo url('/') . '/systemconfiguration' ?>">
+                            <i class="fa fa-fw config-icon icons"></i>
+                            </a>
+                        </span>
+                        <span class="icon-span">System Configuration</span>
+                    </div>
+                    <div class="icon-row">
+                        <span class="icon-vertical">
+                            <a class="active" href="<?php echo url('/') . '/questionnaireresults' ?>">
+                                <i class="fa fa-fw result-icon icons"></i>
+                            </a>
+                        </span>
+                        <span class="icon-span">Results</span>
+                    </div>
+                    <div class="icon-row">
+                        <span class="icon-vertical"><a class="active" href="<?php echo url('/') . '/home' ?>">
+                            <i class="fa fa-fw home-icon icons"></i>
+                            </a>
+                        </span>
+                        <span class="icon-span">Home</span>
+                    </div>
                 </div>
             </div>
-        </nav>
-
+        </div>
         <div class="bd-example">
             @if(count($errors) > 0)
                 @foreach($errors->all() as $error)
@@ -134,6 +120,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/nav.js') }}"></script>
     <script type="text/javascript">
           if ('serviceWorker' in navigator ) {
             window.addEventListener('load', function() {
