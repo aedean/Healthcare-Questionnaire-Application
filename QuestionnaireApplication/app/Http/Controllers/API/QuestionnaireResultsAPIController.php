@@ -40,6 +40,7 @@ class QuestionnaireResultsAPIController extends APIBaseController
             'questionnaireid' => 'required',
             'score' => 'required'       
         ]);
+        
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
@@ -49,18 +50,21 @@ class QuestionnaireResultsAPIController extends APIBaseController
         $result->score = $inputs['score'];
         if(isset($inputs['username'])){
             $user = Patient::where('username', '=', $inputs['username'])->first();
-            if($user->id != null){
+            if($user){
                 $result->userid = $user->id;
             }
         }
-        $result->save();
 
+        $result->save();
         $resultid = $result->id;
 
-        $note = new QuestionnaireNotes;
-        $note->resultid = $resultid;
-        $note->note = $inputs['note'];
-        $note->save();
+        if(isset($inputs['note'])) {
+            $note = new QuestionnaireNotes;
+            $note->resultid = $resultid;
+            $note->note = $inputs['note'];
+            $note->save();
+
+        }
 
         foreach($inputs as $key => $input) {
             if(strpos($key, 'answer') !== false) {
