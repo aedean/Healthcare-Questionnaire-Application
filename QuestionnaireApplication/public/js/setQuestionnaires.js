@@ -1,10 +1,8 @@
-const url = ('http://localhost/QuestionnaireApplication/QuestionnaireApplication/public/api/questionnaires');
+const url = ('http://localhost/QuestionnaireApplication/QuestionnaireApplication/public/api/questionnaire');
 jQuery.getJSON(url, function(data) {
-    console.log(data);
     var request = window.indexedDB.open("questionnaires");
     request.onupgradeneeded = function() {
         var db = event.target.result;
-        console.log('here');
         var store = db.createObjectStore("questionnaires", {keyPath: "id"});
         for(var i = 0; i < data['data'].length; i++) {
             var questionnaireid = data['data'][i]['questionnaire']['id'];
@@ -48,12 +46,8 @@ jQuery.getJSON(healthcarecontactsurl, function(contactdata) {
             else if (d<=1) d = Math.round(d*1000)+"m";
             if(d.replace(/[0-9]/g, '') == 'km' && parseInt(d) <= 40){
                 healthcarecontactsarray.push(contact[count]);
-                console.log(d);
-                console.log(postcodedata['result']['postcode']);
             } else if(d.replace(/[0-9]/g, '') == 'm') {
                 healthcarecontactsarray.push(contact[count]);
-                console.log(d);
-                console.log(postcodedata['result']['postcode']);
             }
             count++;
         });

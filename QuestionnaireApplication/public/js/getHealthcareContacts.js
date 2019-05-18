@@ -48,12 +48,25 @@ jQuery.getJSON(healthcarecontactsurl, function(contactdata) {
 setTimeout(setContacts, 1000);
 
 function setContacts() {
+    let contactshtml = `<table class="table">
+    <thead>
+        <th scope="col"><h4>Name</h4></th>
+        <th scope="col"><h4>Mobile</h4></th>
+        <th scope="col"><h4>Landline</h4></th>
+        <th scope="col"><h4>Company</h4></th>
+        <th scope="col"><h4>Postcode</h4></th>
+    </thead>
+    <tbody>`;
     for(var i = 0; i < healthcarecontactsarray.length; i++) {
-        jQuery(".contacts-container").after(`
-                <p>Name: ${healthcarecontactsarray[i][0]['name']}</p>
-                <p>Company: ${healthcarecontactsarray[i][0]['company']}</p>
-                <p>Mobile: ${healthcarecontactsarray[i][0]['mobile']}</p>
-                <p>Landline: ${healthcarecontactsarray[i][0]['landline']}</p>
-                <p>Postcode: ${healthcarecontactsarray[i][1][0]['postcode']}</p>`);
+        contactshtml += `<tr>
+                    <td><h4>${healthcarecontactsarray[i][0]['name']}</h4></td>
+                    <td><h4>${healthcarecontactsarray[i][0]['company']}</h4></td>
+                    <td><h4>${healthcarecontactsarray[i][0]['mobile']}</h4></td>
+                    <td><h4>${healthcarecontactsarray[i][0]['landline']}</h4></td>
+                    <td><h4>${healthcarecontactsarray[i][1][0]['postcode']}</h4></td>
+                    </tr>`;
     } 
+    contactshtml += `</tbody></table>`;
+    console.log(contactshtml);
+    jQuery(".contacts-container").after(contactshtml);
 }

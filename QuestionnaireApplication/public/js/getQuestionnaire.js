@@ -57,7 +57,7 @@ function getLanguagesSelect(languages)
 jQuery("select.savetype").change(function(){
     savetype = jQuery(this).children("option:selected").val();
     if(savetype == 'save') {
-        jQuery('.questionnaire-user-types').append(`User Name: <input type="text" class="username" />`);
+        jQuery('.questionnaire-user-types').append(`User Name <input type="text" class="username" />`);
     }
 });
 

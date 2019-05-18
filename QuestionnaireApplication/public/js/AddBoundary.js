@@ -44,8 +44,8 @@ $(document).ready(function() {
 
                                 <div class="form-group create-boundary-btns">
                                     <div class="col-md-8 col-md-offset-4">
-                                        <div class="btn btn-default addboundary" id="boundary${elementno}">Add another</div>
-                                        <div class="btn btn-default deleteboundary" id="boundary${elementno}">Delete</div>
+                                        <div class="btn btn-default btn-secondary btn-lg  addboundary" id="boundary${elementno}">Add another</div>
+                                        <div class="btn btn-default  btn-secondary btn-lg deleteboundary" id="boundary${elementno}">Delete</div>
                                     </div>
                                 </div>
                             </div>`);

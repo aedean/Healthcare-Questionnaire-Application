@@ -1,31 +1,37 @@
 <!DOCTYPE html>
     <head>
         <title>Page Title</title>
-        <link href="../css/customstyles.css" rel="stylesheet">
+        <link href="../css/customstyles.scss" rel="stylesheet">
         <link href="../css/app.css" rel="stylesheet">
+        <link href="../css/bootstrap.css" rel="stylesheet">
     </head>
     <body>
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <script>document.write('<img src="' + localStorage.getItem('app-logo') + '" alt="logo" class="navbar-brand mr-0 mr-md-2" />');</script>
+                    <ul class="nav navbar-nav">
+                        &nbsp;
+                        <li class="nav-link ">
+                            <a class="nav-link app-name" href=""><script>document.write('<p>' +localStorage.getItem('app-name')+ '</p>');</script></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <div id="app">
-            <nav class="navbar navbar-default navbar-static-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <script>document.write('<img src="' + localStorage.getItem('app-logo') + '" alt="logo" class="navbar-brand mr-0 mr-md-2" />');</script>
-                        <ul class="nav navbar-nav">
-                            &nbsp;
-                            <li class="nav-link ">
-                                <a class="nav-link app-name" href=""><script>document.write('<p>' +localStorage.getItem('app-name')+ '</p>');</script></a>
-                            </li>
-                        </ul>
+
+            <div class="container">
+                <div class="row">
+                    <div class="bd-example">
+                        <h1>Questionnaires</h2>
+                        <div class="card-columns">
+                            <div class="questionnaires-container">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </nav>
-
-        <h1>All Questionnaires</h1>
-            <div class="questionnaires-container">
-                <div class="card-deck">
-
-                </div>
-            </div> 
+            </div>
         </div>
 
         <script src="../js/app.js"></script>
