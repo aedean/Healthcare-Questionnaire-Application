@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading"><h3>Home</h3></div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -13,48 +13,20 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <p>Welcome back {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</p>
-                    <a href="user/{{ Auth::user()->id }}" type="button" class="btn btn-default">Account Details</a>
+                    <h4>Welcome back {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</h4>
+                    <a href="user/{{ Auth::user()->id }}" class="btn btn-secondary btn-lg btn-default">Account Details</a>
 
-                    <h4>Your Patients</h4>
-                    <table class="table">
-                        <thead>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-
-                    <h4>Your Saved Questionnaires</h4>
-                    <table class="table">
-                        <thead>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Languages</th>
-                            <th scope="col">Tags</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-
-                    <h4>Your Results</h4>
-                    <table class="table">
-                        <thead>
-                            <th scope="col">ID</th>
-                            <th scope="col">Questionnaire ID</th>
-                            <th scope="col">Question ID</th>
-                            <th scope="col">Answer</th>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+            <a href="{{ url('/logout') }}" class="btn btn-secondary btn-lg btn-default"
+                onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
+                Logout
+            </a>
+                <form id="logout-form" 
+                        action="{{ url('/logout') }}" 
+                    method="POST" 
+                    style="display: none;">
+                                {{ csrf_field() }}
+                </form>
                 </div>
             </div>
         </div>
