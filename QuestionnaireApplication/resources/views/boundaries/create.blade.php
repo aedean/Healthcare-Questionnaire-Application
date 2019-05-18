@@ -5,9 +5,10 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Create Questionnaire</div>
+                <div class="panel-heading"><h3>Create Boundaires</h3></div>
+
                 <div class="panel-body">
-                    <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+                    <h5>Boundaries are used to create a set of criteria which scores from questionnaires can be marked against.</h5>
                     {!! Form::open(['action' => 'QuestionnaireBoundariesController@store', 'method' => 'POST', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                     
                         <div class="boundary-container" id="boundary1">
@@ -69,14 +70,14 @@
 
                             <div class="form-group create-boundary-btns">
                                 <div class="col-md-8 col-md-offset-4">
-                                    <div class="btn btn-default addboundary" id="boundary1">Add another</div>
+                                    <div class="btn btn-default addboundary btn-secondary btn-lg " id="boundary1">Add another</div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
-                            {!! Form::submit('Finish', ['class' => 'btn', 'name' => 'submit']) !!}
+                            {!! Form::submit('Finish', ['class' => 'btn  btn-secondary btn-lg ', 'name' => 'submit']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}
