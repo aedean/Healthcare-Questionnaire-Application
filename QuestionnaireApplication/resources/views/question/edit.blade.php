@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit Question</div>
+                <div class="panel-heading"><h3>Edit Question</h3></div>
                 <div class="panel-body">
-                    <a href="<?php echo url('/') . '/questionnaires/' . $questionnaireId . '/edit' ?>" class="btn btn-default">Back</a>
+                    <a href="<?php echo url('/') . '/questionnaires/' . $questionnaireId . '/edit' ?>" class="btn btn-secondary btn-lg btn-default">Back</a>
                     {!! Form::open(['action' => ['QuestionsController@update', $question->questionid], 'method' => 'PUT', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                     
                     <div class="form-group{{ $errors->has('questionnumber') ? ' has-error' : '' }}">
@@ -53,8 +53,8 @@
 
                     <div class="form-group">
                         <label class="col-md-4 control-label">Image</label>
-                        <div class="col-md-12">
-                            <img src="<?php echo url('/') . Storage::url($question->questionimage); ?>" />
+                        <div class="col-md-12 text-center">
+                            <img class="img-fluid edit-img" src="<?php echo url('/') . Storage::url($question->questionimage); ?>" />
                         </div>
                     </div>
 
@@ -62,7 +62,10 @@
                         <label for="questionimage" class="col-md-4 control-label">New Image</label>
 
                         <div class="col-md-6">
-                            <?php echo Form::file('file', array('name'=>'questionimage')); ?>
+                        <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="validatedCustomFile" name="questionimage" required>
+                                <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                            </div>
                         </div>
                     </div>
 
@@ -82,7 +85,7 @@
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
-                        {!! Form::submit('Update', ['class' => 'btn', 'name' => 'update']) !!}
+                        {!! Form::submit('Update', ['class' => 'btn btn-secondary btn-lg', 'name' => 'update']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}
@@ -107,8 +110,12 @@
                     <div class="form-group">
                         <label for="answerimage" class="col-md-4 control-label">Image</label>
 
+                        
                         <div class="col-md-6">
-                            <?php echo Form::file('file', array('name'=>'answerimage')); ?>
+                        <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="validatedCustomFile" name="answernimage" required>
+                                <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                            </div>
                         </div>
                     </div>
 
@@ -128,7 +135,7 @@
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
-                        {!! Form::submit('Add Answer', ['class' => 'btn', 'name' => 'add']) !!}
+                        {!! Form::submit('Add Answer', ['class' => 'btn btn-secondary btn-lg', 'name' => 'add']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}
@@ -137,14 +144,14 @@
                         <h3>Answers</h3>
                         <table class="table answers-table">
                             <thead>
-                                <th scope="col">No</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
+                                <th scope="col"><h4>No</h4></th>
+                                <th scope="col"><h4>Edit</h4></th>
+                                <th scope="col"><h4>Delete</h4></th>
                             </thead>
                             <tbody>
                                 <?php foreach($answers as $answer): ?>
                                     <tr>
-                                        <td scope="row"><?php echo $answer->answerid; ?></td>
+                                        <td scope="row"><h4><?php echo $answer->answerid; ?></h4></td>
                                         <td>
                                             {!! Form::open(['action' => ['QuestionAnswersController@update', $answer->answerid], 'method' => 'PUT', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                                                 <div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
@@ -163,8 +170,8 @@
 
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Image</label>
-                                                    <div class="col-md-12">
-                                                        <img src="<?php echo url('/') . Storage::url($answer->answerimage); ?>" />
+                                                    <div class="col-md-12 text-center">
+                                                        <img class="img-fluid edit-img" src="<?php echo url('/') . Storage::url($answer->answerimage); ?>" />
                                                     </div>
                                                 </div>
 
@@ -172,7 +179,10 @@
                                                     <label for="answerimage" class="col-md-4 control-label">New Image</label>
 
                                                     <div class="col-md-6">
-                                                        <?php echo Form::file('file', array('name'=>'answerimage')); ?>
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input" id="validatedCustomFile" name="answerimage" required>
+                                                            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -192,7 +202,7 @@
                                                 
                                                 <div class="form-group">
                                                     <div class="col-md-8 col-md-offset-4">
-                                                    {!! Form::submit('Update', ['class' => 'btn', 'name' => 'update']) !!}
+                                                    {!! Form::submit('Update', ['class' => 'btn btn-secondary btn-lg', 'name' => 'update']) !!}
                                                     </div>
                                                 </div>
                                             {!! Form::close() !!}
@@ -200,15 +210,13 @@
                                         <td>
                                             {!! Form::open(['action' => ['QuestionAnswersController@destroy', $answer->answerid], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                                 {!! Form::hidden('_method', 'DELETE') !!}
-                                                {!! Form::submit('Delete', ['class' => 'btn']) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-secondary btn-lg']) !!}
                                             {!! Form::close() !!}
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                    <a href="<?php echo url('/'); ?>/question/<?php echo $question->questionid + 1; ?>/edit" class="btn btn-default">Next Question</a>
-                    <a href="<?php echo url('/'); ?>/question/<?php echo $question->questionid - 1; ?>/edit" class="btn btn-default">Previous Question</a>
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\QuestionnaireLanguages;
 use App\Languages;
 use App\Helpers\SaveImages;
+use Session;
 
 class QuestionsController extends Controller
 {
@@ -85,7 +86,36 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        //
+        session_start();
+
+        $questionscount = $_SESSION["questioncount"];
+        $questionnaireid = $_SESSION["questionnaire"]['id'];
+        
+        $thisquestion = Questions::where('questionid', '=', $id)->first();
+
+        $last = false;
+        if($questionscount == $thisquestion->questionnumber) {
+            $last = true;
+        }
+
+        $nextquestionno = $thisquestion->questionnumber + 1;
+        $nextquestion = Questions::where('questionnaireid', '=', $questionnaireid)->get();
+
+        $nextquestionid = 0;
+        foreach($nextquestion as $question){
+            if($question->questionnumber == $nextquestionno) {
+                $nextquestionid = $question->questionid;
+            }
+        }
+
+        $answers = QuestionAnswers::where('questionid', '=', $thisquestion->questionid)->get();
+        $nexturl = url('/') . '/question/' . $nextquestionid;
+
+        return view('question.show')
+            ->with('question', $thisquestion)
+            ->with('nexturl', $nexturl)
+            ->with('answers', $answers)
+            ->with('last', $last);
     }
 
     /**
