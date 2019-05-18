@@ -18,14 +18,16 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        logout as performLogout;
+    }
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/questionnaires';
 
     /**
      * Create a new controller instance.
@@ -40,5 +42,11 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+    public function logout(Request $request)
+    {
+        $this->performLogout($request);
+        return redirect()->route('/questionnaires');
     }
 }
