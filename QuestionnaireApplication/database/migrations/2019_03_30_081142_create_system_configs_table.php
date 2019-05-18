@@ -29,12 +29,6 @@ class CreateSystemConfigsTable extends Migration
                     'updated_at' => date('Y-m-d H:i:s') 
                 ),
                 array (
-                    'attributename' => 'Location API Key',
-                    'attributevalue' => 'na',
-                    'created_at' => date('Y-m-d H:i:s'), 
-                    'updated_at' => date('Y-m-d H:i:s') 
-                ),
-                array (
                     'attributename' => 'Application Name',
                     'attributevalue' => 'How are you feeling?',
                     'created_at' => date('Y-m-d H:i:s'), 
