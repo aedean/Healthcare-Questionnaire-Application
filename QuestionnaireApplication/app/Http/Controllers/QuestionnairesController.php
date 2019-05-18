@@ -8,6 +8,8 @@ use App\Questionnaires;
 use App\QuestionnaireBoundaries;
 use App\Questions;
 use App\QuestionnaireLanguages;
+use App\Tags;
+use App\Languages;
 use App\QuestionnaireTags;
 use App\Helpers\Checkboxes;
 use App\Helpers\SaveCheckboxes;
@@ -15,6 +17,7 @@ use App\Helpers\SaveImages;
 use App\Helpers\SetImagesCookie;
 use App\QuestionAnswers;
 use Cookie;
+use Session;
 
 class QuestionnairesController extends Controller
 {
@@ -29,13 +32,39 @@ class QuestionnairesController extends Controller
         $imageCookie->createServiceWorker();
 
         $questionnaires = Questionnaires::all();
-        $questionnairelanguages = QuestionnaireLanguages::all();
-        $questionnairetags = QuestionnaireTags::all();
+        $languages = Languages::all();
+
+        $questionnaires = Questionnaires::all();
+        /** Questionnaire Vars */
+        $questionnaireResponse = array();
+        foreach($questionnaires as $questionnaire){
+            $id = $questionnaire->id;
+            //LANGUAGES
+            $questionnaireLanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
+            $languages = array();
+            foreach(Languages::all()->toArray() as $language){
+                if(in_array($language['id'], array_column($questionnaireLanguages->toArray(), 'languageid'))){
+                    $languages[] = $language['language'];
+                }
+            }
+            //TAGS
+            $questionnaireTags = QuestionnaireTags::where('questionnaireid', '=', $id)->get();
+            $tags = array();
+            foreach(Tags::all()->toArray() as $tag){
+                if(in_array($tag['id'], array_column($questionnaireTags->toArray(), 'tagid'))){
+                    $tags[] = $tag['tagname'];
+                }
+            }
+
+            $questionnaireResponse[] = array(
+                'questionnaire' => $questionnaire->toArray(),
+                'languages' =>  $languages,
+                'tags'  => $tags
+            );
+        }
 
         return view('questionnaires.index')
-            ->with('questionnaires', $questionnaires)
-            ->with('questionnairelanguages', $questionnairelanguages)
-            ->with('questionnairetags', $questionnairetags);
+            ->with('questionnaires', $questionnaireResponse);
     }
 
     /**
@@ -91,15 +120,37 @@ class QuestionnairesController extends Controller
      */
     public function show($id)
     {
+        session_start();
         $questionnaire = Questionnaires::find($id);
-        $checkboxes = new Checkboxes;
-        $languages = $checkboxes->getLanguages($id);
-        $tags = $checkboxes->getTags($id);
+        $questions = Questions::where('questionnaireid', '=', $id)->get();
+        $count = (int)count($questions);
+        
+        $_SESSION["questionnaire"] = $questionnaire->toArray();
+        $_SESSION["questionno"] = 1;
+        $_SESSION["questioncount"] = $count;
+
+        //languages for select
+        $questionnairelanguages = QuestionnaireLanguages::where('questionnaireid', '=', $id)->get();
+        $questionnairelanguages = $questionnairelanguages->toArray();
+        $questionnairelanguagesarray = array();
+        foreach(Languages::all() as $language) {
+            if(in_array($language->id, array_column($questionnairelanguages, 'languageid'))){
+                $questionnairelanguagesarray[] = $language->language;
+            }
+        }
+
         //first question
+        $firstquestion = 0;
+        foreach($questions as $question) {
+            if($question->questionnumber == 1) {
+                $firstquestion = $question->questionid;
+            }
+        }
+
         return view('questionnaires.show')
             ->with('questionnaire', $questionnaire)
-            ->with('languages', $languages)
-            ->with('tags', $tags);
+            ->with('languages', $questionnairelanguagesarray)
+            ->with('firstquestionid', $firstquestion);
     }
 
     /**
