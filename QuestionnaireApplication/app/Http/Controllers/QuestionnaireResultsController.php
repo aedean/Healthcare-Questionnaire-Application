@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\QuestionnaireResults;
 use App\QuestionnaireResultAnswers;
 use App\QuestionnaireNotes;
+use App\Patient;
 
 class QuestionnaireResultsController extends Controller
 {
@@ -53,9 +54,11 @@ class QuestionnaireResultsController extends Controller
         $results = QuestionnaireResults::find($id);
         $answers = QuestionnaireResultAnswers::where('resultid', '=', $id)->get();
         $resultnote = QuestionnaireNotes::where('resultid', '=', $id)->first();
+        $patients = Patient::find($results->userid);
         return view('questionnaireresults.show')
             ->with('results', $results)
             ->with('answers', $answers)
+            ->with('patient', $patients)
             ->with('resultnote', $resultnote);
     }
 
