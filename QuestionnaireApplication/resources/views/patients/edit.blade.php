@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit Patient</div>
+                <div class="panel-heading"><h3>Edit Patient</h3></div>
                 <div class="panel-body">
-                    <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+                    <a href="{{ URL::previous() }}" class="btn btn-secondary btn-lg btn-default">Back</a>
                     {!! Form::open(['action' => ['PatientsController@update', $patient->id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
                     <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                         {{ Form::hidden('_method', 'PUT') }}
-                        {!! Form::submit('Update Patient', ['class' => 'btn']) !!}
+                        {!! Form::submit('Update Patient', ['class' => 'btn btn-secondary btn-lg btn-default']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}
