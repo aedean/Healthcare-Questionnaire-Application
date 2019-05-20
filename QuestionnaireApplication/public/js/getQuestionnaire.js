@@ -26,9 +26,27 @@ request.onsuccess = function() {
                 var languages = cursor['value']['questionnaire']['languages'];
                 var languagesHTML = getLanguagesSelect(languages);
                 jQuery(".questionnaire-container").append(`
-                        <p>${name}</p>
-                        <img src="${image}" alt="questionnaireimage" />
-                        ${languagesHTML}`);
+                <h1>${name}</h1>
+                <img src="${image}" alt="questionnaireimage" class="img-fluid img-full-width" />
+                <div class="questionnaire-show-center col-md-12">
+                    ${languagesHTML}
+                    <div class="form-group savetypes save-types-container">
+                        <label for="savetype" class="col-md-4 control-label">Save Option</label>
+
+                        <div class="col-md-6">
+                            <div class="questionnaire-user-types">
+                                <select name="savetype" class=" form-control">
+                                    <option name="nosave" value="nosave">Annoymous no data saved</option>
+                                    <option name="annoymoussave" value="annoymoussave">Annoymous save data</option>
+                                    <option name="save" value="save">Healthcare professional on behald of user patient</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn btn-secondary btn-lg questionnaire-btns take-q-btn take-questionnaire">Take Questionnaire</div> 
+                </div>
+                `);
+                
             }
             cursor.continue();
         }
@@ -46,18 +64,20 @@ function getImageURL(image)
 
 function getLanguagesSelect(languages)
 {
-    var selectHTML = '<select id="language" name="language">'
+    var selectHTML = '<div class="form-group"><label for="language" class="col-md-4 control-label">Languages</label><div class="col-md-6">';
+    selectHTML += '<select id="language" name="language" class="language form-control">';
     for(var i = 0; i < languages.length; i++) {
         selectHTML += `<option value="${languages[i]}">${languages[i]}</option>`;
     }
-    selectHTML += '</select>';
+    selectHTML += '</select></div></div>';
     return selectHTML;
 }
 
-jQuery("select.savetype").change(function(){
+jQuery(document).on('change', 'select', function(event) {
+    console.log('heerrreee');
     savetype = jQuery(this).children("option:selected").val();
     if(savetype == 'save') {
-        jQuery('.questionnaire-user-types').append(`User Name <input type="text" class="username" />`);
+        jQuery('.save-types-container').append(`<div class="form-group username-container" style="display: block;"><label for="username" class="col-md-4 control-label">User Name</label> <div class="col-md-6"><input type="text" class="username form-control"></div></div>`);
     }
 });
 
