@@ -3,10 +3,10 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-2 center-block">
             <a href="<?php echo url('/') . '/questionnaires' ?>" class="btn btn-secondary btn-lg">Back</a>
             <h1><?php echo $questionnaire->name; ?></h1>
-            <img class="img-fluid" src="<?php echo url('/') . Storage::url($questionnaire->questionnaireimage); ?>" />
+            <img class="img-fluid img-full-width" src="<?php echo url('/') . Storage::url($questionnaire->questionnaireimage); ?>" />
 
             <div class="questionnaire-show-center col-md-12">
                 <!-- language selection -->

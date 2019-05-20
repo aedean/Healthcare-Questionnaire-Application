@@ -28,8 +28,8 @@
                                     {!! Form::submit('Delete', ['class' => 'btn btn-secondary btn-lg']) !!}
                                 {!! Form::close() !!}
                             </div>
-                            <a href="{{url('/')}}/questionnaires/<?php echo $questionnaire['questionnaire']['id'] ?>" class="btn btn-secondary btn-lg questionnaire-btns">Take<a>
-                            <a href="{{url('/')}}/questionnaires/<?php echo $questionnaire['questionnaire']['id'] ?>/edit" class="btn btn-secondary btn-lg questionnaire-btns">Edit<a>
+                            <a href="{{url('/')}}/questionnaires/<?php echo $questionnaire['questionnaire']['id'] ?>" class="btn btn-secondary btn-lg questionnaire-btns">Take</a>
+                            <a href="{{url('/')}}/questionnaires/<?php echo $questionnaire['questionnaire']['id'] ?>/edit" class="btn btn-secondary btn-lg questionnaire-btns">Edit</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

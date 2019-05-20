@@ -14,8 +14,8 @@ request.onsuccess = function() {
             var languages = cursor['value']['questionnaire']['languages'].toString();
             var tags = cursor['value']['questionnaire']['tags'].toString();
             image = getImageURL(image);
-            jQuery(".questionnaires-container").after(`<div class="card">
-                    <img src="${image}" alt="questionnaireimg" />
+            jQuery(".questionnaires-container").append(`<div class="card">
+                    <img src="${image}" alt="questionnaireimg" class="card-img-top" />
                     <div class="card-body">
                         <h3 class="card-title">${name}</h3>
                     </div>
@@ -27,7 +27,9 @@ request.onsuccess = function() {
                         <h4>Tags</h4>
                         <h3>${tags}</h3>
                     </div>
-                    <div class="btn btn-secondary btn-lg questionnaire-btns take-questionnaire" id="questionnairebtn${id}">Take</div>
+                    <div class="card-footer">
+                        <div class="btn btn-secondary btn-lg questionnaire-btns take-questionnaire" id="questionnairebtn${id}">Take</div>
+                    </div>
                 </div>`);
             cursor.continue();
         }
