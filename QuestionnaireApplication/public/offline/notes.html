@@ -1,35 +1,59 @@
 <!DOCTYPE html>
     <head>
-        <title>Page Title</title>
-        <link href="../css/customstyles.css" rel="stylesheet">
+        <title>Notes</title>
+        <link href="../css/customstyles.scss" rel="stylesheet">
         <link href="../css/app.css" rel="stylesheet">
+        <link href="../css/bootstrap.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
     </head>
     <body>
-        <div id="app">
-            <nav class="navbar navbar-default navbar-static-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <script>document.write('<img src="' + localStorage.getItem('app-logo') + '" alt="logo" class="navbar-brand mr-0 mr-md-2" />');</script>
-                        <ul class="nav navbar-nav">
-                            &nbsp;
-                            <li class="nav-link ">
-                                <a class="nav-link app-name" href=""><script>document.write('<p>' +localStorage.getItem('app-name')+ '</p>');</script></a>
-                            </li>
-                        </ul>
+        <div id="app" class="offline-app">
+            <div class="nav-container">
+                <nav class="custom-nav nav-mobile">
+                    <div class="navs layer-one-mobile">
+                        <div class="app-nav-data mobile-nav-app-data">
+                            <script>document.write('<img src="' + localStorage.getItem('app-logo') + '" alt="logo" class="navbar-brand mr-0 mr-md-2" />');</script>
+                            <h3 class="app-name-header-mobile app-name-header"><a class="nav-link nav-text-offline app-name" href=""><script>document.write(localStorage.getItem('app-name'));</script></a></h3>
+                        </div>
+                        <div class="mobile-qs">
+                            <div class="icon-row icon-row-mobile">
+                                <span class="icon-vertical"><a class="active" href="questionnaires.html">
+                                    <i class="fa fa-fw q-icon icons icons-mobile"></i>
+                                    </a>
+                                </span>
+                                <span class="icon-span nav-text-offline">Questionnaires</span>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                        <div class="panel-heading"><h3>Notes</h3></div>
+                            <div class="panel-body">
+                                <h4 class="col-md-4 control-label">Note</h4>
+                                <div class="form-group">
+            
+                                    <div class="col-md-6 note notes-container">
+                                        <input id="note" type="text" class="form-control notes" name="note" required autofocus>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-md-8 col-md-offset-4 row-padding">
+                                    <div class="btn save btn-lg btn-secondary questionnaire-continue">Save</div>
+                                </div>       
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </nav>
-
-        <h1>Notes</h1>
-            <div class="notes-container">
-                <textarea rows="4" cols="50" class="notes">
-                </textarea>
-            </div> 
-        </div>
-
-        <div class="btn save">Save</div>
-
+            </div>
         <script src="../js/app.js"></script>
-        <script src="../js/notes.js"></script>
+        <script src="../js/getQuestionnaires.js"></script>
+        
     </body>
 </html>
