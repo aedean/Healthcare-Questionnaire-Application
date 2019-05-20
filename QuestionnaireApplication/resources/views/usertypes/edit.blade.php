@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit <?php echo $usertype->usertypeid; ?></div>
+                <div class="panel-heading"><h3>Edit <?php echo $usertype->usertypename; ?></h3></div>
                 <div class="panel-body">
-                    <a href="<?php echo url('/') . '/usertypes'; ?>" class="btn btn-default">Back</a>
+                    <a href="<?php echo url('/') . '/usertypes'; ?>" class="btn btn-default btn-secondary btn-lg">Back</a>
                     {!! Form::open(['action' => ['UserTypesController@update', $usertype->usertypeid], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
                     {{ csrf_field() }}
 
@@ -40,7 +40,7 @@
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
-                        {!! Form::submit('Update User Type', ['class' => 'btn']) !!}
+                        {!! Form::submit('Update User Type', ['class' => 'btn btn-secondary btn-lg']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}

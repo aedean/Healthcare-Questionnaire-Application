@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Update User</div>
+                <div class="panel-heading"><h3>Update User</h3></div>
                 <div class="panel-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
@@ -33,10 +33,10 @@
                         <?php endif; ?>
                     </li>
                     <li class="list-group-item">
-                        <a href="<?php echo Request::url(); ?>/edit" type="button" class="btn btn-default">Edit Details</a>
+                        <a href="<?php echo Request::url(); ?>/edit" class="btn btn-secondary btn-lg btn-default">Edit Details</a>
                     </li>
                 </ul>
-                <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+                <a href="{{ URL::previous() }}" class="btn btn-secondary btn-lg btn-default">Back</a>
                 </div>
             </div>
         </div>

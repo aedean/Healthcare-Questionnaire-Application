@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Helpers\Selects;
+use App\Patient;
+use App\UserTypes;
+use Auth;
 
 class PatientController extends Controller
 {
@@ -23,6 +27,13 @@ class PatientController extends Controller
      */
     public function index()
     {
-        return view('patient');
+        $user = Auth::user();
+        $userid = $user->id;
+
+        $patient = Patient::find($userid);
+        $selects = new Selects;
+        $titles = $selects->getTitles('titlename', $patient->title);
+        $genders = $selects->getGenders('gender', $patient->gender);
+        return view('patient', compact("titles"), compact('genders'))->with('patient', $patient);
     }
 }

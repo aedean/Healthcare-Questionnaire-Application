@@ -1,0 +1,387 @@
+.navbar-default .navbar-brand {
+    color: white;
+}
+
+body {
+    background-color: #f2f3f4 !important;
+}
+
+.navbar-default .navbar-brand:hover {
+    color: white;
+}
+
+#app .navbar-default .navbar-nav>li>a {
+    color: white;
+}
+
+#app .navbar-default .navbar-nav>li>a:hover {
+    color: white;
+}
+
+.panel-heading {
+    color: red;
+}
+
+.btn {
+    background-color: #626567;
+    border-color: #626567;
+    color: white;
+}
+
+* {
+    color: black;
+    font-family: 'Roboto', sans-serif;
+}
+
+.nav-element-right {
+    margin: 10px 0 !important;
+}
+
+hr {
+    border: #626567 1px solid;
+}
+
+.number-right {
+    text-align: right;
+}
+
+.row-padding {
+    padding: 20px 20px 0 20px ;
+}
+
+.custom-btn {
+    background-color: #47525E !important;
+    color: white !important;
+    margin-top: 10px;
+}
+
+.form-control{border-width: 2px; border-color: grey;}   
+.bootstrap-iso .form-control{border-width: 2px; border-color: grey;}   
+
+
+/* NAV */
+
+//MOBILE DESIGNS
+.icons-mobile {
+    font-size: 12px;
+}
+
+.nav-text-offline, .nav-text-offline p {
+    color: white !important;
+}
+
+.app-name-header .nav-text-offline p {
+    margin: 0;
+}
+
+.app-name-header-mobile {
+    margin: 0;
+}
+
+.app-name-header {
+    width: 240px;
+}
+
+.icons-mobile {
+    font-size: 22px;
+}
+
+.nav-text-offline {
+    font-size: 22px;
+}
+
+.nav-mobile {
+    padding: 15px;
+}
+
+.layer-one-mobile {
+    background-color: #154360;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.offline-app .container p, h1, h3, h4 {
+    font-weight: 300 !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .nav-mobile {
+        padding: 0;
+    }
+
+    .icons-mobile {
+        font-size: 16px;
+    }
+
+    .mobile-qs .icon-row-mobile {
+        justify-content: flex-end;
+        align-items: end;
+        padding-top: 16px;
+    }
+    
+    .nav-text-offline {
+        font-size: 16px;
+    }
+
+    .layer-one-mobile {
+        width: 100%;
+    }
+
+    .mobile-qs {
+        width: 50%;
+    }
+
+    .mobile-nav-app-data {
+        width: 50%;
+    }
+}
+
+//MOBILE DESIGNS
+
+/* Icons */
+.home-icon:before {
+    content: url('../storage/icons/home.svg');
+}
+
+.config-icon:before {
+    content: url('../storage/icons/settings.svg');
+}
+
+.q-icon:before {
+    content: url('../storage/icons/questionnaires.png');
+}
+
+.result-icon:before {
+    content: url('../storage/icons/results.svg');
+}
+
+.user-icon:before {
+    content: url('../storage/icons/users.svg');
+}
+
+.patient-icon:before {
+    content: url('../storage/icons/patients.svg');
+}
+
+.more-icon:before {
+    content: url('../storage/icons/more.png');
+}
+
+.navbar .pull-right {
+    text-align: right;
+}
+
+.custom-nav {
+    background-color: #154360;
+}
+
+.layer-three  {
+    background-color:#d7dbdd;
+    display: none ;
+}
+
+.layer-three a {
+    color: black;
+}
+
+.layer-three .content {
+    text-align: right;
+    padding: 15px;
+}
+
+
+.layer-one {
+    width: 50%;
+}
+
+.layer-two {
+    width: 50%;
+}
+
+.custom-nav {
+    display: flex;
+}
+
+.layer-two .content {
+    text-align: right;
+}
+
+.navs {
+    padding: 0 15px;
+}
+
+.icon-row {
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    width: 60%;
+    align-content: right;
+}
+
+.icon-span {
+    padding-left: 5px;
+}
+
+@media only screen and (max-width: 768px) {
+    .content {
+        width: 100%;
+    }
+
+    .icon-row {
+        display: inline-block;
+    }
+
+    .icon-span {
+        padding-left: 0;
+    }
+
+    .layer-one {
+        background-color: #154360;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
+    
+    .layer-two {
+        background-color: #909497;
+    }
+
+    .icon-vertical, .icon-span {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .navs {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .custom-nav {
+        display: block;
+        padding: 0;
+    }
+
+    
+    .app-nav-data {
+        display: block;
+        align-items: center;
+    }
+
+    .app-name-header {
+        display: block;
+    }
+    
+}
+
+.layer-two span, .layer-one a {
+    color: white;
+}
+
+.app-nav-data {
+    display: flex;
+}
+.app-logo {
+    flex: 0 1 25%;
+}
+
+.app-name-header {
+    flex: 0 1 calc(75%);
+    display: flex;
+    align-items: center;
+}
+
+.custom-nav span, .layer-three span {
+    font-size: 12px;
+}
+
+.layer-two, .layer-three {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-container {
+    padding-bottom: 20px;
+}
+
+.questionnaire-delete {
+    display: inline-block;
+}
+
+.questionnaire-btns {
+    margin: 5px;
+}
+
+.questionnaire-show-center{
+    text-align: center;
+    padding: 15px;
+}
+
+.question-image {
+    max-width: 400px !important;
+    background-size: cover;
+}
+
+.answercheckbox {
+    display: none;
+}
+
+.question-show-center{
+    text-align: center;
+    padding:  15px 15px 0 15px;
+}
+
+.take-q-btn {
+    margin: 10px;
+}
+
+.results-container {
+    text-align: center;
+}
+
+.question-input {
+    display: flex;
+    justify-content: center;
+}
+
+#app {
+    padding-bottom: 20px;
+}
+
+.answer-selected {
+    padding: 10px 15px;
+    background-color: #154360;
+    color: white;
+}
+
+.questionnaire-continue {
+    float: right; 
+}
+
+.note {
+    max-width: 100% !important;
+}
+
+.username-container {
+    display:none;
+}
+
+.edit-img {
+    width: 50%;
+    margin-left: 100px;
+}
+
+label {
+    font-size: 13px;
+}
+
+.img-full-width {
+    width: 100% !important;
+}

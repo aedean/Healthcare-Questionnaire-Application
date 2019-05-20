@@ -24,6 +24,9 @@ Route::resource('questionnaires', 'QuestionnairesController');
 Route::resource('question', 'QuestionsController');
 Route::resource('questionanswers', 'QuestionAnswersController');
 Route::resource('boundaries', 'QuestionnaireBoundariesController');
+Route::resource('questionnaireresults', 'QuestionnaireResultsController');
+Route::resource('questionnairenotes', 'QuestionnaireNotesController');
+Route::resource('result', 'QuestionnaireBoundariesController');
 
 /* Users */
 Route::resource('address', 'UserAddressController');
@@ -40,7 +43,7 @@ Route::resource('usertypes', 'UserTypesController');
 /* Patients */
 Route::resource('patients', 'PatientsController');
 Route::prefix('patient')->group(function() {
-Route::get('/login', 'Auth\PatientLoginController@showLoginForm')->name('patient.login');
-Route::post('/login', 'Auth\PatientLoginController@login')->name('patient.login.submit');
-Route::get('/', 'PatientController@index')->name('patient.dashboard');
+    Route::get('/login', 'Auth\PatientLoginController@showLoginForm')->name('patient.login');
+    Route::post('/login', 'Auth\PatientLoginController@login')->name('patient.login.submit');
+    Route::get('/', 'PatientController@index')->name('patient.dashboard');
 });

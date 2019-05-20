@@ -20,6 +20,7 @@ class CreateQuestionAnswersTable extends Migration
             $table->integer('languageid');
             $table->string('answer');
             $table->string('answerimage');
+            $table->integer('score');
             $table->timestamps();
         });
     }

@@ -3,60 +3,40 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
-                    <a href="<?php echo url('/') . '/questionnaires/create' ?>" class="btn btn-default">Create New</a>
-                    <table class="table">
-                        <thead>
-                            <th scope="col">Questionnaire Id</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Languages</th>
-                            <th scope="col">Tags</th>
-                            <th scope="col">Take</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
-                        </thead>
-                        <tbody>
-                            <?php foreach($questionnaires as $questionnaire): ?>
-                                <tr>
-                                    <td scope="row"><?php echo $questionnaire->id; ?></td>
-                                    <td><?php echo $questionnaire->name; ?></td>
-                                    <td><?php echo $questionnaire->questionnaire; ?></td>
-                                    <td><?php echo $questionnaire->languageid; ?></td>
-                                    <td><a href="{{url('/')}}/questionnaires/{{ $questionnaire->id }}">Take<a></td>
-                                    <td><a href="{{url('/')}}/questionnaires/{{ $questionnaire->id }}/edit">Edit<a></td>
-                                    <td>
-                                        {!! Form::open(['action' => ['QuestionnairesController@destroy', $questionnaire->id], 'method' => 'POST']) !!}
-                                            {!! Form::hidden('_method', 'DELETE') !!}
-                                            {!! Form::submit('Delete', ['class' => 'btn']) !!}
-                                        {!! Form::close() !!}
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="bd-example">
+            <h1>Questionnaires</h2>
+            <div class="card-columns">
+                <?php foreach($questionnaires as $questionnaire): ?>
+                    <div class="card">
+                        <img src="<?php echo url('/') . Storage::url($questionnaire['questionnaire']['questionnaireimage']); ?>" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h3 class="card-title"><?php echo $questionnaire['questionnaire']['name'] ?></h3>
+                        </div>
+                        <div class="card-footer">
+                            <h4>Languages</h4>
+                            <h3><?php echo implode($questionnaire['languages'], ', ' ); ?></h3>
+                        </div>
+
+                        <div class="card-footer">
+                            <h4>Tags</h4>
+                            <h3><?php echo implode($questionnaire['tags'], ', ' ); ?></h3>
+                        </div>
+                        <div class="card-footer">
+                            <div class="questionnaire-delete questionnaire-btns"> 
+                                {!! Form::open(['action' => ['QuestionnairesController@destroy', $questionnaire['questionnaire']['id']], 'method' => 'POST']) !!}
+                                    {!! Form::hidden('_method', 'DELETE') !!}
+                                    {!! Form::submit('Delete', ['class' => 'btn btn-secondary btn-lg']) !!}
+                                {!! Form::close() !!}
+                            </div>
+                            <a href="{{url('/')}}/questionnaires/<?php echo $questionnaire['questionnaire']['id'] ?>" class="btn btn-secondary btn-lg questionnaire-btns">Take</a>
+                            <a href="{{url('/')}}/questionnaires/<?php echo $questionnaire['questionnaire']['id'] ?>/edit" class="btn btn-secondary btn-lg questionnaire-btns">Edit</a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-$('#search').on('keyup',function(){
-    console.log('her');
-$value=$(this).val();
-$.ajax({
-type : 'get',
-url : '{{URL::to('search')}}',
-data:{'search':$value},
-success:function(data){
-console.log(data);
-}
-});
-})
-</script>
-<script type="text/javascript">
-$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-</script>
+<script src="{{ asset('js/setQuestionnaires.js') }}"></script>
+<script src="{{ asset('js/setResults.js') }}"></script>
 @endsection

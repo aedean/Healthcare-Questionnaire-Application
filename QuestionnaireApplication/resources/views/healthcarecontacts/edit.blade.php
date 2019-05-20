@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Healthcare Contact</div>
+                <div class="panel-heading"><h3>Healthcare Contact</h3></div>
                 <div class="panel-body">
-                    <a href="<?php echo url('/') . '/healthcarecontacts'; ?>" class="btn btn-default">Back</a>
+                    <a href="<?php echo url('/') . '/healthcarecontacts'; ?>" class="btn btn-default btn-secondary btn-lg">Back</a>
                     {!! Form::open(['action' => ['HealthcareContactsController@update', $healthcarecontact->id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
                     {{ csrf_field() }}
 
@@ -156,7 +156,7 @@
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
-                        {!! Form::submit('Update Healthcare Worker', ['class' => 'btn']) !!}
+                        {!! Form::submit('Update Healthcare Worker', ['class' => 'btn btn-secondary btn-lg']) !!}
                         </div>
                     </div>
                     {!! Form::close() !!}

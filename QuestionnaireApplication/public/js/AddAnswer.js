@@ -13,14 +13,25 @@ $(document).ready(function() {
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="answerimage1" class="col-md-4 control-label">Answer Image</label>
+                                                    
                                                     <div class="col-md-6">
-                                                        <input name="answerimage1" type="file">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input" id="validatedCustomFile" name="answerimage1" required>
+                                                            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label for="score1" class="col-md-4 control-label">Score</label>
+                                                    <div class="col-md-6">
+                                                        <input id="score1" type="text" class="form-control" name="score1" required autofocus>
                                                     </div>
                                                 </div>
                                                 <div class="form-group question-create-answers-btns">
                                                     <div class="col-md-8 col-md-offset-4">
-                                                        <div class="btn btn-default addanswer" id="element1">Add another</div>
-                                                        <div class="btn btn-default deleteanswer" id="element1">Delete</div>
+                                                        <div class="btn btn-default btn-secondary btn-lg addanswer" id="element1">Add another</div>
+                                                        <div class="btn btn-default btn-secondary btn-lg deleteanswer" id="element1">Delete</div>
                                                     </div>
                                                 </div>
                                         </div>`);
@@ -49,13 +60,22 @@ $(document).ready(function() {
                                     <div class="form-group">
                                         <label for="answerimage${elementno}" class="col-md-4 control-label">Answer Image</label>
                                         <div class="col-md-6">
-                                            <input name="answerimage${elementno}" type="file">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="validatedCustomFile" name="answerimage${elementno}" required>
+                                                <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="score${elementno}" class="col-md-4 control-label">Score</label>
+                                        <div class="col-md-6">
+                                            <input id="score${elementno}" type="text" class="form-control" name="score${elementno}" required autofocus>
                                         </div>
                                     </div>
                                     <div class="form-group question-create-answers-btns">
                                         <div class="col-md-8 col-md-offset-4">
-                                            <div class="btn btn-default addanswer" id="element${elementno}">Add another</div>
-                                            <div class="btn btn-default deleteanswer" id="element${elementno}">Delete</div>
+                                            <div class="btn btn-default btn-secondary btn-lg addanswer" id="element${elementno}">Add another</div>
+                                            <div class="btn btn-default btn-secondary btn-lg deleteanswer" id="element${elementno}">Delete</div>
                                         </div>
                                     </div>
                                 </div>`);
