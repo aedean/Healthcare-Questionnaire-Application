@@ -61,6 +61,84 @@ hr {
 
 /* NAV */
 
+//MOBILE DESIGNS
+.icons-mobile {
+    font-size: 12px;
+}
+
+.nav-text-offline, .nav-text-offline p {
+    color: white !important;
+}
+
+.app-name-header .nav-text-offline p {
+    margin: 0;
+}
+
+.app-name-header-mobile {
+    margin: 0;
+}
+
+.app-name-header {
+    width: 240px;
+}
+
+.icons-mobile {
+    font-size: 22px;
+}
+
+.nav-text-offline {
+    font-size: 22px;
+}
+
+.nav-mobile {
+    padding: 15px;
+}
+
+.layer-one-mobile {
+    background-color: #154360;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.offline-app .container p, h1, h3, h4 {
+    font-weight: 300 !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .nav-mobile {
+        padding: 0;
+    }
+
+    .icons-mobile {
+        font-size: 16px;
+    }
+
+    .mobile-qs .icon-row-mobile {
+        justify-content: flex-end;
+        align-items: end;
+        padding-top: 16px;
+    }
+    
+    .nav-text-offline {
+        font-size: 16px;
+    }
+
+    .layer-one-mobile {
+        width: 100%;
+    }
+
+    .mobile-qs {
+        width: 50%;
+    }
+
+    .mobile-nav-app-data {
+        width: 50%;
+    }
+}
+
+//MOBILE DESIGNS
+
 /* Icons */
 .home-icon:before {
     content: url('../storage/icons/home.svg');
@@ -302,4 +380,8 @@ hr {
 
 label {
     font-size: 13px;
+}
+
+.img-full-width {
+    width: 100% !important;
 }
